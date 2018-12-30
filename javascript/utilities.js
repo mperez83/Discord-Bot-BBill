@@ -59,11 +59,11 @@ module.exports.checkNested = function(obj /*, level1, level2, ... levelN*/) {
     return true;
 }
 
-module.exports.incrementUserDataValue = function(message, valueName) {
+module.exports.incrementUserDataValue = function(user, valueName, amount) {
     temporaryReadJSONFile("./data/userData.json", function (userDataJson) {
-        if (!userDataJson[message.author.id]) userDataJson[message.author.id] = {username: message.author.username};
-        if (!userDataJson[message.author.id][valueName]) userDataJson[message.author.id][valueName] = 0;
-        userDataJson[message.author.id][valueName]++;
+        if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
+        if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
+        userDataJson[user.id][valueName] += amount;
         fs.writeFileSync("./data/userData.json", JSON.stringify(userDataJson));
     });
 }

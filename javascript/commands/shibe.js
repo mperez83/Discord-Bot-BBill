@@ -46,11 +46,11 @@ module.exports.run = async (bot, message, args) => {
             message.channel.send(`**${shibes[randomIndex]}** (Amount unboxed: **${shibeDataJson[shibes[randomIndex]].amount}**)\n${sizeString}`);
         }
 
-        console.log("Trying to send message...");
-        message.channel.send({ files: ["./shibes/" + shibes[randomIndex] ]});
-        console.log("Message sent!");
+        message.channel.send({ files: ["./shibes/" + shibes[randomIndex] ]})
+            .then(console.log("Sent shibe!"))
+            .catch(console.error);
 
-        utilitiesModule.incrementUserDataValue(message, "shibeCalls");
+        utilitiesModule.incrementUserDataValue(message.author, "shibeCalls", 1);
 
     });
 }

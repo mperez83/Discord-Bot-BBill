@@ -1,6 +1,5 @@
 /*
 TODO
--Localize shibe folder
 -Global power rankings
 -Indexcall popularity
 */
@@ -73,7 +72,7 @@ bot.on("message", (message) => {
 
     if (message.content.includes("<:GWfroggyFeelsUpMan:400751139563241473>")) {
         //message.channel.send("bad emote");
-        utilitiesModule.incrementUserDataValue(message, "sin");
+        utilitiesModule.incrementUserDataValue(message.author, "sin", 5);
         return;
     }
 
@@ -100,4 +99,6 @@ bot.on("message", (message) => {
 
 });
 
-bot.login(config.token);
+bot.login(config.token)
+    .then(console.log)
+    .catch(console.error);
