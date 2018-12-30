@@ -1,7 +1,8 @@
 /*
 TODO
--Make !speak command work without having to be in the call
--Make !speak command play globally
+-Localize shibe folder
+-Global power rankings
+-Indexcall popularity
 */
 
 //All required things
@@ -33,10 +34,12 @@ fs.readdir("./javascript/commands/", (err, files) => {
         console.log(`${i + 1}: ${f} loaded!`);
         bot.commands.set(props.help.name, props);
     });
+
+    console.log();
 });
 
 //Loading pokemon commands
-fs.readdir("./javascript/commands/pokemon/", (err, files) => {
+fs.readdir("./javascript/pokemon commands/", (err, files) => {
     if (err) console.error(err);
 
     let jsFiles = files.filter(f => f.split(".").pop() === "js");
@@ -48,15 +51,13 @@ fs.readdir("./javascript/commands/pokemon/", (err, files) => {
     console.log(`Loading ${jsFiles.length} pokemon commands!`);
 
     jsFiles.forEach((f, i) => {
-        let props = require(`./commands/pokemon/${f}`);
+        let props = require(`./pokemon commands/${f}`);
         console.log(`${i + 1}: ${f} loaded!`);
         bot.commands.set(props.help.name, props);
     });
 
-    console.log("\n");
+    console.log();
 });
-
-
 
 //Ensure that the bot only starts working after it is ready
 bot.on("ready", () => {
