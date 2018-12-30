@@ -5,7 +5,7 @@ module.exports.run = async (bot, message, args) => {
     utilitiesModule.readJSONFile("./data/shibeData.json", function (shibeDataJson) {
 
         let shibes = [];
-        fs.readdirSync("C:/Users/Michael/Pictures/shibes/").forEach(file => {
+        fs.readdirSync("./shibes/").forEach(file => {
             shibes.push(file);
         });
 
@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
             utilitiesModule.checkAndUpdateIndexList(bot, indexListJson);
         });
 
-        let stats = fs.statSync("C:/Users/Michael/Pictures/shibes/" + shibes[randomIndex]);
+        let stats = fs.statSync("./shibes/" + shibes[randomIndex]);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
         let sizeString;
@@ -46,7 +46,9 @@ module.exports.run = async (bot, message, args) => {
             message.channel.send(`**${shibes[randomIndex]}** (Amount unboxed: **${shibeDataJson[shibes[randomIndex]].amount}**)\n${sizeString}`);
         }
 
-        message.channel.send({ files: ["C:/Users/Michael/Pictures/shibes/" + shibes[randomIndex] ]});
+        console.log("Trying to send message...");
+        message.channel.send({ files: ["./shibes/" + shibes[randomIndex] ]});
+        console.log("Message sent!");
 
         utilitiesModule.incrementUserDataValue(message, "shibeCalls");
 
