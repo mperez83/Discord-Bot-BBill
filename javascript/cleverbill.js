@@ -37,6 +37,7 @@ module.exports = {
                     || msgArray[i] == "are" || msgArray[i] == "arent"
                     || msgArray[i] == "is" || msgArray[i] == "isnt"
                     || msgArray[i] == "have" || msgArray[i] == "havent"
+                    || msgArray[i] == "has" || msgArray[i] == "hasnt"
                     || msgArray[i] == "am") { msgType = 1; break; }
                 //Who/Whom questions
                 if (msgArray[i] == "who" || msgArray[i] == "whom"

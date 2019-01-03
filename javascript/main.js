@@ -1,9 +1,3 @@
-/*
-TODO
--Global power rankings
--Indexcall popularity
-*/
-
 //All required things
 const Discord = require("discord.js");
 const bot = new Discord.Client();
