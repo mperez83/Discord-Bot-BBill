@@ -64,9 +64,10 @@ bot.on("message", (message) => {
 
     if (message.author.bot) return;
 
-    if (message.content.includes("<:GWfroggyFeelsUpMan:400751139563241473>")) {
-        //message.channel.send("bad emote");
-        utilitiesModule.incrementUserDataValue(message.author, "sin", 5);
+    if (message.content.includes("<:GWfroggyFeelsUpMan:400751139563241473>")
+        || message.content.includes("<:GWqlabsFeelsKCHHH:403294831893282820>")
+        || message.content.includes("<:GWqlabsFeelsFunnyMan:398950861361119233>")) {
+        utilitiesModule.incrementUserDataValue(message.author, "sin", 1);
         return;
     }
 

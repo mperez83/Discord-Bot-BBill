@@ -1,3 +1,4 @@
+const fs = require("fs");
 const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {
@@ -27,6 +28,7 @@ module.exports.run = async (bot, message, args) => {
             }
 
             utilitiesModule.incrementUserDataValue(message.author, "prestigeLevel", 1);
+            fs.writeFileSync("./data/userData.json", JSON.stringify(userDataJson));
             message.reply("you're now 1 better than everyone else");
             return;
         }
