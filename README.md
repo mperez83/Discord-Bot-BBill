@@ -4,8 +4,10 @@ A chat bot for discord, utilizing <a href="https://github.com/hydrabolt/discord.
 It's a relatively simple bot with virtually no practical purposes. I'm mostly working on it to better my understanding of JavaScript and node.js, and provide a few goofs and gaffs for some friends.
 
 # Commands:
-- !power: Measures the caller's power level
+- !power: Assesses the caller's power level
 - !powercheck: Checks the caller's power level, and displays when next they can use the !power command
+- !prestige: Enhances the caller if their power level is admirable
+- !liststats: Lists all of the caller's stats
 - !topic [newTopic]: Displays current topic or changes it to a new one
 - !index (imageName): Indexes the most recently posted image (within ten messages) under a given name
 - !indexCall [imageName]: Posts the image under the given index name (posts a random index if unspecified)
@@ -28,14 +30,7 @@ It's a relatively simple bot with virtually no practical purposes. I'm mostly wo
 - Set all the other data/config.json
 - Run start.bat
 
-# ToDo:
-- Global power rankings
-- Indexcall popularity
+# Todo:
 - Format created json files to be readable
 - Look for more node.js modules to utilize
 - More secret commands
-
-# The Bad Bug
-Sometimes, at some random point, it'll stop responding to command calls. The console still logs the results of commands (that are setup to log results), so it's not like it crashed. Furthermore, while it will randomly stop working on one server, it'll work flawlessly on another server (atleast until the bug affects it as well).
-
-Also, sometimes the bot will never run the client.login event, meaning it won't come online, and will do nothing until it times out. There is no perceivable way to replicate this behaviour, every time I run start.bat there's around a 50% chance of this happening.
