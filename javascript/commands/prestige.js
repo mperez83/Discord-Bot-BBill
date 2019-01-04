@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
             }
 
             utilitiesModule.incrementUserDataValue(message.author, "prestigeLevel", 1);
-            message.reply("you've successfully prestiged! Your prestige level is now " + userDataJson[message.author.id].prestigeLevel);
+            message.reply("you're now 1 better than everyone else");
             return;
         }
         else {
