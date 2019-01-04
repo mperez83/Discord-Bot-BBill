@@ -5,7 +5,6 @@ module.exports.run = async (bot, message, args) => {
 
         if (!utilitiesModule.checkNested(userDataJson, message.author.id, "power"))
             message.channel.send("You have to run !power first, " + utilitiesModule.getRandomNameInsult());
-    
         else {
             let currentDate = new Date();
             let checkDateStr = JSON.parse(userDataJson[message.author.id].nextValidPowerCheck);
@@ -18,11 +17,17 @@ module.exports.run = async (bot, message, args) => {
             let secondsLeft = Math.floor((differenceMS / 1000) % 60);
             let minutesLeft = Math.floor((differenceMS / (1000 * 60)) % 60);
             let hoursLeft = Math.floor((differenceMS / (1000 * 60 * 60)) % 24);
-    
-            if (hoursLeft <= 0 && minutesLeft <= 0 && secondsLeft <= 0)
-                message.reply(` your current power level is ${userDataJson[message.author.id].power}, and you may do another power level check right now`);
-            else
-                message.reply(` your current power level is **${userDataJson[message.author.id].power}**, and your next power level check is in **${hoursLeft} hours, ${minutesLeft} minutes, and ${secondsLeft} seconds**`);
+            
+            if (userDataJson[message.author.id].power == 69)
+                message.reply(` your current power level is ${userDataJson[message.author.id].power}, which means you cannot do another power check`)
+            else {
+                if (hoursLeft <= 0 && minutesLeft <= 0 && secondsLeft <= 0)
+                    message.reply(` your current power level is ${userDataJson[message.author.id].power}, and you may do another power level check right now`);
+                else
+                    message.reply(` your current power level is **${userDataJson[message.author.id].power}**, and your next power level check is in **${hoursLeft} hours, ${minutesLeft} minutes, and ${secondsLeft} seconds**`);
+            }
+
+            utilitiesModule.checkAndUpdatePowerRankingList(bot, userDataJson);
         }
     
     });
