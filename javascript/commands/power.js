@@ -19,7 +19,7 @@ module.exports.run = async (bot, message, args) => {
             let checkDate = new Date(checkDateStr);
 
             if (userDataJson[message.author.id].power == 69) {
-                message.reply(" you cannot check your power level again (already attained best power level)");
+                message.reply("you cannot reassess your power level again (already attained best power level. Use '!prestige' to reset your power back to 0 and increase your prestige level)");
                 return;
             }
             else if (checkDate < currentDate) {
