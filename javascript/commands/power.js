@@ -33,14 +33,14 @@ module.exports.run = async (bot, message, args) => {
                 tcount *= 0.1;
             }*/
             if (power == 69) {
-                message.reply(" your power level is **69.** You have attained the POWERFUL role.");
+                message.reply("your power level is **69.** You have attained the POWERFUL role.");
                 utilitiesModule.bequeathPowerfulStatus(message.guild, message.member);
             }
             else if (power == 100) {
-                message.reply(" your power level is **100!** Congratulations!");
+                message.reply("your power level is **100!** Congratulations!");
             }
             else if (power == 1) {
-                message.reply(" your power level is **1.** smh");
+                message.reply("your power level is **1.** smh");
             }
             else {
                 message.reply(`your power level is **${power}**`);
