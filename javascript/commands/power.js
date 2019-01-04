@@ -40,18 +40,7 @@ module.exports.run = async (bot, message, args) => {
                 message.reply(" your power level is **100!** Congratulations!");
             }
             else if (power == 1) {
-                message.reply(" your power level is **1.** You are now a lil bitch lol.");
-                let lilBitchRole = message.member.guild.roles.find("name", "Lil Bitch");
-                if (!lilBitchRole) {
-                    message.member.guild.createRole({
-                        name: "Lil Bitch",
-                        color: "AQUA",
-                        hoist: true
-                    }).then(role => message.member.addRole(role));
-                }
-                else {
-                    message.member.addRole(lilBitchRole);
-                }
+                message.reply(" your power level is **1.** smh");
             }
             else {
                 message.reply(`your power level is **${power}**`);
