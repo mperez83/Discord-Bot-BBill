@@ -8,19 +8,11 @@ module.exports.run = async (bot, message, args) => {
             message.channel.send("I can't delete nothing, " + utilitiesModule.getRandomNameInsult());
             return;
         }
-        if (args.length >= 2) {
-            message.channel.send(utilitiesModule.getRandomParameterInsult() + " (Usage: \"!indexDelete imageNameGoesHere\")");
-            return;
-        }
 
-        let inputIndexName = args[0];
-        inputIndexName = inputIndexName.toLowerCase();
+        let inputIndexName = args.join(" ");
+        //inputIndexName = inputIndexName.toLowerCase();
 
-        if (inputIndexName == "indexcap") {
-            message.channel.send("Don't try to delete indexcap");
-        }
-
-        else if (!indexListJson[inputIndexName])
+        if (!indexListJson[inputIndexName])
             message.channel.send("There is no image indexed with the name '" + inputIndexName + "' to delete, " + utilitiesModule.getRandomNameInsult());
 
         else {

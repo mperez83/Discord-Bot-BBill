@@ -9,13 +9,13 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
-        if (args.length >= 2) {
-            message.channel.send(utilitiesModule.getRandomParameterInsult() + " (Usage: \"!index imageNameGoesHere\")");
+        let inputIndexName = args.join(" ");
+        //inputIndexName = inputIndexName.toLowerCase();
+        
+        if (inputIndexName.length > 50) {
+            message.channel.send("Index names need to be less than 50 characters long, " + utilitiesModule.getRandomNameInsult());
             return;
         }
-
-        let inputIndexName = args[0];
-        inputIndexName = inputIndexName.toLowerCase();
 
         if (indexListJson[inputIndexName]) {
             message.channel.send("That name is already indexed, " + utilitiesModule.getRandomNameInsult());

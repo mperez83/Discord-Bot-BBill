@@ -13,11 +13,6 @@ module.exports.run = async (bot, message, args) => {
                 }
             }
 
-            let indexCapIndex = nameList.indexOf("indexCap");
-            if (indexCapIndex != -1) {  //indexCapIndex would only be -1 if the indexOf() call above didn't find anything
-                nameList.splice(indexCapIndex, 1);
-            }
-
             if (nameList.length == 0) {
                 message.channel.send("There are no indices in the list yet, " + utilitiesModule.getRandomNameInsult());
                 return;
@@ -32,23 +27,15 @@ module.exports.run = async (bot, message, args) => {
                         }
                     }
                 });
+                utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
                 return;
             }
         }
 
-        //If too many arguments were supplied, insult the user
-        if (args.length >= 2) {
-            message.channel.send(utilitiesModule.getRandomParameterInsult() + " (Usage: \"!indexCall imageNameGoesHere\")");
-            return;
-        }
+        let inputIndexCall = args.join(" ");
+        //inputIndexCall = inputIndexCall.toLowerCase();
 
-        let inputIndexCall = args[0];
-        inputIndexCall = inputIndexCall.toLowerCase();
-
-        if (inputIndexCall == "indexcap") {
-            message.channel.send("Don't try to call indexcap");
-        }
-        else if (!indexDataJson[inputIndexCall]) {
+        if (!indexDataJson[inputIndexCall]) {
             message.channel.send("There is no image indexed with the name '" + inputIndexCall + "', " + utilitiesModule.getRandomNameInsult());
         }
         else {
@@ -64,6 +51,7 @@ module.exports.run = async (bot, message, args) => {
         }
 
         utilitiesModule.checkAndUpdateIndexList(bot, indexDataJson);
+        utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
 
     });
 }

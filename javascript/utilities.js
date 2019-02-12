@@ -99,7 +99,6 @@ function updateIndexList(chamberChannel, indexListJson) {
 
         //Concatonate the json of indexes into a single string
         let indexListString = "**- - - INDEX LIST - - -**\n\n";
-        indexListString = indexListString.concat("*Max Index Slots: " + indexListJson.indexCap.toFixed(3) + "*\n\n");
         let count = 1;
         for (let key in indexListJson) {
             if (indexListJson.hasOwnProperty(key)) {
