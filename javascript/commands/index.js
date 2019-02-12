@@ -17,20 +17,8 @@ module.exports.run = async (bot, message, args) => {
         let inputIndexName = args[0];
         inputIndexName = inputIndexName.toLowerCase();
 
-        if (inputIndexName == "indexcap") {
-            message.channel.send("Don't try to index indexcap");
-            return;
-        }
-
         if (indexListJson[inputIndexName]) {
             message.channel.send("That name is already indexed, " + utilitiesModule.getRandomNameInsult());
-            return;
-        }
-
-        if (!indexListJson.indexCap) indexListJson.indexCap = 10;
-
-        if (Object.keys(indexListJson).length > indexListJson.indexCap) {
-            message.channel.send("Index limit reached, " + utilitiesModule.getRandomNameInsult());
             return;
         }
 
