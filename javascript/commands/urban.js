@@ -33,6 +33,7 @@ module.exports.run = async (bot, message, args) => {
             }
         });
     }
+    utilitiesModule.incrementUserDataValue(message.author, "urbanCalls", 1);
 }
 
 module.exports.help = {
