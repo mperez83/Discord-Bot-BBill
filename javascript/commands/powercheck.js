@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
                 message.reply(`your current power level is ${userDataJson[message.author.id].power}, which means you cannot reassess your power. Use '!prestige' to reset your power back to 0 and increase your prestige level`)
             else {
                 if (hoursLeft <= 0 && minutesLeft <= 0 && secondsLeft <= 0)
-                    message.reply(`your current power level is ${userDataJson[message.author.id].power}, and you may reasses your power right now`);
+                    message.reply(`your current power level is ${userDataJson[message.author.id].power}, and you may reassess your power right now`);
                 else
                     message.reply(`your current power level is **${userDataJson[message.author.id].power}**, and you may reassess your power in **${hoursLeft} hours, ${minutesLeft} minutes, and ${secondsLeft} seconds**`);
             }
