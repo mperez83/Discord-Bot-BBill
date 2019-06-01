@@ -19,7 +19,6 @@ module.exports.run = async (bot, message, args) => {
             if (!indexListJson.indexCap) indexListJson.indexCap = 10;
             else indexListJson.indexCap += 0.1;
             fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexListJson));
-            utilitiesModule.checkAndUpdateIndexList(bot, indexListJson);
         });
 
         let stats = fs.statSync("./shibes/" + shibes[randomIndex]);
