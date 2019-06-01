@@ -50,7 +50,6 @@ module.exports.run = async (bot, message, args) => {
             let nextValidPowerCheck = new Date();
             nextValidPowerCheck.setDate(currentDate.getDate() + 1);
             userDataJson[message.author.id].nextValidPowerCheck = JSON.stringify(nextValidPowerCheck);
-            utilitiesModule.checkAndUpdatePowerRankingList(bot, userDataJson);
 
             fs.writeFile("./data/userData.json", JSON.stringify(userDataJson), function(err) {if (err) return err;});
         }

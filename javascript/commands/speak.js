@@ -34,7 +34,6 @@ module.exports.run = async (bot, message, args) => {
 
         voiceChannel.join().then(connection => {
             connection.playFile("./audio/" + inputAudioName + ".mp3");
-            utilitiesModule.checkAndUpdateAudioList(bot, audioFiles);
         })
             .catch(console.error);
     });

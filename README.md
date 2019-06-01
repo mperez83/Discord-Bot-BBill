@@ -34,3 +34,9 @@ It's a relatively simple bot with virtually no practical purposes. I'm mostly wo
 - Format created json files to be readable
 - Look for more node.js modules to utilize
 - More secret commands
+
+# Currently used modules:
+- request
+- urban-dictionary
+- node-gyp
+- node-opus

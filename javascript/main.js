@@ -6,7 +6,9 @@ bot.commands = new Discord.Collection();
 const fs = require("fs");
 const config = require("../data/config.json");
 const utilitiesModule = require('./utilities');
-const cleverbillModule = require("./cleverbill");
+
+const cleverbillModule = require("./string parsing/cleverbill");
+const informalCommandsModule = require("./string parsing/string_parse");
 
 
 
@@ -62,26 +64,19 @@ bot.on("ready", () => {
 //Create an event listener for messages
 bot.on("message", (message) => {
 
+    //Don't parse messages from bbill
     if (message.author.bot) return;
+    
+    //String parsing
+    informalCommandsModule.parseTextForBadEmotes(message);
+    if (informalCommandsModule.parseTextForAtEveryone(message)) return;
+    if (informalCommandsModule.parseTextForSpecificString(message)) return;
+    if (informalCommandsModule.parseTextForLooseString(message)) return;
+    if (cleverbillModule.parseTextForQuestions(message)) return;
 
-    if (message.content.includes("<:GWfroggyFeelsUpMan:400751139563241473>")
-        || message.content.includes("<:GWqlabsFeelsKCHHH:403294831893282820>")
-        || message.content.includes("<:GWqlabsFeelsFunnyMan:398950861361119233>")) {
-        utilitiesModule.incrementUserDataValue(message.author, "sin", 1);
-        return;
-    }
 
-    //If someone uses the @here or @everyone command, get mad
-    if (message.mentions.everyone) {
-        message.channel.send(">:0");
-        return;
-    }
 
-    //If it finds a question and answers it, return from the whole thing
-    if (cleverbillModule.parseTextForQuestions(message)) {
-        return;
-    }
-
+    //Command call parsing
     let messageArray = message.content.split(/\s+/g);
     let command = messageArray[0];
     let args = messageArray.slice(1);   //Slice out the command, leaving only the args

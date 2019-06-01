@@ -1,13 +1,13 @@
 const fs = require("fs");
 
 module.exports.getRandomNameInsult = function() {
-    let nameInsults = fs.readFileSync("./misc stuff/list of names to insult people with.txt").toString().split("\n");
+    let nameInsults = fs.readFileSync("./data/list of names to insult people with.txt").toString().split("\n");
     for (let i = 0; i < nameInsults.length; i++) nameInsults[i] = nameInsults[i].substring(1);
     return nameInsults[Math.floor(Math.random() * nameInsults.length)];
 }
 
 module.exports.getRandomParameterInsult = function() {
-    let tooManyParametersInsults = fs.readFileSync("./misc stuff/too many parameters insults.txt").toString().split("\n");
+    let tooManyParametersInsults = fs.readFileSync("./data/too many parameters insults.txt").toString().split("\n");
     for (let i = 0; i < tooManyParametersInsults.length; i++) tooManyParametersInsults[i] = tooManyParametersInsults[i].substring(1);
     return tooManyParametersInsults[Math.floor(Math.random() * tooManyParametersInsults.length)];
 }
@@ -85,7 +85,7 @@ module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
 
 
 
-module.exports.checkAndUpdateIndexList = function(bot, indexListJson) {
+/*module.exports.checkAndUpdateIndexList = function(bot, indexListJson) {
     bot.guilds.array().forEach(function(guild) {
         if (!guild.channels.find("name", "big-bills-bot-chamber")) guild.createChannel("big-bills-bot-chamber", "text", [{
             id: guild.id,
@@ -123,11 +123,11 @@ function updateIndexList(chamberChannel, indexListJson) {
         if (foundMsg) msgArray[msgIndex].edit(indexListString);
         else chamberChannel.send(indexListString);
     }).catch(console.error);
-}
+}*/
 
 
 
-module.exports.checkAndUpdatePowerRankingList = function(bot, userDataJson) {
+/*module.exports.checkAndUpdatePowerRankingList = function(bot, userDataJson) {
     bot.guilds.array().forEach(function(guild) {
         if (!guild.channels.find("name", "big-bills-bot-chamber")) guild.createChannel("big-bills-bot-chamber", "text", [{
             id: guild.id,
@@ -163,11 +163,11 @@ function updatePowerRankingList(chamberChannel, userDataJson) {
         }
         chamberChannel.send(powerRankingsString);   //If we didn't find the message, just send a new one
     }).catch(console.error);
-}
+}*/
 
 
 
-module.exports.checkAndUpdateAudioList = function(bot, audioNamesList) {
+/*module.exports.checkAndUpdateAudioList = function(bot, audioNamesList) {
     bot.guilds.array().forEach(function(guild) {
         if (!guild.channels.find("name", "big-bills-bot-chamber")) guild.createChannel("big-bills-bot-chamber", "text", [{
             id: guild.id,
@@ -203,4 +203,4 @@ function updateAudioList(chamberChannel, audioNamesList) {
         if (foundMsg) msgArray[msgIndex].edit(audioNamesListString);
         else chamberChannel.send(audioNamesListString);
     }).catch(console.error);
-}
+}*/

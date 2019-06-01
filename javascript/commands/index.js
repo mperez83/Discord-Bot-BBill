@@ -60,7 +60,6 @@ module.exports.run = async (bot, message, args) => {
                         url: validURL
                     };
 
-                    utilitiesModule.checkAndUpdateIndexList(bot, indexListJson);
                     fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexListJson));
                     message.channel.send("Successfully indexed '" + inputIndexName + "'!");
                 }

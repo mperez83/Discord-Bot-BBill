@@ -1,8 +1,0 @@
-The following custom modules are currently installed. To uninstall a module, type "npm uninstall NAMEHERE"
-
-- - - - - - - - - - - - - - - - - - -
-
--request
--urban-dictionary
--node-gyp
--node-opus

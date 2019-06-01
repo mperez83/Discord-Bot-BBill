@@ -28,8 +28,6 @@ module.exports.run = async (bot, message, args) => {
                 else
                     message.reply(`your current power level is **${userDataJson[message.author.id].power}**, and you may reassess your power in **${hoursLeft} hours, ${minutesLeft} minutes, and ${secondsLeft} seconds**`);
             }
-
-            utilitiesModule.checkAndUpdatePowerRankingList(bot, userDataJson);
         }
     
     });

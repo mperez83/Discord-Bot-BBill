@@ -50,7 +50,6 @@ module.exports.run = async (bot, message, args) => {
             });
         }
 
-        utilitiesModule.checkAndUpdateIndexList(bot, indexDataJson);
         utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
 
     });
