@@ -6,12 +6,6 @@ module.exports.getRandomNameInsult = function() {
     return nameInsults[Math.floor(Math.random() * nameInsults.length)];
 }
 
-module.exports.getRandomParameterInsult = function() {
-    let tooManyParametersInsults = fs.readFileSync("./data/too many parameters insults.txt").toString().split("\n");
-    for (let i = 0; i < tooManyParametersInsults.length; i++) tooManyParametersInsults[i] = tooManyParametersInsults[i].substring(1);
-    return tooManyParametersInsults[Math.floor(Math.random() * tooManyParametersInsults.length)];
-}
-
 
 
 module.exports.readJSONFile = function(fileDir, callback) {
