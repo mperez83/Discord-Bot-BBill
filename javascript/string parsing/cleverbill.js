@@ -4,9 +4,11 @@ module.exports = {
 
     //Make big bill answer questions
     parseTextForQuestions: function(message) {
-        if (message.mentions.users.array().length == 1 && message.mentions.users.exists("id", "315755145365553155")) {
+        if (message.mentions.users.size == 1 && message.mentions.users.exists("id", "315755145365553155")) {
 
             let userMsg = message.content;
+            if (!userMsg.startsWith("<@315755145365553155>")) return;   //Only respond to users that start their message with a bbill mention
+
             userMsg = userMsg.replace("<@315755145365553155>", "");
 
             if (!userMsg) { //If the user just @'s Big Bill with no message

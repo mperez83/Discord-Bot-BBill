@@ -16,23 +16,35 @@ module.exports.run = async (bot, message, args) => {
             message.reply(statsString);
         }
         else if (args.length == 1) {
-            if (message.mentions.length == 1) {
-                /*let mentionedUserID = message.mentions.users.first().id;
-                //if (!userDataJson[mentionedUserID]) userDataJson[mentionedUserID] = {username: message.mentions.users.first().username};
+            if (message.mentions.users.size == 1) {
+                let mentionedUserID = message.mentions.users.first().id;
 
-                let statsString = "here is " + userDataJson + " stats:\n- - - - - - - - - -\n";
-                propertyNames = Object.getOwnPropertyNames(userDataJson[message.author.id]);
+                if (mentionedUserID == message.author.id) {
+                    message.channel.send("what the fuck are you doing");
+                    return;
+                }
+
+                if (mentionedUserID == bot.user.id) {
+                    message.channel.send("don't do that what the fuck");
+                    return;
+                }
+
+                if (!userDataJson[mentionedUserID]) {
+                    message.channel.send("That user isn't in my database yet!!! Tell them to do some shit first. " + utilitiesModule.getRandomNameInsult());
+                    return;
+                }
+
+                let statsString = "here are " + userDataJson[mentionedUserID].username + "'s stats:\n- - - - - - - - - -\n";
+                propertyNames = Object.getOwnPropertyNames(userDataJson[mentionedUserID]);
                 for (let i = 0; i < propertyNames.length; i++) {
-                    //console.log(propertyNames[i] + ": " + userDataJson[message.author.id][propertyNames[i]]);
-                    statsString = statsString.concat("**" + propertyNames[i] + ":** " + userDataJson[message.author.id][propertyNames[i]] + "\n");
+                    statsString = statsString.concat("**" + propertyNames[i] + ":** " + userDataJson[mentionedUserID][propertyNames[i]] + "\n");
                 }
                 statsString = statsString.concat("- - - - - - - - - -");
-                message.reply(statsString);*/
+                message.reply(statsString);
             }
             else {
                 message.channel.send("You have to @ someone if you want their stats, " + utilitiesModule.getRandomNameInsult());
             }
-            console.log(args);
         }
         else {
             message.channel.send("Too many parameters, " + utilitiesModule.getRandomNameInsult());
