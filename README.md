@@ -45,3 +45,4 @@ It's a relatively simple bot with virtually no practical purposes; I'm mostly wo
 - urban-dictionary
 - node-gyp
 - node-opus
+- gm
