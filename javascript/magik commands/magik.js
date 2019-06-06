@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args) => {
     utilitiesModule.getMostRecentImageURL(message).then(validURL => {
 
         if (!validURL) {
-            message.channel.send("There weren't any images to terrorize in the last ten messages, " + utilitiesModule.getRandomNameInsult());
+            message.channel.send("There weren't any images to terrorize in the last 10 messages, " + utilitiesModule.getRandomNameInsult());
             return;
         }
         else {
