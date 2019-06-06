@@ -10,7 +10,6 @@ module.exports.run = async (bot, message, args) => {
         }
 
         let inputIndexName = args.join(" ");
-        //inputIndexName = inputIndexName.toLowerCase();
         
         if (inputIndexName.length > 50) {
             message.channel.send("Index names need to be less than 50 characters long, " + utilitiesModule.getRandomNameInsult());
@@ -25,21 +24,31 @@ module.exports.run = async (bot, message, args) => {
         message.channel.fetchMessages({ limit: 10 })
             .then(messagesToCheck => {
                 let validURL;
-                for (let i = (messagesToCheck.size - 1); i >= 0; i--) {
-                    //This part sucks. We have to go step-by-step and check if every element of the attachment/embed is undefined, because straight up doing
-                    //"if (messagesToCheck.array()[i].attachments.first().url != undefined)" causes it to crash when it tries to check the .url of a key that
-                    //doesn't exist. We have to ensure that it does exist first before checking its .url :(
-                    if (messagesToCheck.array()[i].attachments.first() != undefined)
-                        if (messagesToCheck.array()[i].attachments.first().url != undefined)
-                            validURL = messagesToCheck.array()[i].attachments.first().url;
 
-                    if (messagesToCheck.array()[i].embeds[messagesToCheck.array()[i].embeds.length - 1] != undefined)
-                        if (messagesToCheck.array()[i].embeds[messagesToCheck.array()[i].embeds.length - 1].url != undefined)   //Check if the .url exists
-                            validURL = messagesToCheck.array()[i].embeds[messagesToCheck.array()[i].embeds.length - 1].url;
-                        else if (messagesToCheck.array()[i].embeds[messagesToCheck.array()[i].embeds.length - 1].image.url != undefined)    //Check if the .image.url exists
-                            validURL = messagesToCheck.array()[i].embeds[messagesToCheck.array()[i].embeds.length - 1].image.url;
-                        else
-                            console.log("what the fuck");   //If the embed neither had a .url nor a .image.url, panic
+                for (let i = 0; i < messagesToCheck.size; i++) {
+
+                    let curMessage = messagesToCheck.array()[i];
+        
+                    if (curMessage.attachments.size > 0) {
+                        let potentialImage = curMessage.attachments.last();
+        
+                        //This is the only way I know of to check if an attachment is an image
+                        if (potentialImage.width != undefined && potentialImage.height != undefined) {
+                            validURL = potentialImage.url;
+                            break;
+                        }
+                    }
+        
+                    if (curMessage.embeds.length > 0) {
+                        let potentialImage = curMessage.embeds[curMessage.embeds.length - 1];
+        
+                        //This is the only way I know of to check if an embed contains an image
+                        if (potentialImage.image != null) {
+                            validURL = potentialImage.image.url;
+                            break;
+                        }
+                    }
+        
                 }
 
                 if (!validURL) {

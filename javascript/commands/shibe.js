@@ -1,3 +1,4 @@
+const Discord = require("discord.js");
 const fs = require("fs");
 const utilitiesModule = require('../utilities');
 
@@ -38,13 +39,20 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
+        let newEmbed = new Discord.RichEmbed()
+
         if (shibes[randomIndex] == "komugi shibe 1.jpg") {
-            message.channel.send(`**Holy shit, you unboxed '${shibes[randomIndex]}'!! There was a 1/${shibes.length} chance of that happening!**\n${sizeString}`);
+            //message.channel.send(`**Holy shit, you unboxed '${shibes[randomIndex]}'!! There was a 1/${shibes.length} chance of that happening!**\n${sizeString}`);
+            newEmbed.addField(`Holy shit, a  ${shibes[randomIndex]}!!`, `There was a 1/${shibes.length} chance of that happening!`);
         }
         else {
-            message.channel.send(`**${shibes[randomIndex]}** (Amount unboxed: **${shibeDataJson[shibes[randomIndex]].amount}**)\n${sizeString}`);
+            newEmbed.addField(`${shibes[randomIndex]}`, `Amount unboxed: ${shibeDataJson[shibes[randomIndex]].amount}`);
+            newEmbed.addField(`Size`, `${fileSize}mb`);
+            //newEmbed.attachFile("./shibes/" + shibes[randomIndex]);
+            //message.channel.send(`**${shibes[randomIndex]}** (Amount unboxed: **${shibeDataJson[shibes[randomIndex]].amount}**)\n${sizeString}`);
         }
 
+        message.channel.send(newEmbed);
         message.channel.send({ files: ["./shibes/" + shibes[randomIndex] ]});
 
         utilitiesModule.incrementUserDataValue(message.author, "shibeCalls", 1);

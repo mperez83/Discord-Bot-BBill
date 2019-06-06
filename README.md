@@ -46,3 +46,4 @@ It's a relatively simple bot with virtually no practical purposes; I'm mostly wo
 - node-gyp
 - node-opus
 - gm
+- remote-file-size
