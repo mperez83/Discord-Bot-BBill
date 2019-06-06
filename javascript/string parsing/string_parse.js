@@ -111,7 +111,7 @@ module.exports = {
 
 
         //Check for yelling
-        if (message.mentions.users.array().length == 0 && userMsg == userMsg.toUpperCase() && userMsg.length >= 10) {
+        if (message.mentions.users.array().length == 0 && userMsg == userMsg.toUpperCase() && userMsg.length >= 20) {
             message.channel.send("stop yelling");
             return true;
         }
