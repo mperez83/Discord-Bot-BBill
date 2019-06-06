@@ -77,6 +77,44 @@ module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
     }
 }
 
+module.exports.getMostRecentImageURL = function(message) {
+
+    return message.channel.fetchMessages({ limit: 10 })
+    .then(messagesToCheck => {
+        let validURL;
+
+        for (let i = 0; i < messagesToCheck.size; i++) {
+
+            let curMessage = messagesToCheck.array()[i];
+
+            if (curMessage.attachments.size > 0) {
+                let potentialImage = curMessage.attachments.last();
+
+                //This is the only way I know of to check if an attachment is an image
+                if (potentialImage.width != undefined && potentialImage.height != undefined) {
+                    validURL = potentialImage.url;
+                    break;
+                }
+            }
+
+            if (curMessage.embeds.length > 0) {
+                let potentialImage = curMessage.embeds[curMessage.embeds.length - 1];
+
+                //This is the only way I know of to check if an embed contains an image
+                if (potentialImage.image != null) {
+                    validURL = potentialImage.image.url;
+                    break;
+                }
+            }
+
+        }
+
+        return validURL;
+    })
+    .catch(console.error);
+
+}
+
 
 
 /*module.exports.checkAndUpdateIndexList = function(bot, indexListJson) {

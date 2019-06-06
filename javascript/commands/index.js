@@ -21,60 +21,32 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
-        message.channel.fetchMessages({ limit: 10 })
-            .then(messagesToCheck => {
-                let validURL;
+        utilitiesModule.getMostRecentImageURL(message).then(validURL => {
 
-                for (let i = 0; i < messagesToCheck.size; i++) {
-
-                    let curMessage = messagesToCheck.array()[i];
-        
-                    if (curMessage.attachments.size > 0) {
-                        let potentialImage = curMessage.attachments.last();
-        
-                        //This is the only way I know of to check if an attachment is an image
-                        if (potentialImage.width != undefined && potentialImage.height != undefined) {
-                            validURL = potentialImage.url;
-                            break;
+            if (!validURL) {
+                message.channel.send("There weren't any images to index in the last ten messages, " + utilitiesModule.getRandomNameInsult());
+                return;
+            }
+            else {
+                for (var indexEntry in indexListJson) {
+                    if (indexListJson.hasOwnProperty(indexEntry)) {
+                        if (validURL == indexListJson[indexEntry].url) {
+                            message.channel.send("That image is already indexed under '" + indexEntry + "', " + utilitiesModule.getRandomNameInsult());
+                            return;
                         }
                     }
-        
-                    if (curMessage.embeds.length > 0) {
-                        let potentialImage = curMessage.embeds[curMessage.embeds.length - 1];
-        
-                        //This is the only way I know of to check if an embed contains an image
-                        if (potentialImage.image != null) {
-                            validURL = potentialImage.image.url;
-                            break;
-                        }
-                    }
-        
                 }
 
-                if (!validURL) {
-                    message.channel.send("There weren't any images to index in the last ten messages, " + utilitiesModule.getRandomNameInsult());
-                    return;
-                }
-                else {
-                    for (var indexEntry in indexListJson) {
-                        if (indexListJson.hasOwnProperty(indexEntry)) {
-                            if (validURL == indexListJson[indexEntry].url) {
-                                message.channel.send("That image is already indexed under '" + indexEntry + "', " + utilitiesModule.getRandomNameInsult());
-                                return;
-                            }
-                        }
-                    }
+                indexListJson[inputIndexName] = {
+                    url: validURL
+                };
 
-                    indexListJson[inputIndexName] = {
-                        url: validURL
-                    };
+                fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexListJson));
+                message.channel.send("Successfully indexed '" + inputIndexName + "'!");
+            }
 
-                    fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexListJson));
-                    message.channel.send("Successfully indexed '" + inputIndexName + "'!");
-                }
-            })
-            .catch(console.error);
-
+        });
+        
     });
 }
 

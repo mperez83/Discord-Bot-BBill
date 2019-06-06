@@ -7,35 +7,7 @@ const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {
 
-    message.channel.fetchMessages({ limit: 10 })
-    .then(messagesToCheck => {
-        let validURL;
-
-        for (let i = 0; i < messagesToCheck.size; i++) {
-
-            let curMessage = messagesToCheck.array()[i];
-
-            if (curMessage.attachments.size > 0) {
-                let potentialImage = curMessage.attachments.last();
-
-                //This is the only way I know of to check if an attachment is an image
-                if (potentialImage.width != undefined && potentialImage.height != undefined) {
-                    validURL = potentialImage.url;
-                    break;
-                }
-            }
-
-            if (curMessage.embeds.length > 0) {
-                let potentialImage = curMessage.embeds[curMessage.embeds.length - 1];
-
-                //This is the only way I know of to check if an embed contains an image
-                if (potentialImage.image != null) {
-                    validURL = potentialImage.image.url;
-                    break;
-                }
-            }
-
-        }
+    utilitiesModule.getMostRecentImageURL(message).then(validURL => {
 
         if (!validURL) {
             message.channel.send("There weren't any images to terrorize in the last ten messages, " + utilitiesModule.getRandomNameInsult());
@@ -44,20 +16,20 @@ module.exports.run = async (bot, message, args) => {
         else {
             remote(validURL, function(err, size) {
                 let fileSize = (size / 1000000.0).toFixed(2);
-
+    
                 if (fileSize > 2) {
                     message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult()}`);
                     return;
                 }
                 else {
                     message.channel.send(`alright hold on, doing work on a ~${fileSize}mb image`);
-
+    
                     //Directly write method (not asynchronous??)
                     gm(request(validURL))
-                        .implode(-1.2)
+                        //.implode(-1.2)
+                        .charcoal(0.4)
                         .write('./graphics/resultImage.png', function (err) {
                             if (err) console.log(err);
-                            message.channel.send(`posting rn`);
                             message.channel.send({ files: ["./graphics/resultImage.png"]});
                         });
                     
@@ -68,24 +40,28 @@ module.exports.run = async (bot, message, args) => {
                         .out("./graphics/resultImage.png")
                         .write('./graphics/resultImage.png', function (err) {
                             if (err) console.log(err);
-                            message.channel.send(`posting rn`);
                             //message.channel.send({ files: ["./graphics/resultImage.png"]});
                         });*/
-
+    
                     /*imageMagick(request(validURL))
                         .resize(240, 240)
                         .write('./graphics/resultImage.png', function (err) {
                             if (err) console.log(err);
-                            message.channel.send(`posting rn`);
                             //message.channel.send({ files: ["./graphics/resultImage.png"]});
                         });*/
                 }
             });
         }
-    })
-    .catch(console.error);
-    
-    /*let filename = Date.now();
+        
+    });
+
+}
+
+module.exports.help = {
+    name: "magik"
+}
+
+/*let filename = Date.now();
     let pos = 62;
     let bodywidth = 15;
     let command;
@@ -120,8 +96,3 @@ module.exports.run = async (bot, message, args) => {
                 });
             });
         });*/
-}
-
-module.exports.help = {
-    name: "magik"
-}
