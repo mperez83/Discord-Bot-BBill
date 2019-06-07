@@ -13,7 +13,7 @@ module.exports.run = async (bot, message, args) => {
         //keep deflateAmount at default value
     }
 
-    //If the user supplied a strength level for the inflation, do tons of bullshit checking
+    //If the user supplied a strength level for the deflation, do tons of bullshit checking
     else if (args.length == 1) {
         if (isNaN(args[0])) {
             message.channel.send("That's not a fucking number, " + utilitiesModule.getRandomNameInsult());

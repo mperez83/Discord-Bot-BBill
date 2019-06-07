@@ -5,38 +5,29 @@ const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {
 
-    let inflateAmount = 1;
-    let appendSuggestion = false;
+    let singeAmount = 1;
 
-    //If the user didn't supply a strength level, keep the inflation level normal
+    //If the user didn't supply a strength level, keep the singe level normal
     if (args.length == 0) {
-        //keep inflateAmount at default value
+        //keep singeAmount at default value
     }
 
-    //If the user supplied a strength level for the inflation, do tons of bullshit checking
+    //If the user supplied a strength level for the singe, do tons of bullshit checking
     else if (args.length == 1) {
         if (isNaN(args[0])) {
             message.channel.send("That's not a fucking number, " + utilitiesModule.getRandomNameInsult());
             return;
         }
         else {
-            if (args[0] < 0) {
-                message.channel.send("Go use !deflate to do reverse inflates, " + utilitiesModule.getRandomNameInsult());
+            if (args[0] < -99) {
+                message.channel.send("I'm not letting you go lower than -99, " + utilitiesModule.getRandomNameInsult());
                 return;
-            }
-            else if (args[0] == 0) {
-                message.channel.send("???");
-                return;
-            }
-            else if (args[0] > 2 && args[0] <= 99) {
-                appendSuggestion = true;
-                //message.channel.send("kinky mf huh");
             }
             else if (args[0] > 99) {
                 message.channel.send("I'm not letting you go higher than 99, " + utilitiesModule.getRandomNameInsult());
                 return;
             }
-            inflateAmount = args[0];
+            singeAmount = args[0];
         }
     }
 
@@ -49,7 +40,7 @@ module.exports.run = async (bot, message, args) => {
     utilitiesModule.getMostRecentImageURL(message).then(validURL => {
 
         if (!validURL) {
-            message.channel.send("There weren't any things to inflate in the last 10 messages, " + utilitiesModule.getRandomNameInsult());
+            message.channel.send("There weren't any things to singe in the last 10 messages, " + utilitiesModule.getRandomNameInsult());
             return;
         }
         else {
@@ -61,16 +52,14 @@ module.exports.run = async (bot, message, args) => {
                     return;
                 }
                 else {
-                    let msg = `alright hold on, inflating a ~${fileSize}mb image`;
-                    if (appendSuggestion) msg += ` (for best results, keep inflation strength less than 2)`;
+                    let msg = `alright hold on, singing a ~${fileSize}mb image`;
                     message.channel.send(msg);
     
                     gm(request(validURL))
-                        .implode(-inflateAmount)
+                        .charcoal(singeAmount)
                         .write('./graphics/resultImage.png', function (err) {
                             if (err) console.log(err);
-                            if (inflateAmount == 69) message.channel.send({ files: ["./graphics/gotcha.png"]});
-                            else message.channel.send({ files: ["./graphics/resultImage.png"]});
+                            message.channel.send({ files: ["./graphics/resultImage.png"]});
                         });
                 }
             });
@@ -81,5 +70,5 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "inflate"
+    name: "singe"
 }

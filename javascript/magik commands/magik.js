@@ -7,6 +7,38 @@ const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {
 
+    let magikAmount = 1;
+
+    //If the user didn't supply a strength level, keep the magik level normal
+    if (args.length == 0) {
+        //keep magikAmount at default value
+    }
+
+    //If the user supplied a strength level for the magik, do tons of bullshit checking
+    else if (args.length == 1) {
+        if (isNaN(args[0])) {
+            message.channel.send("That's not a fucking number, " + utilitiesModule.getRandomNameInsult());
+            return;
+        }
+        else {
+            if (args[0] < -99) {
+                message.channel.send("I'm not letting you go lower than -99, " + utilitiesModule.getRandomNameInsult());
+                return;
+            }
+            else if (args[0] > 99) {
+                message.channel.send("I'm not letting you go higher than 99, " + utilitiesModule.getRandomNameInsult());
+                return;
+            }
+            magikAmount = args[0];
+        }
+    }
+
+    //If the user supplied more than one parameter, return
+    else {
+        message.channel.send("Too many parameters, " + utilitiesModule.getRandomNameInsult());
+        return;
+    }
+
     utilitiesModule.getMostRecentImageURL(message).then(validURL => {
 
         if (!validURL) {
@@ -22,12 +54,18 @@ module.exports.run = async (bot, message, args) => {
                     return;
                 }
                 else {
-                    message.channel.send(`alright hold on, doing work on a ~${fileSize}mb image`);
+                    let msg = `alright hold on, doing work on a ~${fileSize}mb image`;
+                    message.channel.send(msg);
     
                     //Directly write method (not asynchronous??)
                     gm(request(validURL))
-                        //.implode(-1.2)
-                        .charcoal(0.4)
+                        .filter("Gaussian")
+                        .minify()
+                        .minify()
+                        .minify()
+                        .magnify()
+                        .magnify()
+                        .magnify()
                         .write('./graphics/resultImage.png', function (err) {
                             if (err) console.log(err);
                             message.channel.send({ files: ["./graphics/resultImage.png"]});
