@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) => {
         if (doPowerCheck == true) {
             let power = Math.ceil(Math.random() * 100);
             /*if (userDataJson[message.author.id].username == "SM980") {
-                tcount *= 0.1;
+                power *= 0.1;
             }*/
             if (power == 69) {
                 message.reply("your power level is **69.** You have attained the POWERFUL role.");
@@ -45,6 +45,11 @@ module.exports.run = async (bot, message, args) => {
             else {
                 message.reply(`your power level is **${power}**`);
             }
+
+            if (power == 68 || power == 70) {
+                utilitiesModule.incrementUserDataValue(message.author, "chokes", 1);
+            }
+
             userDataJson[message.author.id].power = power;
 
             let nextValidPowerCheck = new Date();
@@ -52,6 +57,8 @@ module.exports.run = async (bot, message, args) => {
             userDataJson[message.author.id].nextValidPowerCheck = JSON.stringify(nextValidPowerCheck);
 
             fs.writeFile("./data/userData.json", JSON.stringify(userDataJson), function(err) {if (err) return err;});
+
+            utilitiesModule.incrementUserDataValue(message.author, "powerCalls", 1);
         }
         else {
             let checkDateStr = JSON.parse(userDataJson[message.author.id].nextValidPowerCheck);
