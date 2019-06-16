@@ -32,8 +32,6 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send(newEmbed);
         message.channel.send({ files: ["./hams/" + hams[randomIndex] ]});
 
-        utilitiesModule.incrementUserDataValue(message.author, "shibeCalls", 1);
-
     });
 }
 
