@@ -8,6 +8,7 @@ module.exports.run = async (bot, message, args) => {
 
             let statsString = "here are your stats:\n- - - - - - - - - -\n";
             propertyNames = Object.getOwnPropertyNames(userDataJson[message.author.id]);
+            propertyNames.sort();
             for (let i = 0; i < propertyNames.length; i++) {
                 //console.log(propertyNames[i] + ": " + userDataJson[message.author.id][propertyNames[i]]);
                 statsString = statsString.concat("**" + propertyNames[i] + ":** " + userDataJson[message.author.id][propertyNames[i]] + "\n");
@@ -36,6 +37,7 @@ module.exports.run = async (bot, message, args) => {
 
                 let statsString = "here are " + userDataJson[mentionedUserID].username + "'s stats:\n- - - - - - - - - -\n";
                 propertyNames = Object.getOwnPropertyNames(userDataJson[mentionedUserID]);
+                propertyNames.sort();
                 for (let i = 0; i < propertyNames.length; i++) {
                     statsString = statsString.concat("**" + propertyNames[i] + ":** " + userDataJson[mentionedUserID][propertyNames[i]] + "\n");
                 }

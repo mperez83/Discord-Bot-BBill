@@ -134,6 +134,24 @@ module.exports.getMostRecentImageURL = function(message) {
 
 }
 
+module.exports.sendGlobalMessage = function(bot, msg) {
+    let guilds = bot.guilds;
+    for (let i = 0; i < guilds.size; i++) {
+        billBayou = guilds.array()[i].channels.find("name", "bill-bayou");
+        if (!billBayou) {
+            guilds.array()[i].createChannel('bill-bayou', { type: 'text' })
+                .then(() => {
+                    billBayou = guilds.array()[i].channels.find("name", "bill-bayou");
+                    billBayou.send(msg);
+                })
+                .catch(console.error);
+        }
+        else {
+            billBayou.send(msg);
+        }
+    }
+}
+
 
 
 /*module.exports.checkAndUpdateIndexList = function(bot, indexListJson) {
