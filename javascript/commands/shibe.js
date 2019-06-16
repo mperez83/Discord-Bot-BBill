@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
-        let newEmbed = new Discord.RichEmbed()
+        let newEmbed = new Discord.RichEmbed();
 
         if (shibes[randomIndex] == "komugi shibe 1.jpg") {
             //message.channel.send(`**Holy shit, you unboxed '${shibes[randomIndex]}'!! There was a 1/${shibes.length} chance of that happening!**\n${sizeString}`);

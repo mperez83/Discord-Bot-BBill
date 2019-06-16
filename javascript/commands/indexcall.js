@@ -1,9 +1,14 @@
+const Discord = require("discord.js");
+const fs = require("fs");
 const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {
     utilitiesModule.readJSONFile("./data/indexImageData.json", function (indexDataJson) {
+
+        let inputIndexCall;
+        let randomCall = false;
         
-        //If no arg was supplied, display a random image in the indexlist
+        //If no arg was supplied, choose a random indice name to set as inputIndexCall (after checking that there are indices in the list)
         if (args.length == 0) {
             let nameList = [];
 
@@ -18,40 +23,39 @@ module.exports.run = async (bot, message, args) => {
                 return;
             }
             else {
-                let inputIndexCall = nameList[Math.floor(Math.random() * nameList.length)];
-                message.channel.send(`**${inputIndexCall}**`);
-                message.channel.send({
-                    embed: {
-                        image: {
-                            url: indexDataJson[inputIndexCall].url
-                        }
-                    }
-                });
-                utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
+                inputIndexCall = nameList[Math.floor(Math.random() * nameList.length)];
+                randomCall = true;
+            }
+        }
+
+        //If an arg was supplied, set inputIndexCall as the args (after checking to make sure it exists)
+        else {
+            inputIndexCall = args.join(" ");
+
+            if (!indexDataJson[inputIndexCall]) {
+                message.channel.send("There is no image indexed with the name '" + inputIndexCall + "', " + utilitiesModule.getRandomNameInsult());
                 return;
             }
         }
 
-        let inputIndexCall = args.join(" ");
-        //inputIndexCall = inputIndexCall.toLowerCase();
 
-        if (!indexDataJson[inputIndexCall]) {
-            message.channel.send("There is no image indexed with the name '" + inputIndexCall + "', " + utilitiesModule.getRandomNameInsult());
-            return;
-        }
-        else {
-            //message.channel.send({file: indexImageData[argName].url});//probably don't use this (it creates a new file in discord everytime someone calls something)
-            //message.channel.send(indexImageData[argName].url);        //Maybe use this (posts a URL to the picture, which by default posts the picture)
-            message.channel.send({                                      //Totally use this (embeds the picture into a beautiful embed box)
-                embed: {
-                    image: {
-                        url: indexDataJson[inputIndexCall].url
-                    }
-                }
-            });
-            utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
-            return;
-        }
+
+        //Actually compose the message
+        let newEmbed = new Discord.RichEmbed();
+
+        if (!indexDataJson[inputIndexCall].directCalls) indexDataJson[inputIndexCall].directCalls = 0;
+        if (!randomCall) indexDataJson[inputIndexCall].directCalls++;
+
+        newEmbed.addField(`${inputIndexCall}`, `Direct Calls: ${indexDataJson[inputIndexCall].directCalls}`);
+        newEmbed.setImage(indexDataJson[inputIndexCall].url);
+
+        message.channel.send(newEmbed);
+
+        //This is to update the directCalls property
+        fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexDataJson));
+
+        utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
+        return;
 
     });
 }
