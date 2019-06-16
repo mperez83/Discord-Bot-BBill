@@ -100,14 +100,33 @@ module.exports.getMostRecentImageURL = function(message) {
             if (curMessage.embeds.length > 0) {
                 let potentialImage = curMessage.embeds[curMessage.embeds.length - 1];
 
-                //This is the only way I know of to check if an embed contains an image
+                //If the embed contains an image, use that
                 if (potentialImage.image != null) {
                     validURL = potentialImage.image.url;
+                    break;
+                }
+
+                //Or, if the embed contains a url, use that
+                else if (potentialImage.url != null) {
+                    validURL = potentialImage.url;
                     break;
                 }
             }
 
         }
+
+        let errorMessage;
+
+        if (!validURL) {
+            errorMessage = `I didn't find any messages containing images whatsoever in the last ten messages, ${this.getRandomNameInsult()}`;
+        }
+
+        else if (validURL.match(/\.(jpeg|jpg|gif|png)$/) == null) {
+            errorMessage = `The image url I found doesn't have a valid file extension. ${this.getRandomNameInsult()}`;
+            validURL = null;
+        }
+
+        if (errorMessage) message.channel.send(errorMessage);
 
         return validURL;
     })

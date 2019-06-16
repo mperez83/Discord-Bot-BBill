@@ -24,7 +24,6 @@ module.exports.run = async (bot, message, args) => {
         utilitiesModule.getMostRecentImageURL(message).then(validURL => {
 
             if (!validURL) {
-                message.channel.send("There weren't any images to index in the last ten messages, " + utilitiesModule.getRandomNameInsult());
                 return;
             }
             else {
