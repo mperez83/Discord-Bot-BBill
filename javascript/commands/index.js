@@ -43,6 +43,10 @@ module.exports.run = async (bot, message, args) => {
 
                 fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexListJson));
                 message.channel.send("Successfully indexed '" + inputIndexName + "'!");
+
+                if (message.channel.type == "dm") {
+                    utilitiesModule.incrementUserDataValue(message.author, "stealthyBastardPoints", 1);
+                }
             }
 
         });
