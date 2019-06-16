@@ -28,6 +28,7 @@ module.exports.run = async (bot, message, args) => {
                 return;
             }
             else {
+                //Check if the url we're trying to index already exists
                 for (var indexEntry in indexListJson) {
                     if (indexListJson.hasOwnProperty(indexEntry)) {
                         if (validURL == indexListJson[indexEntry].url) {
@@ -38,7 +39,8 @@ module.exports.run = async (bot, message, args) => {
                 }
 
                 indexListJson[inputIndexName] = {
-                    url: validURL
+                    url: validURL,
+                    culprit: message.author.username
                 };
 
                 fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexListJson));
