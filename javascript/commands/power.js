@@ -56,9 +56,9 @@ module.exports.run = async (bot, message, args) => {
             nextValidPowerCheck.setDate(currentDate.getDate() + 1);
             userDataJson[message.author.id].nextValidPowerCheck = JSON.stringify(nextValidPowerCheck);
 
-            fs.writeFile("./data/userData.json", JSON.stringify(userDataJson), function(err) {if (err) return err;});
-
             utilitiesModule.incrementUserDataValue(message.author, "powerCalls", 1);
+
+            fs.writeFileSync("./data/userData.json", JSON.stringify(userDataJson), function(err) {if (err) return err;});
         }
         else {
             let checkDateStr = JSON.parse(userDataJson[message.author.id].nextValidPowerCheck);
