@@ -37,6 +37,7 @@ module.exports.run = async (bot, message, args) => {
 
         if (!indexDataJson[inputIndexCall]) {
             message.channel.send("There is no image indexed with the name '" + inputIndexCall + "', " + utilitiesModule.getRandomNameInsult());
+            return;
         }
         else {
             //message.channel.send({file: indexImageData[argName].url});//probably don't use this (it creates a new file in discord everytime someone calls something)
@@ -48,9 +49,9 @@ module.exports.run = async (bot, message, args) => {
                     }
                 }
             });
+            utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
+            return;
         }
-
-        utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
 
     });
 }
