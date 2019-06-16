@@ -14,27 +14,12 @@ module.exports.run = async (bot, message, args) => {
 
         if (!shibeDataJson[shibes[randomIndex]]) shibeDataJson[shibes[randomIndex]] = { amount: 0 };
         shibeDataJson[shibes[randomIndex]].amount++;
-        fs.writeFile("./data/shibeData.json", JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
-
-        utilitiesModule.readJSONFile("./data/indexImageData.json", function (indexListJson) {
-            if (!indexListJson.indexCap) indexListJson.indexCap = 10;
-            else indexListJson.indexCap += 0.1;
-            fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexListJson));
-        });
+        fs.writeFileSync("./data/shibeData.json", JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
 
         let stats = fs.statSync("./shibes/" + shibes[randomIndex]);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
-        let sizeString;
-        if (fileSize < 0.4)
-            sizeString = `size - **${fileSize}mb**`;
-        else if (fileSize >= 0.4 && fileSize < 1)
-            sizeString = `size - **${fileSize}mb** (kinda big, may take a moment)`;
-        else if (fileSize >= 1 && fileSize < 4)
-            sizeString = `size - **${fileSize}mb** (fairly big, will take a while)`;
-        else if (fileSize >= 4 && fileSize <= 8)
-            sizeString = `size - **${fileSize}mb** (obscenely big, give me a minute or two)`;
-        else {
+        if (fileSize > 8) {
             message.channel.send(`That fuckin image is **${fileSize}mb** big, I physically cannot upload that`);
             return;
         }
