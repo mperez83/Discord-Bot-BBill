@@ -38,6 +38,22 @@ module.exports.run = async (bot, message, args) => {
             }
         }
 
+        //Remove indices that don't have url properties
+        if (!indexDataJson[inputIndexCall].url) {
+            message.channel.send(`"${inputIndexCall}" doesn't even have a url property!!!!!!! im deleting it`);
+            delete indexDataJson[inputIndexCall];
+            fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexDataJson));
+            return;
+        }
+
+        //Remove indices that don't have valid urls (don't contain .jpeg, .jpg, .gif, .png)
+        if (indexDataJson[inputIndexCall].url.match(/\.(jpeg|jpg|gif|png)$/) == null) {
+            message.channel.send(`"${inputIndexCall}" isn't even valid!!!!!!! im deleting it`);
+            delete indexDataJson[inputIndexCall];
+            fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexDataJson));
+            return;
+        }
+
 
 
         //Actually compose the message
