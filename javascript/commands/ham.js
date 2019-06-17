@@ -6,7 +6,7 @@ module.exports.run = async (bot, message, args) => {
     utilitiesModule.readJSONFile("./data/hamData.json", function (hamDataJson) {
 
         let hams = [];
-        fs.readdirSync("./hams/").forEach(file => {
+        fs.readdirSync("./graphics/hams/").forEach(file => {
             hams.push(file);
         });
 
@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
         hamDataJson[hams[randomIndex]].amount++;
         fs.writeFileSync("./data/hamData.json", JSON.stringify(hamDataJson), function(err) {if (err) return err;});
 
-        let stats = fs.statSync("./hams/" + hams[randomIndex]);
+        let stats = fs.statSync("./graphics/hams/" + hams[randomIndex]);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
         if (fileSize > 8) {
@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) => {
         newEmbed.addField(`Size`, `${fileSize}mb`);
 
         message.channel.send(newEmbed);
-        message.channel.send({ files: ["./hams/" + hams[randomIndex] ]});
+        message.channel.send({ files: ["./graphics/hams/" + hams[randomIndex] ]});
 
     });
 }

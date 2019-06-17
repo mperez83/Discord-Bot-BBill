@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args) => {
     utilitiesModule.readJSONFile("./data/shibeData.json", function (shibeDataJson) {
 
         let shibes = [];
-        fs.readdirSync("./shibes/").forEach(file => {
+        fs.readdirSync("./graphics/shibes/").forEach(file => {
             shibes.push(file);
         });
 
@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
 
         fs.writeFileSync("./data/shibeData.json", JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
 
-        let stats = fs.statSync("./shibes/" + shibes[randomIndex]);
+        let stats = fs.statSync("./graphics/shibes/" + shibes[randomIndex]);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
         if (fileSize > 8) {
@@ -66,7 +66,7 @@ module.exports.run = async (bot, message, args) => {
         }
 
         message.channel.send(newEmbed);
-        message.channel.send({ files: ["./shibes/" + shibes[randomIndex] ]});
+        message.channel.send({ files: ["./graphics/shibes/" + shibes[randomIndex] ]});
 
         utilitiesModule.incrementUserDataValue(message.author, "shibeCalls", 1);
 

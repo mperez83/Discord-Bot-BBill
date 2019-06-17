@@ -1,6 +1,7 @@
 audio/
 data/
-hams/
-shibes/
 graphics/resultImage.png
 graphics/gotcha.png
+graphics/shibes/
+graphics/hams/
+graphics/fumikas/
