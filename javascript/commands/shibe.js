@@ -38,8 +38,8 @@ module.exports.run = async (bot, message, args) => {
             newEmbed.setColor("#ff0000");
         }
         else {
-            newEmbed.addField(`Rarity`, `${shibeDataJson[shibes[randomIndex]].rarity}`);
             newEmbed.addField(`${shibes[randomIndex]}`, `Amount unboxed: ${shibeDataJson[shibes[randomIndex]].amount}`);
+            newEmbed.addField(`Rarity`, `${shibeDataJson[shibes[randomIndex]].rarity}`);
             newEmbed.addField(`Size`, `${fileSize}mb`);
 
             switch(shibeDataJson[shibes[randomIndex]].rarity) {

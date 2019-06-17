@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
                     return;
                 }
                 else {
-                    let msg = `alright hold on, blotting a ~${fileSize}mb image`;
+                    let msg = `alright hold on, blotting a ~${fileSize}mb image (this usually takes a fuckton of time so be patient)`;
                     message.channel.send(msg);
     
                     //Directly write method (not asynchronous??)
