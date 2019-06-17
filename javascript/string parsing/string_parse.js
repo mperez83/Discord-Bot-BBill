@@ -111,7 +111,7 @@ module.exports = {
 
 
         //Check for yelling
-        if (message.mentions.users.array().length == 0 && userMsg == userMsg.toUpperCase() && userMsg.length >= 20) {
+        if (message.mentions.users.array().length == 0 && userMsg.match(/[a-zA-Z]+/) && userMsg == userMsg.toUpperCase() && userMsg.length >= 20) {
             message.channel.send("stop yelling");
             return true;
         }
@@ -147,6 +147,11 @@ module.exports = {
                 }
             });
             return true;
+        }
+
+        //React to messages containing a reference to bbill
+        if (userMsg.includes("big bill") || userMsg.includes("bbill") || userMsg.includes("bill")) {
+            if (Math.ceil(Math.random() * 100) <= 25) message.react("👁");
         }
 
         return false;
