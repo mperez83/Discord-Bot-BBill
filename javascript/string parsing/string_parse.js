@@ -1,3 +1,4 @@
+const config = require("../../data/config.json");
 const utilitiesModule = require('../utilities');
 
 module.exports = {
@@ -123,7 +124,7 @@ module.exports = {
 
 
     //Parse message for string of text, disregarding punctuation and capitalization
-    parseTextForLooseString: function(message) {
+    parseTextForLooseString: function(message, bot) {
 
         let userMsg = message.content;
 
@@ -152,6 +153,19 @@ module.exports = {
         //React to messages containing a reference to bbill
         if (userMsg.includes("big bill") || userMsg.includes("bbill") || userMsg.includes("bill")) {
             if (Math.ceil(Math.random() * 100) <= 25) message.react("👁");
+        }
+
+        //React to messages containing the word "fuck" if the message before that was from bbill
+        if (userMsg.includes("fuck")) {
+            message.channel.fetchMessages({ limit: 2 })
+                .then(messages => {
+                    //Check if the message before the one the user sent is from billiams himself
+                    if (messages.last().author.bot && messages.last().author.id == config.id) {
+                        //console.log("thats our boy");
+                        messages.first().react("😡");
+                    }
+                })
+                .catch(console.error);
         }
 
         return false;

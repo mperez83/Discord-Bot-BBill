@@ -49,6 +49,7 @@ module.exports.run = async (bot, message, args) => {
             }
 
             if (power == 68 || power == 70) {
+                message.react("😂");
                 utilitiesModule.incrementUserDataValue(message.author, "chokes", 1);
             }
 

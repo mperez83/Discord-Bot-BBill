@@ -99,6 +99,18 @@ fs.readdir("./javascript/admin commands/", (err, files) => {
 //Ensure that the bot only starts working after it is ready
 bot.on("ready", () => {
     console.log("Logged in! Serving in " + bot.guilds.array().length + " servers");
+
+    //Update bill's id in the config file if something is wrong
+    if (!config.id) {
+        console.log("Bot ID doesn't exist in config file, adding it now");
+        config.id = bot.user.id;
+        fs.writeFileSync("./data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
+    }
+    else if (config.id != bot.user.id) {
+        console.log("Bot ID doesn't match one listed in config file, updating it now");
+        config.id = bot.user.id;
+        fs.writeFileSync("./data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
+    }
 });
 
 
@@ -113,7 +125,7 @@ bot.on("message", (message) => {
     informalCommandsModule.parseTextForBadEmotes(message);
     if (informalCommandsModule.parseTextForAtEveryone(message)) return;
     if (informalCommandsModule.parseTextForSpecificString(message)) return;
-    if (informalCommandsModule.parseTextForLooseString(message)) return;
+    if (informalCommandsModule.parseTextForLooseString(message, bot)) return;
     if (cleverbillModule.parseTextForQuestions(message)) return;
 
 
@@ -132,5 +144,5 @@ bot.on("message", (message) => {
 });
 
 bot.login(config.token)
-    .then(console.log)
+    .then(/*console.log*/)
     .catch(console.error);
