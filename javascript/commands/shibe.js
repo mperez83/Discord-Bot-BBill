@@ -70,7 +70,7 @@ module.exports.run = async (bot, message, args) => {
 
         utilitiesModule.incrementUserDataValue(message.author, "shibeCalls", 1);
 
-        const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 10000 });
+        const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 15000 });
         collector.on('collect', message => {
 
             msg = message.content.toLowerCase();
@@ -100,6 +100,7 @@ module.exports.run = async (bot, message, args) => {
 
                 fs.writeFileSync("./data/shibeData.json", JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
                 message.react("✅");
+                utilitiesModule.incrementUserDataValue(message.author, "Billie-Bucks", 1);
                 collector.stop();
 
             }
