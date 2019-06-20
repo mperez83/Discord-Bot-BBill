@@ -121,7 +121,7 @@ module.exports.getMostRecentImageURL = function(message) {
             errorMessage = `I didn't find any messages containing images whatsoever in the last ten messages, ${this.getRandomNameInsult()}`;
         }
 
-        else if (validURL.match(/\.(jpeg|jpg|gif|png)$/) == null) {
+        else if (validURL.match(/\.(jpeg|jpg|gif|png)(\?v=1)*$/) == null) {
             errorMessage = `The image url I found doesn't have a valid file extension. ${this.getRandomNameInsult()}`;
             validURL = null;
         }

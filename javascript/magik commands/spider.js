@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args) => {
 
     //If the user tried to supply some kind of argument, cut that shit right off
     if (args.length > 0) {
-        message.channel.send("Inkblot doesn't use parameters, " + utilitiesModule.getRandomNameInsult());
+        message.channel.send("Spiders don't need parameters, " + utilitiesModule.getRandomNameInsult());
         return;
     }
 
@@ -22,16 +22,18 @@ module.exports.run = async (bot, message, args) => {
             remote(validURL, function(err, size) {
                 let fileSize = (size / 1000000.0).toFixed(2);
     
-                if (fileSize > 0.5) {
-                    message.channel.send(`I don't want to fuck with anything around the size of 0.5mb, ${utilitiesModule.getRandomNameInsult()}`);
+                if (fileSize > 0.2) {
+                    message.channel.send(`I can't turn this into a spider, ${utilitiesModule.getRandomNameInsult()} (larger than 0.2mb)`);
                     return;
                 }
                 else {
-                    let msg = `alright hold on, blotting a ~${fileSize}mb image (this usually takes a fuckton of time so be patient)`;
+                    let msg = `hatching (~${fileSize}mb)`;
                     message.channel.send(msg);
     
                     //Directly write method (not asynchronous??)
                     gm(request(validURL))
+                        .implode(1)
+                        .implode(-4)
                         .charcoal(1)
                         .charcoal(1)
                         .charcoal(1)
@@ -61,5 +63,5 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "inkblot"
+    name: "spider"
 }
