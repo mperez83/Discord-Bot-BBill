@@ -6,19 +6,15 @@ const utilitiesModule = require('../utilities');
 module.exports.run = async (bot, message, args) => {
 
     let singeAmount = 1;
-    let maximumSinge = false;
 
     //If the user didn't supply a strength level, keep the singe level normal
     if (args.length == 0) {
         //keep singeAmount at default value
     }
 
-    //If the user supplied a strength level for the singe, do tons of bullshit checking
+    //If the user supplied a strength level for the singe, do some checks
     else if (args.length == 1) {
-        if (args[0] == "max") {
-            maximumSinge = true;
-        }
-        else if (isNaN(args[0])) {
+        if (isNaN(args[0])) {
             message.channel.send("That's not a fucking number, " + utilitiesModule.getRandomNameInsult());
             return;
         }
@@ -75,11 +71,11 @@ module.exports.run = async (bot, message, args) => {
                                 if (err) console.error(err);
                                 else {
                                     let maxSingeAmount = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
-                                    if (maximumSinge) singeAmount = maxSingeAmount;
+                                    if (maxSingeAmount > 99) maxSingeAmount = 99;
 
                                     //Return if singe amount is higher than the max singe amount
                                     if (singeAmount > maxSingeAmount) {
-                                        message.channel.send(`Max singe amount for this image is ${maxSingeAmount}, ${utilitiesModule.getRandomNameInsult()} (max singe amount for any given image is half the width or height, whichever is smaller. use the parameter "max" to automatically singe at the max amount)`);
+                                        message.channel.send(`Max singe amount for this image is ${maxSingeAmount}, ${utilitiesModule.getRandomNameInsult()} (max singe amount for any image is half the smaller of the two dimensions, with a ceiling of 99)`);
                                         return;
                                     }
 

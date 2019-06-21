@@ -1,8 +1,6 @@
-const fs = require("fs");
 const gm = require("gm");
-const imageMagick = require('gm').subClass({imageMagick: true});
 const request = require("request");
-const remote = require("remote-file-size");
+const rp = require("request-promise");
 const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {
@@ -13,49 +11,56 @@ module.exports.run = async (bot, message, args) => {
         return;
     }
 
-    utilitiesModule.getMostRecentImageURL(message).then(validURL => {
 
-        if (!validURL) {
+
+    let foundURL;
+
+    utilitiesModule.getMostRecentImageURL(message).then(requestedURL => {
+
+        foundURL = requestedURL;
+
+        if (!foundURL) {
             return;
         }
         else {
-            remote(validURL, function(err, size) {
-                let fileSize = (size / 1000000.0).toFixed(2);
-    
-                if (fileSize > 2) {
-                    message.channel.send(`I can't make this go ultra, ${utilitiesModule.getRandomNameInsult()} (larger than 2mb)`);
-                    return;
-                }
-                else {
-                    let msg = `improving (~${fileSize}mb)`;
-                    message.channel.send(msg);
+            let options = {
+                uri: foundURL,
+                resolveWithFullResponse: true
+            };
 
-                    let sharpenIntensity = 0;
+            rp(options)
+                .then(function (response) {
+                    let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
     
-                    gm(request(validURL))
-                        .size(function (err, size) {
-                            if (err) console.error(err);
-                            else {
-                                sharpenIntensity = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
-                                console.log(sharpenIntensity);
-                            }
-                        })
-                        .filter("Gaussian")
-                        .minify()
-                        .magnify()
-                        .sharpen(sharpenIntensity)
-                        .sharpen(sharpenIntensity)
-                        .sharpen(sharpenIntensity)
-                        .sharpen(sharpenIntensity)
-                        .sharpen(sharpenIntensity)
-                        .modulate(100, 500)
-                        .write('./graphics/resultImage.png', function (err) {
-                            if (err) console.log(err);
-                            console.log("posting");
-                            message.channel.send({ files: ["./graphics/resultImage.png"]});
-                        });
-                }
-            });
+                    if (fileSize > 0.5) {
+                        message.channel.send(`I can't make this go ultra, ${utilitiesModule.getRandomNameInsult()} (larger than 0.5mb)`);
+                        return;
+                    }
+                    else {
+                        gm(request(foundURL))
+                            .size(function (err, size) {
+                                if (err) console.error(err);
+                                else {
+                                    let sharpenIntensity = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
+                                    if (sharpenIntensity > 99) sharpenIntensity = 99;
+
+                                    message.channel.send(`improving (~${fileSize}mb)`);
+
+                                    gm(request(foundURL))
+                                        .blur(sharpenIntensity)
+                                        .sharpen(sharpenIntensity)
+                                        .modulate(100, 500)
+                                        .write('./graphics/resultImage.png', function (err) {
+                                            if (err) console.log(err);
+                                            message.channel.send({ files: ["./graphics/resultImage.png"]});
+                                        });
+                                }
+                            })
+                    }
+                })
+                .catch(function (err) {
+                    console.error(err);
+                });
         }
         
     });

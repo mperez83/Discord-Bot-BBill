@@ -44,7 +44,7 @@ module.exports.run = async (bot, message, args) => {
                                     let maxSingeAmount = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
                                     let singeAmount = (maxSingeAmount < 99) ? maxSingeAmount : 99;
 
-                                    message.channel.send(`alright hold on, blotting a ~${fileSize}mb image (this usually takes a fuckton of time so be patient)`);
+                                    message.channel.send(`alright hold on, blotting a ~${fileSize}mb image (takes a while, be patient)`);
                     
                                     gm(request(foundURL))
                                         .charcoal(1)
@@ -55,13 +55,13 @@ module.exports.run = async (bot, message, args) => {
                                         .charcoal(singeAmount)
                                         .charcoal(singeAmount)
                                         .charcoal(singeAmount)
-                                        .filter("Gaussian")
-                                        .minify()
-                                        .minify()
-                                        .minify()
+                                        /*.filter("Gaussian")   //Cut all this shit out because it occurs before all the previous commands do
+                                        .minify()               //which manipulates the width/height of the image presumably because of floating point
+                                        .minify()               //error. This makes for a small chance that charcoal isn't able to properly run because
+                                        .minify()               //the calculated singeAmount is no longer half the size of the width or height
                                         .magnify()
                                         .magnify()
-                                        .magnify()
+                                        .magnify()*/
                                         .charcoal(singeAmount)
                                         .write('./graphics/resultImage.png', function (err) {
                                             if (err) console.log(err);
