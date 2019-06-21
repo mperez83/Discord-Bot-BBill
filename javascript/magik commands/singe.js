@@ -1,7 +1,6 @@
 const gm = require("gm");
 const request = require("request");
 const rp = require("request-promise");
-//const remote = require("remote-file-size");
 const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {

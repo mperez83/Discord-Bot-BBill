@@ -1,6 +1,6 @@
 const gm = require("gm");
 const request = require("request");
-const remote = require("remote-file-size");
+const rp = require("request-promise");
 const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {
@@ -49,32 +49,43 @@ module.exports.run = async (bot, message, args) => {
     //Arbitrary divide by 2, to make the strength levels more sensible
     deflateAmount /= 2;
 
-    utilitiesModule.getMostRecentImageURL(message).then(validURL => {
+    utilitiesModule.getMostRecentImageURL(message).then(returnedURL => {
 
-        if (!validURL) {
+        foundURL = returnedURL;
+
+        if (!foundURL) {
             return;
         }
         else {
-            remote(validURL, function(err, size) {
-                let fileSize = (size / 1000000.0).toFixed(2);
+            let options = {
+                uri: foundURL,
+                resolveWithFullResponse: true
+            };
+
+            rp(options)
+                .then(function (response) {
+                    let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
     
-                if (fileSize > 2) {
-                    message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult()}`);
-                    return;
-                }
-                else {
-                    let msg = `alright hold on, deflating a ~${fileSize}mb image`;
-                    if (appendSuggestion) msg += ` (for best results, keep deflation strength less than 1)`;
-                    message.channel.send(msg);
-    
-                    gm(request(validURL))
-                        .implode(deflateAmount)
-                        .write('./graphics/resultImage.png', function (err) {
-                            if (err) console.log(err);
-                            message.channel.send({ files: ["./graphics/resultImage.png"]});
-                        });
-                }
-            });
+                    if (fileSize > 2) {
+                        message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult()}`);
+                        return;
+                    }
+                    else {
+                        let msg = `alright hold on, deflating a ~${fileSize}mb image`;
+                        if (appendSuggestion) msg += ` (for best results, keep deflation strength less than 1)`;
+                        message.channel.send(msg);
+        
+                        gm(request(foundURL))
+                            .implode(deflateAmount)
+                            .write('./graphics/resultImage.png', function (err) {
+                                if (err) console.log(err);
+                                message.channel.send({ files: ["./graphics/resultImage.png"]});
+                            });
+                    }
+                })
+                .catch(function (err) {
+                    console.error(err);
+                });
         }
         
     });

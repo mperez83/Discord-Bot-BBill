@@ -1,6 +1,6 @@
 const gm = require("gm");
 const request = require("request");
-const remote = require("remote-file-size");
+const rp = require("request-promise");
 const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {
@@ -46,33 +46,48 @@ module.exports.run = async (bot, message, args) => {
         return;
     }
 
-    utilitiesModule.getMostRecentImageURL(message).then(validURL => {
 
-        if (!validURL) {
+
+    let foundURL;
+
+    utilitiesModule.getMostRecentImageURL(message).then(returnedURL => {
+
+        foundURL = returnedURL;
+
+        if (!foundURL) {
             return;
         }
         else {
-            remote(validURL, function(err, size) {
-                let fileSize = (size / 1000000.0).toFixed(2);
-    
-                if (fileSize > 2) {
-                    message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult()}`);
-                    return;
-                }
-                else {
-                    let msg = `alright hold on, inflating a ~${fileSize}mb image`;
-                    if (appendSuggestion) msg += ` (for best results, keep inflation strength less than 2)`;
-                    message.channel.send(msg);
-    
-                    gm(request(validURL))
-                        .implode(-inflateAmount)
-                        .write('./graphics/resultImage.png', function (err) {
-                            if (err) console.log(err);
-                            if (inflateAmount == 69) message.channel.send({ files: ["./graphics/gotcha.png"]});
-                            else message.channel.send({ files: ["./graphics/resultImage.png"]});
-                        });
-                }
-            });
+            let options = {
+                uri: foundURL,
+                resolveWithFullResponse: true
+            };
+
+            rp(options)
+                .then(function (response) {
+                    let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
+
+                    if (fileSize > 2) {
+                        message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult()}`);
+                        return;
+                    }
+                    else {
+                        let msg = `alright hold on, inflating a ~${fileSize}mb image`;
+                        if (appendSuggestion) msg += ` (for best results, keep inflation strength less than 2)`;
+                        message.channel.send(msg);
+        
+                        gm(request(foundURL))
+                            .implode(-inflateAmount)
+                            .write('./graphics/resultImage.png', function (err) {
+                                if (err) console.log(err);
+                                if (inflateAmount == 69) message.channel.send({ files: ["./graphics/gotcha.png"]});
+                                else message.channel.send({ files: ["./graphics/resultImage.png"]});
+                            });
+                    }
+                })
+                .catch(function (err) {
+                    console.error(err);
+                });
         }
         
     });
