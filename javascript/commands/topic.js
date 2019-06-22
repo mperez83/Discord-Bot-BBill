@@ -2,6 +2,11 @@ const fs = require("fs");
 const utilitiesModule = require('../utilities');
 
 module.exports.run = async (bot, message, args) => {
+    if (message.channel.type == "dm") {
+        message.channel.send(`you can't use this in a dm, ${utilitiesModule.getRandomNameInsult()}`);
+        return;
+    }
+
     utilitiesModule.readJSONFile("./data/serverData.json", function (serverDataJson) {
 
         //View topic
