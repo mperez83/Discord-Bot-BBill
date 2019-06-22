@@ -5,10 +5,10 @@ bot.commands = new Discord.Collection();
 
 const fs = require("fs");
 const config = require("../data/config.json");
-const utilitiesModule = require('./utilities');
 
 const cleverbillModule = require("./string parsing/cleverbill");
 const informalCommandsModule = require("./string parsing/string_parse");
+const messageEvents = require("./joke modules/messageEvents");
 
 
 
@@ -120,6 +120,9 @@ bot.on("message", (message) => {
 
     //Don't parse messages from bbill
     if (message.author.bot) return;
+
+    //Events checking
+    messageEvents.checkForRandomEvents(message);
     
     //String parsing
     informalCommandsModule.parseTextForBadEmotes(message);
