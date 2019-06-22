@@ -47,8 +47,8 @@ var flagObjects = {
         Another interpretation is simply that pink is one unspecified gender, blue is another unspecified gender, and purple is both.`
     },
     "catgirl who spilled her orange juice": {
-        description: `abebbeabaebbebab`,
-        colors: `meaning`
+        description: `for all the catgirls out there spilling their oranged juices`,
+        colors: `orange: orange juice. red: shurt. pink:catgirl`
     },
     "ceterosexual": {
         description: `Sexual identity of someone who is only attracted to people that identify as nonbinary (synonymous with skoliosexual).`,
@@ -108,9 +108,18 @@ var flagObjects = {
         description: `Someone who identifies as a woman, and is attracted to women.`,
         colors: `Unknown :(`
     },
+    "minecraft": {
+        description: `undefined`,
+        colors: `undefined`
+    },
     "nonbinary": {
         description: `Gender identity of someone who does not fit within the male/female binary (synonymous with genderqueer).`,
         colors: `Yellow is for gender without reference to the gender binary. White: those with many or all genders. Purple: a mix of female and male. Black: without gender.`
+    },
+    "off the shits": {
+        description: `For when you're completely off the shits!`,
+        colors: `Deep Plum: Represents going absolutely hog wild at all times. Red: Represents insatiable blood lust. Yellowish Green: Represents being a fucking menace \
+        with no critical thinking skills.`
     },
     "omnisexual": {
         description: `Sexual identity of someone who can be attracted to any gender. Unlike pansexuals, omnisexuals still care about the gender their \
