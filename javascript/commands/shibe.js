@@ -66,46 +66,48 @@ module.exports.run = async (bot, message, args) => {
         }
 
         message.channel.send(newEmbed);
-        message.channel.send({ files: ["./graphics/shibes/" + shibes[randomIndex] ]});
+        message.channel.send({ files: ["./graphics/shibes/" + shibes[randomIndex] ]})
+            .then(function (msg) {
+                const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 15000 });
+                collector.on('collect', message => {
+
+                    msg = message.content.toLowerCase();
+                    if (msg == "common" || msg == "uncommon" || msg == "rare" || msg == "epic" || msg == "legendary") {
+
+                        switch (msg) {
+                            case "common":
+                                shibeDataJson[shibes[randomIndex]].rarity = "Common";
+                                break;
+
+                            case "uncommon":
+                                shibeDataJson[shibes[randomIndex]].rarity = "Uncommon";
+                                break;
+                            
+                            case "rare":
+                                shibeDataJson[shibes[randomIndex]].rarity = "Rare";
+                                break;
+
+                            case "epic":
+                                shibeDataJson[shibes[randomIndex]].rarity = "Epic";
+                                break;
+                            
+                            case "legendary":
+                                shibeDataJson[shibes[randomIndex]].rarity = "Legendary";
+                                break;
+                        }
+
+                        fs.writeFileSync("./data/shibeData.json", JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
+                        message.react("✅");
+                        utilitiesModule.incrementUserDataValue(message.author, "Billie-Bucks", 1);
+                        collector.stop();
+
+                    }
+
+                });
+            })
+            .catch(console.error);
 
         utilitiesModule.incrementUserDataValue(message.author, "shibeCalls", 1);
-
-        const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 15000 });
-        collector.on('collect', message => {
-
-            msg = message.content.toLowerCase();
-            if (msg == "common" || msg == "uncommon" || msg == "rare" || msg == "epic" || msg == "legendary") {
-
-                switch (msg) {
-                    case "common":
-                        shibeDataJson[shibes[randomIndex]].rarity = "Common";
-                        break;
-
-                    case "uncommon":
-                        shibeDataJson[shibes[randomIndex]].rarity = "Uncommon";
-                        break;
-                    
-                    case "rare":
-                        shibeDataJson[shibes[randomIndex]].rarity = "Rare";
-                        break;
-
-                    case "epic":
-                        shibeDataJson[shibes[randomIndex]].rarity = "Epic";
-                        break;
-                    
-                    case "legendary":
-                        shibeDataJson[shibes[randomIndex]].rarity = "Legendary";
-                        break;
-                }
-
-                fs.writeFileSync("./data/shibeData.json", JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
-                message.react("✅");
-                utilitiesModule.incrementUserDataValue(message.author, "Billie-Bucks", 1);
-                collector.stop();
-
-            }
-
-        });
     });
 }
 
