@@ -1,56 +1,75 @@
 const utilitiesModule = require('../utilities');
 
+var unnecessaryStats = ["nextValidPowerCheck", "username"];
+
+
+
 module.exports.run = async (bot, message, args) => {
+
+    let userToIdentify;
+
+    //More than one parameter = abort
+    if (args.length > 1) {
+        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult()}`);
+        return;
+    }
+
+    //One parameter = display stats of whoever they mention (check if they mentioned anyone)
+    else if (args.length == 1) {
+
+        //If the argument provided by the user is a mention
+        if (message.mentions.users.size == 1) {
+            userToIdentify = message.mentions.users.first();
+
+            //If the user tries to put themself in as an argument
+            if (userToIdentify.id == message.author.id) {
+                message.channel.send(`what the fuck are you doing`);
+                return;
+            }
+
+            //If the user tries to put big bill in as an argument
+            if (userToIdentify.id == bot.user.id) {
+                message.channel.send(`don't do that what the fuck`);
+                return;
+            }
+        }
+
+        //If the argument provided by the user isn't a mention
+        else {
+            message.channel.send(`You have to @ someone if you want their stats, ${utilitiesModule.getRandomNameInsult()}`);
+            return;
+        }
+
+    }
+
+    //No parameters = display stats of the user that did the call
+    else {
+        userToIdentify = message.author;
+    }
+
+
+
     utilitiesModule.readJSONFile("./data/userData.json", function (userDataJson) {
 
-        if (args.length == 0) {
-            if (!userDataJson[message.author.id]) userDataJson[message.author.id] = {username: message.author.username};
+        if (!userDataJson[userToIdentify.id]) userDataJson[userToIdentify.id] = {username: userToIdentify.username};
 
-            let statsString = "here are your stats:\n- - - - - - - - - -\n";
-            propertyNames = Object.getOwnPropertyNames(userDataJson[message.author.id]);
-            propertyNames.sort();
-            for (let i = 0; i < propertyNames.length; i++) {
-                //console.log(propertyNames[i] + ": " + userDataJson[message.author.id][propertyNames[i]]);
-                statsString = statsString.concat("**" + propertyNames[i] + ":** " + userDataJson[message.author.id][propertyNames[i]] + "\n");
-            }
-            statsString = statsString.concat("- - - - - - - - - -");
-            message.reply(statsString);
+        let statsString;
+        if (userToIdentify == message.author)
+            statsString = `here are your stats:\n- - - - - - - - - -\n`;
+        else
+            statsString = `here are ${userDataJson[userToIdentify.id].username}'s stats:\n- - - - - - - - - -\n`;
+
+        let propertyNames = Object.getOwnPropertyNames(userDataJson[userToIdentify.id]);
+
+        utilitiesModule.removeElementsFromArray(propertyNames, unnecessaryStats);
+
+        propertyNames.sort();
+        for (let i = 0; i < propertyNames.length; i++) {
+            statsString = statsString.concat(`**${propertyNames[i]}:** ${userDataJson[userToIdentify.id][propertyNames[i]]}\n`);
         }
-        else if (args.length == 1) {
-            if (message.mentions.users.size == 1) {
-                let mentionedUserID = message.mentions.users.first().id;
+        statsString = statsString.concat(`- - - - - - - - - -`);
 
-                if (mentionedUserID == message.author.id) {
-                    message.channel.send("what the fuck are you doing");
-                    return;
-                }
-
-                if (mentionedUserID == bot.user.id) {
-                    message.channel.send("don't do that what the fuck");
-                    return;
-                }
-
-                if (!userDataJson[mentionedUserID]) {
-                    message.channel.send("That user isn't in my database yet!!! Tell them to do some shit first. " + utilitiesModule.getRandomNameInsult());
-                    return;
-                }
-
-                let statsString = "here are " + userDataJson[mentionedUserID].username + "'s stats:\n- - - - - - - - - -\n";
-                propertyNames = Object.getOwnPropertyNames(userDataJson[mentionedUserID]);
-                propertyNames.sort();
-                for (let i = 0; i < propertyNames.length; i++) {
-                    statsString = statsString.concat("**" + propertyNames[i] + ":** " + userDataJson[mentionedUserID][propertyNames[i]] + "\n");
-                }
-                statsString = statsString.concat("- - - - - - - - - -");
-                message.reply(statsString);
-            }
-            else {
-                message.channel.send("You have to @ someone if you want their stats, " + utilitiesModule.getRandomNameInsult());
-            }
-        }
-        else {
-            message.channel.send("Too many parameters, " + utilitiesModule.getRandomNameInsult());
-        }
+        message.reply(statsString);
 
     });
 }

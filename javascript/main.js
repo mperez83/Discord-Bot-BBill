@@ -118,7 +118,7 @@ bot.on("ready", () => {
 //Create an event listener for messages
 bot.on("message", (message) => {
 
-    //Don't parse messages from bbill
+    //Don't even consider messages from bbill
     if (message.author.bot) return;
 
     //Events checking

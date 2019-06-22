@@ -152,6 +152,18 @@ module.exports.sendGlobalMessage = function(bot, msg) {
     }
 }
 
+module.exports.removeElementsFromArray = function(arrayToRemoveStuffFrom, stuffToRemove) {
+
+    for (let i = 0; i < arrayToRemoveStuffFrom.length; i++) {
+        for (let j = 0; j < stuffToRemove.length; j++) {
+            if (arrayToRemoveStuffFrom[i] == stuffToRemove[j]) {
+                arrayToRemoveStuffFrom.splice(i, 1);
+            }
+        }
+    }
+
+}
+
 
 
 /*module.exports.checkAndUpdateIndexList = function(bot, indexListJson) {
