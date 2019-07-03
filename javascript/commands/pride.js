@@ -55,6 +55,14 @@ var flagObjects = {
         colors: `Yellow represents being non-binary or attracted to non-binary people. Green represents bigender, third gender, genderqueer, or other genders. \
         White and black represent neutral genderlessness, agender, questioning gender identity, etc. Lavender represents love outside the gender norms.`
     },
+    "chocolate bitch pride": {
+        description: `Secretly a weaponized cannoli, this flag stands for`,
+        colors: `Brown reperesensts chocolate`
+    },
+    "completely normal photo of ross": {
+        description: `A completely normal photo of Ross Geller.`,
+        colors: `him`
+    },
     "cupiosexual": {
         description: `Sexual identity of someone who does not experience sexual attraction, but still desires a sexual relationship.`,
         colors: `Up for interpretation.`
@@ -76,6 +84,10 @@ var flagObjects = {
     "dumb bitch pride": {
         description: `all of us`,
         colors: `meaning`
+    },
+    "gamer bernie sanders": {
+        description: `unknown...`,
+        colors: `unknown`
     },
     "gay": {
         description: `Sexual identity of someone who is attracted to people of the same sex/gender. Also used as a catch-all for the \
@@ -158,6 +170,10 @@ var flagObjects = {
         description: `Gender identity of someone whose gender does not align with the sex they were assigned at birth.`,
         colors: `Light Blue: Represents the traditional color for boys. Light Pink: Represents the traditional color for girls. White: Represents \
         those who are intersex, transitioning, or see themselves as having a neutral or undefined gender.`
+    },
+    "yogurt cat": {
+        description: `huuuuuurg`,
+        colors: `don't eat 'im`
     }
 
 };
