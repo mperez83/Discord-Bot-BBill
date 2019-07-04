@@ -1,9 +1,10 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const utilitiesModule = require('../utilities');
+const dataLoc = "./data/general_data/indexImageData.json";
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile("./data/indexImageData.json", function (indexDataJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (indexDataJson) {
 
         let inputIndexCall;
         let randomCall = false;
@@ -19,7 +20,7 @@ module.exports.run = async (bot, message, args) => {
             }
 
             if (nameList.length == 0) {
-                message.channel.send("There are no indices in the list yet, " + utilitiesModule.getRandomNameInsult());
+                message.channel.send(`There are no indices in the list yet, ${utilitiesModule.getRandomNameInsult()}`);
                 return;
             }
             else {
@@ -33,7 +34,7 @@ module.exports.run = async (bot, message, args) => {
             inputIndexCall = args.join(" ");
 
             if (!indexDataJson[inputIndexCall]) {
-                message.channel.send("There is no image indexed with the name '" + inputIndexCall + "', " + utilitiesModule.getRandomNameInsult());
+                message.channel.send(`There is no image indexed with the name "${inputIndexCall}", ${utilitiesModule.getRandomNameInsult()}`);
                 return;
             }
         }
@@ -42,7 +43,7 @@ module.exports.run = async (bot, message, args) => {
         if (!indexDataJson[inputIndexCall].url) {
             message.channel.send(`"${inputIndexCall}" doesn't even have a url property!!!!!!! im deleting it`);
             delete indexDataJson[inputIndexCall];
-            fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexDataJson));
+            fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson));
             return;
         }
 
@@ -50,7 +51,7 @@ module.exports.run = async (bot, message, args) => {
         if (indexDataJson[inputIndexCall].url.match(/\.(jpeg|jpg|gif|png)$/) == null) {
             message.channel.send(`"${inputIndexCall}" isn't even valid!!!!!!! im deleting it`);
             delete indexDataJson[inputIndexCall];
-            fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexDataJson));
+            fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson));
             return;
         }
 
@@ -68,7 +69,7 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send(newEmbed);
 
         //This is to update the directCalls property
-        fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexDataJson));
+        fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson));
 
         utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
         return;

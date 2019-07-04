@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const utilitiesModule = require("../utilities");
+const dataLoc = "./data/general_data/prideFlagData.json";
 
 //Primary sources for color descriptions:
 //University of Northern Colorado https://www.unco.edu/gender-sexuality-resource-center/resources/pride-flags.aspx
@@ -8,7 +9,7 @@ const utilitiesModule = require("../utilities");
 
 module.exports.run = async (bot, message, args) => {
 
-    utilitiesModule.readJSONFile("./data/general_data/prideFlagData.json", function (prideFlagDataJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (prideFlagDataJson) {
 
         let flags = [];
         fs.readdirSync("./graphics/pride flags/").forEach(file => {
@@ -41,7 +42,7 @@ module.exports.run = async (bot, message, args) => {
 
         message.channel.send(newEmbed);
 
-        fs.writeFileSync("./data/general_data/prideFlagData.json", JSON.stringify(prideFlagDataJson));
+        fs.writeFileSync(dataLoc, JSON.stringify(prideFlagDataJson));
 
     });
 
