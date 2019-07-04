@@ -53,6 +53,7 @@ module.exports.run = async (bot, message, args) => {
                                     let singeAmount = (maxSingeAmount < 99) ? maxSingeAmount : 99;
 
                                     message.channel.send(`hatching the ~${fileSize}mb creature (takes a while, be patient)`);
+                                    let fileName = Date.now();
                     
                                     gm(request(foundURL))
                                         .implode(1 + (Math.random() * 0.5))
@@ -67,9 +68,9 @@ module.exports.run = async (bot, message, args) => {
                                         .charcoal(singeAmount)
                                         .charcoal(singeAmount)
                                         .charcoal(singeAmount)
-                                        .write('./graphics/resultImage.png', function (err) {
+                                        .write(`./graphics/spiders/${fileName}.png`, function (err) {
                                             if (err) console.log(err);
-                                            message.channel.send({ files: ["./graphics/resultImage.png"] });
+                                            message.channel.send({ files: [`./graphics/spiders/${fileName}.png`] });
                                         });
                                 }
                             });
