@@ -151,6 +151,9 @@ bot.on("message", (message) => {
     if (!command.startsWith(config.prefix)) return;
     command = command.slice(config.prefix.length);  //Slice off command prefix
 
+    //Special command check (currently only !doge is a special command)
+    if (command.match(/^do+ge$/)) command = "doge";
+
     let cmd = bot.commands.get(command);
     if (cmd) cmd.run(bot, message, args);
 

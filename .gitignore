@@ -1,10 +1,9 @@
 audio/
 
 data/*
-!data/list of names to insult people with.txt
 !data/general_data/
 data/general_data/*
-#!data/general_data/prideFlagData.json
+!data/general_data/list_of_names_to_insult_people_with.txt
 
 graphics/resultImage.png
 graphics/gotcha.png
@@ -12,3 +11,4 @@ graphics/shibes/
 graphics/hams/
 graphics/fumikas/
 graphics/pride flags/
+graphics/doge/
