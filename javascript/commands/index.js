@@ -1,23 +1,26 @@
 const fs = require("fs");
-const utilitiesModule = require('../utilities');
+const utilitiesModule = require("../utilities");
+const dataLoc = "./data/general_data/indexImageData.json";
+
+
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile("./data/indexImageData.json", function (indexListJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (indexListJson) {
 
         if (args.length == 0) {
-            message.channel.send("I can't index nothing, " + utilitiesModule.getRandomNameInsult());
+            message.channel.send(`I can't index nothing, ${utilitiesModule.getRandomNameInsult()}`);
             return;
         }
 
         let inputIndexName = args.join(" ");
         
         if (inputIndexName.length > 50) {
-            message.channel.send("Index names need to be less than 50 characters long, " + utilitiesModule.getRandomNameInsult());
+            message.channel.send(`Index names can't be longer than 50 characters, ${utilitiesModule.getRandomNameInsult()}`);
             return;
         }
 
         if (indexListJson[inputIndexName]) {
-            message.channel.send("That name is already indexed, " + utilitiesModule.getRandomNameInsult());
+            message.channel.send(`That name is already indexed, ${utilitiesModule.getRandomNameInsult()}`);
             return;
         }
 
@@ -31,7 +34,7 @@ module.exports.run = async (bot, message, args) => {
                 for (var indexEntry in indexListJson) {
                     if (indexListJson.hasOwnProperty(indexEntry)) {
                         if (validURL == indexListJson[indexEntry].url) {
-                            message.channel.send("That image is already indexed under '" + indexEntry + "', " + utilitiesModule.getRandomNameInsult());
+                            message.channel.send(`That image is already indexed under "${indexEntry}", ${utilitiesModule.getRandomNameInsult()}`);
                             return;
                         }
                     }
@@ -42,8 +45,8 @@ module.exports.run = async (bot, message, args) => {
                     culprit: message.author.username
                 };
 
-                fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexListJson));
-                message.channel.send("Successfully indexed '" + inputIndexName + "'!");
+                fs.writeFileSync(dataLoc, JSON.stringify(indexListJson));
+                message.channel.send(`Successfully indexed "${inputIndexName}"!`);
 
                 if (message.channel.type == "dm") {
                     utilitiesModule.incrementUserDataValue(message.author, "stealthyBastardPoints", 1);

@@ -1,28 +1,37 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const utilitiesModule = require('../utilities');
+const utilitiesModule = require("../utilities");
+
+const photoLoc = "./graphics/shibes/";
+const dataLoc = "./data/image_data/shibeData.json";
 
 
 
 module.exports.run = async (bot, message, args) => {
 
-    utilitiesModule.readJSONFile("./data/shibeData.json", function (shibeDataJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (shibeDataJson) {
 
         let shibes = [];
-        fs.readdirSync("./graphics/shibes/").forEach(file => {
+        fs.readdirSync(photoLoc).forEach(file => {
             shibes.push(file);
         });
 
-        let randomIndex = Math.floor(Math.random() * shibes.length);
+        let selectedShibe = shibes[Math.floor(Math.random() * shibes.length)];
+        let shibeJsonObj = shibeDataJson[selectedShibe];
 
-        if (!shibeDataJson[shibes[randomIndex]]) shibeDataJson[shibes[randomIndex]] = { amount: 0 };
-        shibeDataJson[shibes[randomIndex]].amount++;
+        //Setting json stuff
+        if (!shibeJsonObj) shibeJsonObj = { amount: 0 };
+        shibeJsonObj.amount++;
+        if (!shibeJsonObj.rarity) shibeJsonObj.rarity = "Not set yet";
+        
+        //Javascript can't do pass by reference, so when I set shibeJsonObj = shibeDataJson[selectedShibe], it gained all of the values of shibeDataJson[selectedShibe],
+        //but changing the values in shibeJsonObj does not affect shibeDataJson[selectedShibe]. This is a shame because shibeJsonObj is much more readable (particularly
+        //because it's used a lot further on), so in order to maintain that clean aspect, I have to manually set shibeDataJson[selectedShibe] = shibeJsonObj, which in
+        //a sense lets the original json file know that its been updated.
+        shibeDataJson[selectedShibe] = shibeJsonObj;
+        fs.writeFileSync(dataLoc, JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
 
-        if (!shibeDataJson[shibes[randomIndex]].rarity) shibeDataJson[shibes[randomIndex]].rarity = "Not set yet";
-
-        fs.writeFileSync("./data/shibeData.json", JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
-
-        let stats = fs.statSync("./graphics/shibes/" + shibes[randomIndex]);
+        let stats = fs.statSync(`${photoLoc + selectedShibe}`);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
         if (fileSize > 8) {
@@ -32,17 +41,17 @@ module.exports.run = async (bot, message, args) => {
 
         let newEmbed = new Discord.RichEmbed();
 
-        if (shibes[randomIndex] == "komugi shibe 1.jpg") {
-            //message.channel.send(`**Holy shit, you unboxed '${shibes[randomIndex]}'!! There was a 1/${shibes.length} chance of that happening!**\n${sizeString}`);
-            newEmbed.addField(`Holy shit, a  ${shibes[randomIndex]}!!`, `There was a 1/${shibes.length} chance of that happening!`);
+        if (selectedShibe == "komugi shibe 1.jpg") {
+            //message.channel.send(`**Holy shit, you unboxed '${selectedShibe}'!! There was a 1/${shibes.length} chance of that happening!**\n${sizeString}`);
+            newEmbed.addField(`Holy shit, a ${selectedShibe}!!`, `There was a 1/${shibes.length} chance of that happening!`);
             newEmbed.setColor("#ff0000");
         }
         else {
-            newEmbed.addField(`${shibes[randomIndex]}`, `Amount unboxed: ${shibeDataJson[shibes[randomIndex]].amount}`);
-            newEmbed.addField(`Rarity`, `${shibeDataJson[shibes[randomIndex]].rarity}`);
+            newEmbed.addField(`${selectedShibe}`, `Amount unboxed: ${shibeJsonObj.amount}`);
+            newEmbed.addField(`Rarity`, `${shibeJsonObj.rarity}`);
             newEmbed.addField(`Size`, `${fileSize}mb`);
 
-            switch(shibeDataJson[shibes[randomIndex]].rarity) {
+            switch(shibeJsonObj.rarity) {
                 case "Common":
                     newEmbed.setColor("#bcbcbc");
                     break;
@@ -66,7 +75,7 @@ module.exports.run = async (bot, message, args) => {
         }
 
         message.channel.send(newEmbed);
-        message.channel.send({ files: ["./graphics/shibes/" + shibes[randomIndex] ]})
+        message.channel.send({ files: [`${photoLoc + selectedShibe}`] })
             .then(function (msg) {
                 const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 15000 });
                 collector.on('collect', message => {
@@ -76,27 +85,29 @@ module.exports.run = async (bot, message, args) => {
 
                         switch (msg) {
                             case "common":
-                                shibeDataJson[shibes[randomIndex]].rarity = "Common";
+                                shibeJsonObj.rarity = "Common";
                                 break;
 
                             case "uncommon":
-                                shibeDataJson[shibes[randomIndex]].rarity = "Uncommon";
+                                shibeJsonObj.rarity = "Uncommon";
                                 break;
                             
                             case "rare":
-                                shibeDataJson[shibes[randomIndex]].rarity = "Rare";
+                                shibeJsonObj.rarity = "Rare";
                                 break;
 
                             case "epic":
-                                shibeDataJson[shibes[randomIndex]].rarity = "Epic";
+                                shibeJsonObj.rarity = "Epic";
                                 break;
                             
                             case "legendary":
-                                shibeDataJson[shibes[randomIndex]].rarity = "Legendary";
+                                shibeJsonObj.rarity = "Legendary";
                                 break;
                         }
+                        
+                        shibeDataJson[selectedShibe] = shibeJsonObj;
+                        fs.writeFileSync(dataLoc, JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
 
-                        fs.writeFileSync("./data/shibeData.json", JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
                         message.react("✅");
                         utilitiesModule.incrementUserDataValue(message.author, "Billie-Bucks", 1);
                         collector.stop();

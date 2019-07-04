@@ -2,21 +2,30 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const utilitiesModule = require('../utilities');
 
+const photoLoc = "./graphics/fumikas/";
+const dataLoc = "./data/image_data/fumikaData.json";
+
+
+
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile("./data/fumikaData.json", function (fumikaDataJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (fumikaDataJson) {
 
         let fumikas = [];
-        fs.readdirSync("./graphics/fumikas/").forEach(file => {
+        fs.readdirSync(photoLoc).forEach(file => {
             fumikas.push(file);
         });
 
-        let randomIndex = Math.floor(Math.random() * fumikas.length);
+        let selectedFumika = fumikas[Math.floor(Math.random() * fumikas.length)];
+        let fumikaJsonObj = fumikaDataJson[selectedFumika];
 
-        if (!fumikaDataJson[fumikas[randomIndex]]) fumikaDataJson[fumikas[randomIndex]] = { amount: 0 };
-        fumikaDataJson[fumikas[randomIndex]].amount++;
-        fs.writeFileSync("./data/fumikaData.json", JSON.stringify(fumikaDataJson), function(err) {if (err) return err;});
+        //Setting json stuff
+        if (!fumikaJsonObj) fumikaJsonObj = { amount: 0 };
+        fumikaJsonObj.amount++;
 
-        let stats = fs.statSync("./graphics/fumikas/" + fumikas[randomIndex]);
+        fumikaDataJson[selectedFumika] = fumikaJsonObj; //see shibe.js to know why I'm doing this
+        fs.writeFileSync(dataLoc, JSON.stringify(fumikaDataJson), function(err) {if (err) return err;});
+
+        let stats = fs.statSync(`${photoLoc + selectedFumika}`);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
         if (fileSize > 8) {
@@ -26,11 +35,11 @@ module.exports.run = async (bot, message, args) => {
 
         let newEmbed = new Discord.RichEmbed();
 
-        newEmbed.addField(`${fumikas[randomIndex]}`, `Amount unboxed: ${fumikaDataJson[fumikas[randomIndex]].amount}`);
+        newEmbed.addField(`${selectedFumika}`, `Amount unboxed: ${fumikaJsonObj.amount}`);
         newEmbed.addField(`Size`, `${fileSize}mb`);
 
         message.channel.send(newEmbed);
-        message.channel.send({ files: ["./graphics/fumikas/" + fumikas[randomIndex] ]});
+        message.channel.send({ files: [`${photoLoc + selectedFumika}`] });
 
     });
 }

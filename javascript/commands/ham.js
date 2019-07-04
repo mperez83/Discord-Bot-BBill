@@ -2,21 +2,30 @@ const Discord = require("discord.js");
 const fs = require("fs");
 const utilitiesModule = require('../utilities');
 
+const photoLoc = "./graphics/hams/";
+const dataLoc = "./data/image_data/hamData.json";
+
+
+
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile("./data/hamData.json", function (hamDataJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (hamDataJson) {
 
         let hams = [];
-        fs.readdirSync("./graphics/hams/").forEach(file => {
+        fs.readdirSync(photoLoc).forEach(file => {
             hams.push(file);
         });
 
-        let randomIndex = Math.floor(Math.random() * hams.length);
+        let selectedHam = hams[Math.floor(Math.random() * hams.length)]
+        let hamJsonObj = hamDataJson[selectedHam];
 
-        if (!hamDataJson[hams[randomIndex]]) hamDataJson[hams[randomIndex]] = { amount: 0 };
-        hamDataJson[hams[randomIndex]].amount++;
-        fs.writeFileSync("./data/hamData.json", JSON.stringify(hamDataJson), function(err) {if (err) return err;});
+        //Setting json stuff
+        if (!hamJsonObj) hamJsonObj = { amount: 0 };
+        hamJsonObj.amount++;
 
-        let stats = fs.statSync("./graphics/hams/" + hams[randomIndex]);
+        hamDataJson[selectedHam] = hamJsonObj;  //see shibe.js to know why I'm doing this
+        fs.writeFileSync(dataLoc, JSON.stringify(hamDataJson), function(err) {if (err) return err;});
+
+        let stats = fs.statSync(`${photoLoc + selectedHam}`);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
         if (fileSize > 8) {
@@ -26,11 +35,11 @@ module.exports.run = async (bot, message, args) => {
 
         let newEmbed = new Discord.RichEmbed();
 
-        newEmbed.addField(`${hams[randomIndex]}`, `Amount unboxed: ${hamDataJson[hams[randomIndex]].amount}`);
+        newEmbed.addField(`${selectedHam}`, `Amount unboxed: ${hamJsonObj.amount}`);
         newEmbed.addField(`Size`, `${fileSize}mb`);
 
         message.channel.send(newEmbed);
-        message.channel.send({ files: ["./graphics/hams/" + hams[randomIndex] ]});
+        message.channel.send({ files: [`${photoLoc + selectedHam}`] });
 
     });
 }

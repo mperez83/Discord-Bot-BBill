@@ -1,5 +1,6 @@
 const fs = require("fs");
 const utilitiesModule = require('../utilities');
+const dataLoc = "./data/general_data/serverData.json";
 
 module.exports.run = async (bot, message, args) => {
     if (message.channel.type == "dm") {
@@ -7,7 +8,7 @@ module.exports.run = async (bot, message, args) => {
         return;
     }
 
-    utilitiesModule.readJSONFile("./data/serverData.json", function (serverDataJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (serverDataJson) {
 
         //View topic
         if (args.length == 0) {
@@ -44,7 +45,7 @@ module.exports.run = async (bot, message, args) => {
 
             serverDataJson[message.guild.id].topic.topicCreator = message.author.username;
 
-            fs.writeFile("./data/serverData.json", JSON.stringify(serverDataJson), function(err) {if (err) return err;});
+            fs.writeFile(dataLoc, JSON.stringify(serverDataJson), function(err) {if (err) return err;});
         }
 
     });

@@ -1,6 +1,8 @@
 const fs = require("fs");
 const utilitiesModule = require('../utilities');
 
+
+
 module.exports.run = async (bot, message, args) => {
     var inputAudioName = args.join(" ");
 
@@ -13,7 +15,7 @@ module.exports.run = async (bot, message, args) => {
     //If no name is entered, set the name of the audio file to some random filename from the audio folder
     if (inputAudioName.length == 0) {
         if (audioFiles.length == 0) {
-            message.channel.send("There are no audio files to play yet, " + utilitiesModule.getRandomNameInsult());
+            message.channel.send(`There are no audio files to play yet, ${utilitiesModule.getRandomNameInsult()}`);
             return;
         }
         else {
@@ -33,7 +35,7 @@ module.exports.run = async (bot, message, args) => {
         }
 
         voiceChannel.join().then(connection => {
-            connection.playFile("./audio/" + inputAudioName + ".mp3");
+            connection.playFile(`./audio/${inputAudioName}.mp3`);
         })
             .catch(console.error);
     });

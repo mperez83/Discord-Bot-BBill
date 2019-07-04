@@ -1,7 +1,7 @@
 const fs = require("fs");
 
 module.exports.getRandomNameInsult = function() {
-    let nameInsults = fs.readFileSync("./data/list of names to insult people with.txt").toString().split("\n");
+    let nameInsults = fs.readFileSync("./data/general_data/list_of_names_to_insult_people_with.txt").toString().split("\n");
     for (let i = 0; i < nameInsults.length; i++) nameInsults[i] = nameInsults[i].substring(1);
     return nameInsults[Math.floor(Math.random() * nameInsults.length)];
 }
@@ -54,11 +54,11 @@ module.exports.checkNested = function(obj /*, level1, level2, ... levelN*/) {
 }
 
 module.exports.incrementUserDataValue = function(user, valueName, amount) {
-    temporaryReadJSONFile("./data/userData.json", function (userDataJson) {
+    temporaryReadJSONFile("./data/general_data/userData.json", function (userDataJson) {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
         if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
         userDataJson[user.id][valueName] += amount;
-        fs.writeFileSync("./data/userData.json", JSON.stringify(userDataJson));
+        fs.writeFileSync("./data/general_data/userData.json", JSON.stringify(userDataJson));
     });
 }
 
@@ -163,125 +163,3 @@ module.exports.removeElementsFromArray = function(arrayToRemoveStuffFrom, stuffT
     }
 
 }
-
-
-
-/*module.exports.checkAndUpdateIndexList = function(bot, indexListJson) {
-    bot.guilds.array().forEach(function(guild) {
-        if (!guild.channels.find("name", "big-bills-bot-chamber")) guild.createChannel("big-bills-bot-chamber", "text", [{
-            id: guild.id,
-            deny: ['SEND_MESSAGES']
-          }]).then(chamberChannel => updateIndexList(chamberChannel, indexListJson));
-        else updateIndexList(guild.channels.find("name", "big-bills-bot-chamber"), indexListJson);
-    });
-}
-function updateIndexList(chamberChannel, indexListJson) {
-    chamberChannel.fetchMessages().then(function (messages) {
-
-        //Concatonate the json of indexes into a single string
-        let indexListString = "**- - - INDEX LIST - - -**\n\n";
-        let count = 1;
-        for (let key in indexListJson) {
-            if (indexListJson.hasOwnProperty(key)) {
-                indexListString = indexListString.concat("**" + count + ":** " + key + "\n");
-                count++;
-            }
-        }
-
-        msgArray = messages.array();
-        let foundMsg = false;
-        let msgIndex = 0;
-
-        //Check if the INDEX LIST message is in this channel
-        for (let i = 0; i < msgArray.length; i++) {
-            if (msgArray[i].content.includes("**- - - INDEX LIST - - -**") && msgArray[i].author.bot) {
-                foundMsg = true;
-                msgIndex = i;
-                break;
-            }
-        }
-
-        if (foundMsg) msgArray[msgIndex].edit(indexListString);
-        else chamberChannel.send(indexListString);
-    }).catch(console.error);
-}*/
-
-
-
-/*module.exports.checkAndUpdatePowerRankingList = function(bot, userDataJson) {
-    bot.guilds.array().forEach(function(guild) {
-        if (!guild.channels.find("name", "big-bills-bot-chamber")) guild.createChannel("big-bills-bot-chamber", "text", [{
-            id: guild.id,
-            deny: ['SEND_MESSAGES']
-          }]).then(chamberChannel => updatePowerRankingList(chamberChannel, userDataJson));
-        else updatePowerRankingList(guild.channels.find("name", "big-bills-bot-chamber"), userDataJson);
-    });
-}
-function updatePowerRankingList(chamberChannel, userDataJson) {
-    chamberChannel.fetchMessages().then(function (messages) {
-
-        //Sort users in order of power and list them
-        let powerRankingsString = "**- - - POWER RANKINGS - - -**\n\n";
-        let userArray = [];
-        for (let userID in userDataJson) {  //Get all users that have the "power" property
-            if (userDataJson[userID].hasOwnProperty("power")) {
-                userArray.push(userDataJson[userID]);
-            }
-        }
-        userArray.sort(function(a,b){ return a.power - b.power });  //Sort them by their power property, from lowest to highest
-        userArray.reverse();
-        for (let i = 0; i < userArray.length; i++) {
-            powerRankingsString = powerRankingsString.concat("**" + userArray[i].username + ":** " + userArray[i].power + "\n");
-        }
-
-        //Check if the POWER RANKINGS message is in this channel
-        msgArray = messages.array();
-        for (let i = 0; i < msgArray.length; i++) {
-            if (msgArray[i].content.includes("**- - - POWER RANKINGS - - -**") && msgArray[i].author.bot) {
-                msgArray[i].edit(powerRankingsString);
-                return;
-            }
-        }
-        chamberChannel.send(powerRankingsString);   //If we didn't find the message, just send a new one
-    }).catch(console.error);
-}*/
-
-
-
-/*module.exports.checkAndUpdateAudioList = function(bot, audioNamesList) {
-    bot.guilds.array().forEach(function(guild) {
-        if (!guild.channels.find("name", "big-bills-bot-chamber")) guild.createChannel("big-bills-bot-chamber", "text", [{
-            id: guild.id,
-            deny: ['SEND_MESSAGES']
-          }]).then(chamberChannel => updateAudioList(chamberChannel, audioNamesList));
-        else updateAudioList(guild.channels.find("name", "big-bills-bot-chamber"), audioNamesList);
-    });
-}
-function updateAudioList(chamberChannel, audioNamesList) {
-    chamberChannel.fetchMessages().then(function (messages) {
-
-        //Concatonate the list of audio names into a single string
-        let audioNamesListString = "**- - - AUDIO LIST - - -**\n\n";
-        let count = 1;
-        for (let i = 0; i < audioNamesList.length; i++) {
-            audioNamesListString = audioNamesListString.concat("**" + count + ":** " + audioNamesList[i] + "\n");
-            count++;
-        }
-
-        msgArray = messages.array();
-        let foundMsg = false;
-        let msgIndex = 0;
-
-        //Check if the AUDIO LIST message is in this channel
-        for (let i = 0; i < msgArray.length; i++) {
-            if (msgArray[i].content.includes("**- - - AUDIO LIST - - -**") && msgArray[i].author.bot) {
-                foundMsg = true;
-                msgIndex = i;
-                break;
-            }
-        }
-
-        if (foundMsg) msgArray[msgIndex].edit(audioNamesListString);
-        else chamberChannel.send(audioNamesListString);
-    }).catch(console.error);
-}*/

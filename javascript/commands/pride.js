@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 const utilitiesModule = require("../utilities");
+
+const photoLoc = "./graphics/pride_flags/";
 const dataLoc = "./data/general_data/prideFlagData.json";
 
 //Primary sources for color descriptions:
@@ -12,14 +14,13 @@ module.exports.run = async (bot, message, args) => {
     utilitiesModule.readJSONFile(dataLoc, function (prideFlagDataJson) {
 
         let flags = [];
-        fs.readdirSync("./graphics/pride flags/").forEach(file => {
+        fs.readdirSync(photoLoc).forEach(file => {
             flags.push(file);
         });
 
-        let randomIndex = Math.floor(Math.random() * flags.length);
+        let selectedFlag = flags[Math.floor(Math.random() * flags.length)];
 
-        let selectedFlag = `./graphics/pride flags/${flags[randomIndex]}`;
-        let stats = fs.statSync(selectedFlag);
+        let stats = fs.statSync(`${photoLoc + selectedFlag}`);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
         if (fileSize > 8) {
@@ -27,9 +28,14 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
-        let fileName = flags[randomIndex].replace(/\.[^/.]+$/, "");
-
+        let fileName = selectedFlag.replace(/\.[^/.]+$/, "");
         let flagObject = prideFlagDataJson[fileName];
+        
+        if (!flagObject) {
+            message.channel.send(`Tell michael that "${fileName}" isn't in the pride flag database`);
+            return;
+        }
+
         if (!flagObject.peopleCount) flagObject.peopleCount = 0;
         flagObject.peopleCount++;
 
@@ -38,7 +44,7 @@ module.exports.run = async (bot, message, args) => {
             .addField("Description", flagObject.description)
             .addField("Colors", flagObject.colors)
             .addField(`Number of ${fileName} people`, flagObject.peopleCount)
-            .attachFile(selectedFlag);
+            .attachFile(`${photoLoc + selectedFlag}`);
 
         message.channel.send(newEmbed);
 

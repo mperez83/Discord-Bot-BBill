@@ -1,5 +1,5 @@
 const utilitiesModule = require('../utilities');
-
+const dataLoc = "./data/general_data/userData.json";
 var unnecessaryStats = ["nextValidPowerCheck", "username"];
 
 
@@ -49,7 +49,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    utilitiesModule.readJSONFile("./data/userData.json", function (userDataJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (userDataJson) {
 
         if (!userDataJson[userToIdentify.id]) userDataJson[userToIdentify.id] = {username: userToIdentify.username};
 

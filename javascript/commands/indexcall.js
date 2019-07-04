@@ -1,7 +1,9 @@
 const Discord = require("discord.js");
 const fs = require("fs");
-const utilitiesModule = require('../utilities');
+const utilitiesModule = require("../utilities");
 const dataLoc = "./data/general_data/indexImageData.json";
+
+
 
 module.exports.run = async (bot, message, args) => {
     utilitiesModule.readJSONFile(dataLoc, function (indexDataJson) {

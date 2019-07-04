@@ -1,8 +1,17 @@
 const fs = require("fs");
 const utilitiesModule = require('../utilities');
+const dataLoc = "./data/general_data/userData.json";
+
+
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile("./data/userData.json", function (userDataJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (userDataJson) {
+
+        //If the user tried to supply some kind of argument, cut that shit right off
+        if (args.length > 0) {
+            message.channel.send(`do not tarnish your presige call with arguments, ${utilitiesModule.getRandomNameInsult()}`);
+            return;
+        }
 
         if (!userDataJson[message.author.id]) userDataJson[message.author.id] = {username: message.author.username};
 
@@ -28,12 +37,12 @@ module.exports.run = async (bot, message, args) => {
             }
 
             utilitiesModule.incrementUserDataValue(message.author, "prestigeLevel", 1);
-            fs.writeFileSync("./data/userData.json", JSON.stringify(userDataJson));
-            message.reply("you're now 1 better than everyone else");
+            fs.writeFileSync(dataLoc, JSON.stringify(userDataJson));
+            message.reply(`you're now 1 better than everyone else`);
             return;
         }
         else {
-            message.reply("you are not eligible to prestige");
+            message.reply(`you are not eligible to prestige, ${utilitiesModule.getRandomNameInsult()}`);
             return;
         }
 

@@ -4,7 +4,7 @@ data/*
 !data/list of names to insult people with.txt
 !data/general_data/
 data/general_data/*
-!data/general_data/prideFlagData.json
+#!data/general_data/prideFlagData.json
 
 graphics/resultImage.png
 graphics/gotcha.png

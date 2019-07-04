@@ -1,10 +1,13 @@
 const utilitiesModule = require('../utilities');
+const dataLoc = "./data/general_data/userData.json";
+
+
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile("./data/userData.json", function (userDataJson) {
+    utilitiesModule.readJSONFile(dataLoc, function (userDataJson) {
 
         if (!utilitiesModule.checkNested(userDataJson, message.author.id, "power"))
-            message.channel.send("You have to run !power first, " + utilitiesModule.getRandomNameInsult());
+            message.channel.send(`You have to run !power first, ${utilitiesModule.getRandomNameInsult()}`);
         else {
             let currentDate = new Date();
             let checkDateStr = JSON.parse(userDataJson[message.author.id].nextValidPowerCheck);

@@ -4,11 +4,12 @@ const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 
 const fs = require("fs");
-const config = require("../data/config.json");
+const config = require("../data/general_data/config.json");
 
-const cleverbillModule = require("./string parsing/cleverbill");
-const informalCommandsModule = require("./string parsing/string_parse");
-const messageEvents = require("./joke modules/messageEvents");
+const cleverbillModule = require("./string_parsing/cleverbill");
+const informalCommandsModule = require("./string_parsing/string_parse");
+const messageEvents = require("./joke_modules/messageEvents");
+const utilitiesModule = require("./utilities");
 
 
 
@@ -34,7 +35,7 @@ fs.readdir("./javascript/commands/", (err, files) => {
 });
 
 //Loading magik commands
-fs.readdir("./javascript/magik commands/", (err, files) => {
+fs.readdir("./javascript/magik_commands/", (err, files) => {
     if (err) console.error(err);
 
     let jsFiles = files.filter(f => f.split(".").pop() === "js");
@@ -46,7 +47,7 @@ fs.readdir("./javascript/magik commands/", (err, files) => {
     console.log(`Loading ${jsFiles.length} magik commands!`);
 
     jsFiles.forEach((f, i) => {
-        let props = require(`./magik commands/${f}`);
+        let props = require(`./magik_commands/${f}`);
         console.log(`${i + 1}: ${f} loaded!`);
         bot.commands.set(props.help.name, props);
     });
@@ -55,7 +56,7 @@ fs.readdir("./javascript/magik commands/", (err, files) => {
 });
 
 //Loading pokemon commands
-fs.readdir("./javascript/pokemon commands/", (err, files) => {
+fs.readdir("./javascript/pokemon_commands/", (err, files) => {
     if (err) console.error(err);
 
     let jsFiles = files.filter(f => f.split(".").pop() === "js");
@@ -67,7 +68,7 @@ fs.readdir("./javascript/pokemon commands/", (err, files) => {
     console.log(`Loading ${jsFiles.length} pokemon commands!`);
 
     jsFiles.forEach((f, i) => {
-        let props = require(`./pokemon commands/${f}`);
+        let props = require(`./pokemon_commands/${f}`);
         console.log(`${i + 1}: ${f} loaded!`);
         bot.commands.set(props.help.name, props);
     });
@@ -76,7 +77,7 @@ fs.readdir("./javascript/pokemon commands/", (err, files) => {
 });
 
 //Loading admin commands
-fs.readdir("./javascript/admin commands/", (err, files) => {
+fs.readdir("./javascript/admin_commands/", (err, files) => {
     if (err) console.error(err);
 
     let jsFiles = files.filter(f => f.split(".").pop() === "js");
@@ -88,7 +89,7 @@ fs.readdir("./javascript/admin commands/", (err, files) => {
     console.log(`Loading ${jsFiles.length} admin commands!`);
 
     jsFiles.forEach((f, i) => {
-        let props = require(`./admin commands/${f}`);
+        let props = require(`./admin_commands/${f}`);
         console.log(`${i + 1}: ${f} loaded!`);
         bot.commands.set(props.help.name, props);
     });
@@ -104,12 +105,12 @@ bot.on("ready", () => {
     if (!config.id) {
         console.log("Bot ID doesn't exist in config file, adding it now");
         config.id = bot.user.id;
-        fs.writeFileSync("./data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
+        fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
     }
     else if (config.id != bot.user.id) {
         console.log("Bot ID doesn't match one listed in config file, updating it now");
         config.id = bot.user.id;
-        fs.writeFileSync("./data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
+        fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
     }
 });
 
@@ -120,6 +121,15 @@ bot.on("message", (message) => {
 
     //Don't even consider messages from bbill
     if (message.author.bot) return;
+
+    //Check if bbill is in construction mode
+    if (config.construction_mode == "true") {
+        if (message.author.id != "205106238697111552") {
+            if (message.content.startsWith(config.prefix))
+                message.channel.send(`I'm currently in construction_mode, ${utilitiesModule.getRandomNameInsult()}`);
+            return;
+        }
+    }
 
     //Events checking
     messageEvents.checkForRandomEvents(message);
@@ -139,7 +149,7 @@ bot.on("message", (message) => {
     let args = messageArray.slice(1);   //Slice out the command, leaving only the args
 
     if (!command.startsWith(config.prefix)) return;
-    command = command.slice(config.prefix.length);  //Slice off command prefix !
+    command = command.slice(config.prefix.length);  //Slice off command prefix
 
     let cmd = bot.commands.get(command);
     if (cmd) cmd.run(bot, message, args);
