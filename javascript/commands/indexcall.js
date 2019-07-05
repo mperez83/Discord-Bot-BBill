@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
             }
 
             if (nameList.length == 0) {
-                message.channel.send(`There are no indices in the list yet, ${utilitiesModule.getRandomNameInsult()}`);
+                message.channel.send(`There are no indices in the list yet, ${utilitiesModule.getRandomNameInsult(message.author)}`);
                 return;
             }
             else {
@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args) => {
             inputIndexCall = args.join(" ");
 
             if (!indexDataJson[inputIndexCall]) {
-                message.channel.send(`There is no image indexed with the name "${inputIndexCall}", ${utilitiesModule.getRandomNameInsult()}`);
+                message.channel.send(`There is no image indexed with the name "${inputIndexCall}", ${utilitiesModule.getRandomNameInsult(message.author)}`);
                 return;
             }
         }

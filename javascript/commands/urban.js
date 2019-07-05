@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args) => {
     if (args.length == 0) {
         urban.random((error, entry) => {
             if (error) {
-                message.channel.send(`Something went wrong, ${utilitiesModule.getRandomNameInsult}`);
+                message.channel.send(`Something went wrong, ${utilitiesModule.getRandomNameInsult(message.author)}`);
             }
             else {
                 text = `**Word**: ${entry.word} (<${entry.permalink}>)
@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
     else {
         urban.term(args, (error, entries, tags, sounds) => {
             if (error) {
-                message.channel.send(`No match found for '${args}', ${utilitiesModule.getRandomNameInsult()}`);
+                message.channel.send(`No match found for '${args}', ${utilitiesModule.getRandomNameInsult(message.author)}`);
             }
             else {
                 text = `**Word**: ${entries[0].word} (<${entries[0].permalink}>)

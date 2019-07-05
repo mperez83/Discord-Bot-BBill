@@ -9,7 +9,7 @@ const config = require("../../data/general_data/config.json");
 module.exports.run = async (bot, message, args) => {
 
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult()}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message.author)}`);
         return;
     }
 
@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args) => {
     //If the user supplied a strength level for the singe, do some checks
     else if (args.length == 1) {
         if (isNaN(args[0])) {
-            message.channel.send(`That's not a fucking number, ${utilitiesModule.getRandomNameInsult()}`);
+            message.channel.send(`That's not a fucking number, ${utilitiesModule.getRandomNameInsult(message.author)}`);
             return;
         }
         else {
@@ -33,7 +33,7 @@ module.exports.run = async (bot, message, args) => {
 
     //If the user supplied more than one parameter, return
     else {
-        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult()}`);
+        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult(message.author)}`);
         return;
     }
 
@@ -67,7 +67,7 @@ module.exports.run = async (bot, message, args) => {
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
                     if (fileSize > 2) {
-                        message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult()}`);
+                        message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult(message.author)}`);
                         return;
                     }
                     else {
@@ -83,7 +83,7 @@ module.exports.run = async (bot, message, args) => {
 
                                     //Return if singe amount is higher than the max singe amount
                                     if (singeAmount > maxSingeAmount) {
-                                        message.channel.send(`Max singe amount for this image is ${maxSingeAmount}, ${utilitiesModule.getRandomNameInsult()}\n(max singe amount for any image is half the smaller of the two dimensions, with a ceiling of 99)`);
+                                        message.channel.send(`Max singe amount for this image is ${maxSingeAmount}, ${utilitiesModule.getRandomNameInsult(message.author)}\n(max singe amount for any image is half the smaller of the two dimensions, with a ceiling of 99)`);
                                         return;
                                     }
 

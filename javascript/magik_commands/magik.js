@@ -11,7 +11,7 @@ const config = require("../../data/general_data/config.json");
 module.exports.run = async (bot, message, args) => {
 
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult()}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message.author)}`);
         return;
     }
 
@@ -25,16 +25,16 @@ module.exports.run = async (bot, message, args) => {
     //If the user supplied a strength level for the magik, do tons of bullshit checking
     else if (args.length == 1) {
         if (isNaN(args[0])) {
-            message.channel.send(`That's not a fucking number, ${utilitiesModule.getRandomNameInsult()}`);
+            message.channel.send(`That's not a fucking number, ${utilitiesModule.getRandomNameInsult(message.author)}`);
             return;
         }
         else {
             if (args[0] < -99) {
-                message.channel.send(`I'm not letting you go lower than -99, ${utilitiesModule.getRandomNameInsult()}`);
+                message.channel.send(`I'm not letting you go lower than -99, ${utilitiesModule.getRandomNameInsult(message.author)}`);
                 return;
             }
             else if (args[0] > 99) {
-                message.channel.send(`I'm not letting you go higher than 99, ${utilitiesModule.getRandomNameInsult()}`);
+                message.channel.send(`I'm not letting you go higher than 99, ${utilitiesModule.getRandomNameInsult(message.author)}`);
                 return;
             }
             magikAmount = args[0];
@@ -43,7 +43,7 @@ module.exports.run = async (bot, message, args) => {
 
     //If the user supplied more than one parameter, return
     else {
-        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult()}`);
+        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult(message.author)}`);
         return;
     }
 
@@ -69,7 +69,7 @@ module.exports.run = async (bot, message, args) => {
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
     
                     if (fileSize > 2) {
-                        message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult()}`);
+                        message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult(message.author)}`);
                         return;
                     }
                     else {

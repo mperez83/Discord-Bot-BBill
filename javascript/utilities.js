@@ -1,6 +1,9 @@
 const fs = require("fs");
 
-module.exports.getRandomNameInsult = function() {
+
+
+module.exports.getRandomNameInsult = function(user) {
+    this.incrementUserDataValue(user, "socialDeviancy", 1);
     let nameInsults = fs.readFileSync("./data/general_data/list_of_names_to_insult_people_with.txt").toString().split("\n");
     for (let i = 0; i < nameInsults.length; i++) nameInsults[i] = nameInsults[i].substring(1);
     return nameInsults[Math.floor(Math.random() * nameInsults.length)];
@@ -23,44 +26,19 @@ module.exports.readJSONFile = function(fileDir, callback) {
         }
     });
 }
-//This is just because incrementUserDataValue calls readJSONFile, but I don't know how to call a module.exports function in the same file
-function temporaryReadJSONFile(fileDir, callback) {
-    fs.readFile(fileDir, function readFileCallback(err, data) {
-        if (err) {
-            //console.error(err);
-            let tempData = {}
-            fs.writeFile(fileDir, JSON.stringify(tempData), function (err) {
-                if (err) throw err;
-                callback(tempData);
-            });
-        }
-        else {
-            callback(JSON.parse(data, "utf8"));
-        }
-    });
-}
 
-//checkNested checks a given json object for if it has a specific property
-//I don't know why this shit works, I just found it online lmao
-//This might not even be needed (see !index for where it could be used but isn't)
-module.exports.checkNested = function(obj /*, level1, level2, ... levelN*/) {
-    for (var i = 1; i < arguments.length; i++) {
-        if (!obj.hasOwnProperty(arguments[i])) {
-            return false;
-        }
-        obj = obj[arguments[i]];
-    }
-    return true;
-}
+
 
 module.exports.incrementUserDataValue = function(user, valueName, amount) {
-    temporaryReadJSONFile("./data/general_data/userData.json", function (userDataJson) {
+    this.readJSONFile("./data/general_data/userData.json", function (userDataJson) {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
         if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
         userDataJson[user.id][valueName] += amount;
         fs.writeFileSync("./data/general_data/userData.json", JSON.stringify(userDataJson));
     });
 }
+
+
 
 module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
     let powerfulRole = guild.roles.find("name", "Powerful");
@@ -76,6 +54,8 @@ module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
         guildMember.addRole(powerfulRole);
     }
 }
+
+
 
 module.exports.getMostRecentImageURL = function(message) {
 
@@ -118,11 +98,11 @@ module.exports.getMostRecentImageURL = function(message) {
         let errorMessage;
 
         if (!validURL) {
-            errorMessage = `I didn't find any messages containing images whatsoever in the last ten messages, ${this.getRandomNameInsult()}`;
+            errorMessage = `I didn't find any messages containing images whatsoever in the last ten messages, ${this.getRandomNameInsult(message.author)}`;
         }
 
         else if (validURL.match(/\.(jpeg|jpg|gif|png)(\?v=1)*$/) == null) {
-            errorMessage = `The image url I found doesn't have a valid file extension. ${this.getRandomNameInsult()}`;
+            errorMessage = `The image url I found doesn't have a valid file extension. ${this.getRandomNameInsult(message.author)}`;
             validURL = null;
         }
 
@@ -133,6 +113,8 @@ module.exports.getMostRecentImageURL = function(message) {
     .catch(console.error);
 
 }
+
+
 
 module.exports.sendGlobalMessage = function(bot, msg) {
     let guilds = bot.guilds;
@@ -151,6 +133,8 @@ module.exports.sendGlobalMessage = function(bot, msg) {
         }
     }
 }
+
+
 
 module.exports.removeElementsFromArray = function(arrayToRemoveStuffFrom, stuffToRemove) {
 

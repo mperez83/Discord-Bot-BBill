@@ -1,6 +1,8 @@
 const garfield = require("garfield");
 const utilitiesModule = require('../utilities');
 
+
+
 module.exports.run = async (bot, message, args) => {
     let url = garfield.random();
     message.channel.send(url);

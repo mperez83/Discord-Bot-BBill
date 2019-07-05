@@ -37,7 +37,22 @@ module.exports.run = async (bot, message, args) => {
         }
 
         if (!flagObject.peopleCount) flagObject.peopleCount = 0;
-        flagObject.peopleCount++;
+
+        //Handle peopleCount in various ways
+        switch (flagObject.peopleCount) {
+            case "completely normal photo of ross":
+            case "gamer bernie sanders":
+                flagObject.peopleCount = 1;
+                break;
+
+            case "shit eating brain fungus":
+                flagObject.peopleCount = 4;
+                break;
+            
+            default:
+                flagObject.peopleCount++;
+                break;
+        }
 
         let newEmbed = new Discord.RichEmbed()
             .setTitle(`${fileName}`)

@@ -2,9 +2,11 @@ const fs = require("fs");
 const utilitiesModule = require('../utilities');
 const dataLoc = "./data/general_data/serverData.json";
 
+
+
 module.exports.run = async (bot, message, args) => {
     if (message.channel.type == "dm") {
-        message.channel.send(`you can't use this in a dm, ${utilitiesModule.getRandomNameInsult()}`);
+        message.channel.send(`you can't use this in a dm, ${utilitiesModule.getRandomNameInsult(message.author)}`);
         return;
     }
 

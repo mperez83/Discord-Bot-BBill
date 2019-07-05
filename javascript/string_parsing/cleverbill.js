@@ -12,7 +12,7 @@ module.exports = {
             userMsg = userMsg.replace("<@315755145365553155>", "");
 
             if (!userMsg) { //If the user just @'s Big Bill with no message
-                message.channel.send("What? " + utilitiesModule.getRandomNameInsult());
+                message.channel.send("What? " + utilitiesModule.getRandomNameInsult(message.author));
                 return true;
             }
 
@@ -60,7 +60,7 @@ module.exports = {
 
             switch (msgType) {
                 case 0:
-                    message.channel.send("You have to ask something, " + utilitiesModule.getRandomNameInsult());
+                    message.channel.send("You have to ask something, " + utilitiesModule.getRandomNameInsult(message.author));
                     break;
 
                 case 1:

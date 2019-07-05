@@ -10,7 +10,7 @@ module.exports.run = async (bot, message, args) => {
 
     //More than one parameter = abort
     if (args.length > 1) {
-        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult()}`);
+        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult(message.author)}`);
         return;
     }
 
@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args) => {
 
         //If the argument provided by the user isn't a mention
         else {
-            message.channel.send(`You have to @ someone if you want their stats, ${utilitiesModule.getRandomNameInsult()}`);
+            message.channel.send(`You have to @ someone if you want their stats, ${utilitiesModule.getRandomNameInsult(message.author)}`);
             return;
         }
 

@@ -7,7 +7,7 @@ const config = require("../../data/general_data/config.json");
 module.exports.run = async (bot, message, args) => {
 
     if (args.length > 0) {
-        message.channel.send(`doge doesn't take parameters, ${utilitiesModule.getRandomNameInsult()}`);
+        message.channel.send(`doge doesn't take parameters, ${utilitiesModule.getRandomNameInsult(message.author)}`);
         return;
     }
 

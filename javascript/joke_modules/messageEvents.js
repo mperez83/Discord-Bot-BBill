@@ -1,6 +1,8 @@
 const config = require("../../data/general_data/config.json");
 const utilitiesModule = require('../utilities');
 
+
+
 var emojiSampling = [
     '😊', '😬', '😁', '😂', '😃', '😄', '😅', '😆', '😇', '😉',
     '😊', '🙂', '🙃', '☺', '😋', '😌', '😍', '😘', '😗', '😙',
