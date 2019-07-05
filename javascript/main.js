@@ -155,7 +155,15 @@ bot.on("message", (message) => {
     if (command.match(/^do+ge$/)) command = "doge";
 
     let cmd = bot.commands.get(command);
-    if (cmd) cmd.run(bot, message, args);
+    if (cmd) {
+        //Increment command call count
+        utilitiesModule.readJSONFile("./data/general_data/commandData.json", function (commandDataJson) {
+            if (!commandDataJson[command]) commandDataJson[command] = { calls: 0 };
+            commandDataJson[command].calls++;
+            fs.writeFileSync("./data/general_data/commandData.json", JSON.stringify(commandDataJson), function(err) {if (err) return err;});
+        });
+        cmd.run(bot, message, args);
+    }
 
 });
 

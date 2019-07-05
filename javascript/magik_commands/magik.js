@@ -74,6 +74,8 @@ module.exports.run = async (bot, message, args) => {
                     }
                     else {
                         message.channel.send(`alright hold on, doing work on a ~${fileSize}mb image`);
+
+                        let filename = Date.now();
         
                         //Directly write method (not asynchronous??)
                         gm(request(foundURL))
@@ -84,26 +86,38 @@ module.exports.run = async (bot, message, args) => {
                             .magnify()
                             .magnify()
                             .magnify()
-                            .write('./graphics/resultImage.png', function (err) {
-                                if (err) console.log(err);
-                                message.channel.send({ files: ["./graphics/resultImage.png"] });
+                            .write(`./graphics/${filename}.png`, function (err) {
+                                if (err) console.error(err);
+                                message.channel.send({ files: [`./graphics/${filename}.png`] })
+                                    .then(function(msg) {
+                                        fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                    })
+                                    .catch(console.error);
                             });
                         
                         /*imageMagick(request(foundURL))
                             .command("convert")
-                            .in("./graphics/resultImage.png")
+                            .in(`./graphics/${filename}.png`)
                             .in("-liquid-rescale", "50x100%\!")
-                            .out("./graphics/resultImage.png")
-                            .write('./graphics/resultImage.png', function (err) {
-                                if (err) console.log(err);
-                                //message.channel.send({ files: ["./graphics/resultImage.png"] });
+                            .out(`./graphics/${filename}.png`)
+                            .write(`./graphics/${filename}.png`, function (err) {
+                                if (err) console.error(err);
+                                message.channel.send({ files: [`./graphics/${filename}.png`] })
+                                    .then(function(msg) {
+                                        fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                    })
+                                    .catch(console.error);
                             });*/
         
                         /*imageMagick(request(foundURL))
                             .resize(240, 240)
-                            .write('./graphics/resultImage.png', function (err) {
-                                if (err) console.log(err);
-                                //message.channel.send({ files: ["./graphics/resultImage.png"] });
+                            .write(`./graphics/${filename}.png`, function (err) {
+                                if (err) console.error(err);
+                                message.channel.send({ files: [`./graphics/${filename}.png`] })
+                                    .then(function(msg) {
+                                        fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                    })
+                                    .catch(console.error);
                             });*/
                     }
                 })

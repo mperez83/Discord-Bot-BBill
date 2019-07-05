@@ -1,3 +1,4 @@
+const fs = require("fs");
 const gm = require("gm");
 const request = require("request");
 const rp = require("request-promise");
@@ -83,13 +84,27 @@ module.exports.run = async (bot, message, args) => {
                         let msg = `alright hold on, inflating a ~${fileSize}mb image`;
                         if (appendSuggestion) msg += ` (for best results, keep inflation strength less than 2)`;
                         message.channel.send(msg);
-        
+                        
+                        let filename = Date.now();
+
                         gm(request(foundURL))
                             .implode(-inflateAmount)
-                            .write('./graphics/resultImage.png', function (err) {
-                                if (err) console.log(err);
-                                if (inflateAmount == 69) message.channel.send({ files: ["./graphics/gotcha.png"] });
-                                else message.channel.send({ files: ["./graphics/resultImage.png"] });
+                            .write(`./graphics/${filename}.png`, function (err) {
+                                if (err) console.error(err);
+                                if (inflateAmount == 69) {
+                                    message.channel.send({ files: [`./graphics/gotcha.png`] })
+                                        .then(function(msg) {
+                                            fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                        })
+                                        .catch(console.error);
+                                }
+                                else {
+                                    message.channel.send({ files: [`./graphics/${filename}.png`] })
+                                        .then(function(msg) {
+                                            fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                        })
+                                        .catch(console.error);
+                                }
                             });
                     }
                 })

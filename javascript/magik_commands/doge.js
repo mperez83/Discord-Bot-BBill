@@ -1,3 +1,4 @@
+const fs = require("fs");
 const gm = require("gm");
 const utilitiesModule = require("../utilities");
 const config = require("../../data/general_data/config.json");
@@ -41,8 +42,12 @@ module.exports.run = async (bot, message, args) => {
         .background("transparent")
         .mosaic()
         .write(`./graphics/doge/${filename}.png`, function(err){
-            if(err) { console.log(err); }
-            message.channel.send({ files: [`./graphics/doge/${filename}.png`] });
+            if(err) { console.error(err); }
+            message.channel.send({ files: [`./graphics/doge/${filename}.png`] })
+                .then(function(msg) {
+                    fs.unlink(`./graphics/doge/${filename}.png`, function(err) { if (err) throw err; });
+                })
+                .catch(console.error);
         });
     
 }

@@ -1,3 +1,4 @@
+const fs = require("fs");
 const gm = require("gm");
 const request = require("request");
 const rp = require("request-promise");
@@ -53,7 +54,8 @@ module.exports.run = async (bot, message, args) => {
                                     let singeAmount = (maxSingeAmount < 99) ? maxSingeAmount : 99;
 
                                     message.channel.send(`alright hold on, blotting a ~${fileSize}mb image (takes a while, be patient)`);
-                                    let fileName = Date.now();
+
+                                    let filename = Date.now();
                     
                                     gm(request(foundURL))
                                         .charcoal(1)
@@ -72,9 +74,13 @@ module.exports.run = async (bot, message, args) => {
                                         .magnify()
                                         .magnify()*/
                                         .charcoal(singeAmount)
-                                        .write(`./graphics/inkblots/${fileName}.png`, function (err) {
-                                            if (err) console.log(err);
-                                            message.channel.send({ files: [`./graphics/inkblots/${fileName}.png`] });
+                                        .write(`./graphics/${filename}.png`, function (err) {
+                                            if (err) console.error(err);
+                                            message.channel.send({ files: [`./graphics/${filename}.png`] })
+                                                .then(function(msg) {
+                                                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                                })
+                                                .catch(console.error);
                                         });
                                 }
                             });

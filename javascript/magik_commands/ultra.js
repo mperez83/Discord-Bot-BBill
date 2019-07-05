@@ -1,3 +1,4 @@
+const fs = require("fs");
 const gm = require("gm");
 const request = require("request");
 const rp = require("request-promise");
@@ -54,13 +55,19 @@ module.exports.run = async (bot, message, args) => {
 
                                     message.channel.send(`improving (~${fileSize}mb)`);
 
+                                    let filename = Date.now();
+
                                     gm(request(foundURL))
                                         .blur(sharpenIntensity)
                                         .sharpen(sharpenIntensity)
                                         .modulate(100, 500)
-                                        .write('./graphics/resultImage.png', function (err) {
-                                            if (err) console.log(err);
-                                            message.channel.send({ files: ["./graphics/resultImage.png"]});
+                                        .write(`./graphics/${filename}.png`, function (err) {
+                                            if (err) console.error(err);
+                                            message.channel.send({ files: [`./graphics/${filename}.png`] })
+                                                .then(function(msg) {
+                                                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                                })
+                                                .catch(console.error);
                                         });
                                 }
                             })

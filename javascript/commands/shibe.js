@@ -76,7 +76,7 @@ module.exports.run = async (bot, message, args) => {
 
         message.channel.send(newEmbed);
         message.channel.send({ files: [`${photoLoc + selectedShibe}`] })
-            .then(function (msg) {
+            .then(function(msg) {
                 const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 15000 });
                 collector.on('collect', message => {
 
