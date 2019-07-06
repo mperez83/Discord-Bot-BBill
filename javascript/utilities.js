@@ -16,7 +16,7 @@ module.exports.readJSONFile = function(fileDir, callback) {
         if (err) {
             //console.error(err);
             let tempData = {}
-            fs.writeFile(fileDir, JSON.stringify(tempData), function (err) {
+            fs.writeFile(fileDir, JSON.stringify(tempData, null, 4), function (err) {
                 if (err) throw err;
                 callback(tempData);
             });
@@ -34,7 +34,7 @@ module.exports.incrementUserDataValue = function(user, valueName, amount) {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
         if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
         userDataJson[user.id][valueName] += amount;
-        fs.writeFileSync("./data/general_data/userData.json", JSON.stringify(userDataJson));
+        fs.writeFileSync("./data/general_data/userData.json", JSON.stringify(userDataJson, null, 4));
     });
 }
 

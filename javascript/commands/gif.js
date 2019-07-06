@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
         if (!data) {
-            message.channel.send(`Error:\n${JSON.stringify(data)}`);
+            message.channel.send(`Error:\n${JSON.stringify(data, null, 4)}`);
             return;
         }
         else if (!data.items || data.items.length == 0) {

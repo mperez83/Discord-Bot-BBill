@@ -45,7 +45,7 @@ module.exports.run = async (bot, message, args) => {
         if (!indexDataJson[inputIndexCall].url) {
             message.channel.send(`"${inputIndexCall}" doesn't even have a url property!!!!!!! im deleting it`);
             delete indexDataJson[inputIndexCall];
-            fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson));
+            fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson, null, 4));
             return;
         }
 
@@ -53,7 +53,7 @@ module.exports.run = async (bot, message, args) => {
         if (indexDataJson[inputIndexCall].url.match(/\.(jpeg|jpg|gif|png)$/) == null) {
             message.channel.send(`"${inputIndexCall}" isn't even valid!!!!!!! im deleting it`);
             delete indexDataJson[inputIndexCall];
-            fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson));
+            fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson, null, 4));
             return;
         }
 
@@ -71,7 +71,7 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send(newEmbed);
 
         //This is to update the directCalls property
-        fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson));
+        fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson, null, 4));
 
         utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
         return;

@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args) => {
         hamJsonObj.amount++;
 
         hamDataJson[selectedHam] = hamJsonObj;  //see shibe.js to know why I'm doing this
-        fs.writeFileSync(dataLoc, JSON.stringify(hamDataJson), function(err) {if (err) return err;});
+        fs.writeFileSync(dataLoc, JSON.stringify(hamDataJson, null, 4), function(err) {if (err) return err;});
 
         let stats = fs.statSync(`${photoLoc + selectedHam}`);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);

@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args) => {
         //because it's used a lot further on), so in order to maintain that clean aspect, I have to manually set shibeDataJson[selectedShibe] = shibeJsonObj, which in
         //a sense lets the original json file know that its been updated.
         shibeDataJson[selectedShibe] = shibeJsonObj;
-        fs.writeFileSync(dataLoc, JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
+        fs.writeFileSync(dataLoc, JSON.stringify(shibeDataJson, null, 4), function(err) {if (err) return err;});
 
         let stats = fs.statSync(`${photoLoc + selectedShibe}`);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
@@ -106,7 +106,7 @@ module.exports.run = async (bot, message, args) => {
                         }
                         
                         shibeDataJson[selectedShibe] = shibeJsonObj;
-                        fs.writeFileSync(dataLoc, JSON.stringify(shibeDataJson), function(err) {if (err) return err;});
+                        fs.writeFileSync(dataLoc, JSON.stringify(shibeDataJson, null, 4), function(err) {if (err) return err;});
 
                         message.react("✅");
                         utilitiesModule.incrementUserDataValue(message.author, "Billie-Bucks", 1);

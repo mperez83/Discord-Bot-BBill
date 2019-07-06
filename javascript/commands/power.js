@@ -10,18 +10,21 @@ module.exports.run = async (bot, message, args) => {
         let doPowerCheck = false;
         let currentDate = new Date();
 
-        if (!userDataJson[message.author.id]) userDataJson[message.author.id] = {username: message.author.username};
+        let user = message.author;
+        let userObj = userDataJson[user.id];
 
-        if (!utilitiesModule.checkNested(userDataJson, message.author.id, "power")) {
-            userDataJson[message.author.id].power = 0;
-            userDataJson[message.author.id].nextValidPowerCheck = undefined;
+        if (!userObj) userObj = {username: user.username};
+
+        if (!userObj.power) {
+            userObj.power = 0;
+            userObj.nextValidPowerCheck = undefined;
             doPowerCheck = true;
         }
         else {
-            let checkDateStr = JSON.parse(userDataJson[message.author.id].nextValidPowerCheck);
+            let checkDateStr = JSON.parse(userObj.nextValidPowerCheck);
             let checkDate = new Date(checkDateStr);
 
-            if (userDataJson[message.author.id].power == 69) {
+            if (userObj.power == 69) {
                 message.reply(`you cannot reassess your power level again (already attained best power level. Use !prestige to reset your power back to 0 and increase your prestige level)`);
                 return;
             }
@@ -32,20 +35,20 @@ module.exports.run = async (bot, message, args) => {
 
         if (doPowerCheck == true) {
             let power = Math.ceil(Math.random() * 100);
-            /*if (userDataJson[message.author.id].username == "SM980") {
+            /*if (userObj.username == "SM980") {
                 power *= 0.1;
             }*/
             if (power == 69) {
                 message.reply(`your power level is **69.** You have attained the POWERFUL role.`);
                 utilitiesModule.bequeathPowerfulStatus(message.guild, message.member);
-                utilitiesModule.sendGlobalMessage(bot, `User **${message.author.username}** just got a power level of 69!!!`);
+                utilitiesModule.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 69!!!`);
             }
             else if (power == 100) {
                 message.reply("your power level is **100!** Congratulations!");
             }
             else if (power == 1) {
                 message.reply("your power level is **1.** smh");
-                utilitiesModule.sendGlobalMessage(bot, `User **${message.author.username}** just got a power level of 1`);
+                utilitiesModule.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 1`);
             }
             else {
                 message.reply(`your power level is **${power}**`);
@@ -53,21 +56,22 @@ module.exports.run = async (bot, message, args) => {
 
             if (power == 68 || power == 70) {
                 message.react("😂");
-                utilitiesModule.incrementUserDataValue(message.author, "chokes", 1);
+                utilitiesModule.incrementUserDataValue(user, "chokes", 1);
             }
 
-            userDataJson[message.author.id].power = power;
+            userObj.power = power;
 
             let nextValidPowerCheck = new Date();
             nextValidPowerCheck.setDate(currentDate.getDate() + 1);
-            userDataJson[message.author.id].nextValidPowerCheck = JSON.stringify(nextValidPowerCheck);
+            userObj.nextValidPowerCheck = JSON.stringify(nextValidPowerCheck);
 
-            utilitiesModule.incrementUserDataValue(message.author, "powerCalls", 1);
+            utilitiesModule.incrementUserDataValue(user, "powerCalls", 1);
 
-            fs.writeFileSync(dataLoc, JSON.stringify(userDataJson), function(err) {if (err) return err;});
+            //userDataJson[user.id] = userObj;
+            fs.writeFileSync(dataLoc, JSON.stringify(userDataJson, null, 4), function(err) {if (err) return err;});
         }
         else {
-            let checkDateStr = JSON.parse(userDataJson[message.author.id].nextValidPowerCheck);
+            let checkDateStr = JSON.parse(userObj.nextValidPowerCheck);
             let checkDate = new Date(checkDateStr);
 
             let checkDateMS = checkDate.getTime();

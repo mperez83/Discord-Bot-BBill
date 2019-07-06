@@ -53,7 +53,7 @@ module.exports.run = async (bot, message, args) => {
                 if (args[1] == "true" || args[1] == "false") {
                     config[args[0]] = args[1];
                     message.channel.send(`Set config key "${args[0]}" to ${args[1]}`);
-                    fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
+                    fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
                 }
                 else {
                     message.channel.send(`Config key "${args[0]}" is a boolean, so you have to provide a boolean as the second arg. ${utilitiesModule.getRandomNameInsult(message.author)}`);
@@ -70,7 +70,7 @@ module.exports.run = async (bot, message, args) => {
                 else {
                     config[args[0]] = args[1];
                     message.channel.send(`Set config key "${args[0]}" to ${args[1]}`);
-                    fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
+                    fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
                 }
             }
 
@@ -78,7 +78,7 @@ module.exports.run = async (bot, message, args) => {
             else {
                 config[args[0]] = args[1];
                 message.channel.send(`Set config key "${args[0]}" to ${args[1]}`);
-                fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
+                fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
             }
 
         }

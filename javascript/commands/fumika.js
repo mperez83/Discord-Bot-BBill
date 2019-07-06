@@ -23,7 +23,7 @@ module.exports.run = async (bot, message, args) => {
         fumikaJsonObj.amount++;
 
         fumikaDataJson[selectedFumika] = fumikaJsonObj; //see shibe.js to know why I'm doing this
-        fs.writeFileSync(dataLoc, JSON.stringify(fumikaDataJson), function(err) {if (err) return err;});
+        fs.writeFileSync(dataLoc, JSON.stringify(fumikaDataJson, null, 4), function(err) {if (err) return err;});
 
         let stats = fs.statSync(`${photoLoc + selectedFumika}`);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);

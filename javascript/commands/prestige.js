@@ -37,7 +37,7 @@ module.exports.run = async (bot, message, args) => {
             }
 
             utilitiesModule.incrementUserDataValue(message.author, "prestigeLevel", 1);
-            fs.writeFileSync(dataLoc, JSON.stringify(userDataJson));
+            fs.writeFileSync(dataLoc, JSON.stringify(userDataJson, null, 4));
             message.reply(`you're now 1 better than everyone else`);
             return;
         }

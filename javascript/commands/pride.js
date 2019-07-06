@@ -39,7 +39,7 @@ module.exports.run = async (bot, message, args) => {
         if (!flagObject.peopleCount) flagObject.peopleCount = 0;
 
         //Handle peopleCount in various ways
-        switch (flagObject.peopleCount) {
+        switch (fileName) {
             case "completely normal photo of ross":
             case "gamer bernie sanders":
                 flagObject.peopleCount = 1;
@@ -63,7 +63,7 @@ module.exports.run = async (bot, message, args) => {
 
         message.channel.send(newEmbed);
 
-        fs.writeFileSync(dataLoc, JSON.stringify(prideFlagDataJson));
+        fs.writeFileSync(dataLoc, JSON.stringify(prideFlagDataJson, null, 4));
 
     });
 

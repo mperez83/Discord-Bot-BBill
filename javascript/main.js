@@ -105,12 +105,12 @@ bot.on("ready", () => {
     if (!config.id) {
         console.log("Bot ID doesn't exist in config file, adding it now");
         config.id = bot.user.id;
-        fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
+        fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
     }
     else if (config.id != bot.user.id) {
         console.log("Bot ID doesn't match one listed in config file, updating it now");
         config.id = bot.user.id;
-        fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config), function(err) {if (err) return err;});
+        fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
     }
 });
 
@@ -139,7 +139,7 @@ bot.on("message", (message) => {
     if (informalCommandsModule.parseTextForAtEveryone(message)) return;
     if (informalCommandsModule.parseTextForSpecificString(message)) return;
     if (informalCommandsModule.parseTextForLooseString(message, bot)) return;
-    if (cleverbillModule.parseTextForQuestions(message)) return;
+    if (cleverbillModule.parseTextForQuestions(bot, message)) return;
 
 
 
@@ -160,7 +160,7 @@ bot.on("message", (message) => {
         utilitiesModule.readJSONFile("./data/general_data/commandData.json", function (commandDataJson) {
             if (!commandDataJson[command]) commandDataJson[command] = { calls: 0 };
             commandDataJson[command].calls++;
-            fs.writeFileSync("./data/general_data/commandData.json", JSON.stringify(commandDataJson), function(err) {if (err) return err;});
+            fs.writeFileSync("./data/general_data/commandData.json", JSON.stringify(commandDataJson, null, 4), function(err) {if (err) return err;});
         });
         cmd.run(bot, message, args);
     }

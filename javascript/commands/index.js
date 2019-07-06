@@ -45,7 +45,7 @@ module.exports.run = async (bot, message, args) => {
                     culprit: message.author.username
                 };
 
-                fs.writeFileSync(dataLoc, JSON.stringify(indexListJson));
+                fs.writeFileSync(dataLoc, JSON.stringify(indexListJson, null, 4));
                 message.channel.send(`Successfully indexed "${inputIndexName}"!`);
 
                 if (message.channel.type == "dm") {
