@@ -123,18 +123,35 @@ module.exports = {
 
                 //EIGHT-BALL responses
                 case MessageTypes.EIGHT_BALL:
-                    let orAmount = 0;
-                    for (let i = 0; i < msgArray.length; i++)
-                        if (msgArray[i] == "or")
-                            orAmount++;
-
-                    if (orAmount <= 0) {
+                    //If there are no "or"s, it's a simple question
+                    if (!msgArray.includes("or")) {
                         let eightBallResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/eight_ball_responses.txt`);
                         message.channel.send(eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)]);
                     }
+
+                    //If this is potentially an "or" question, get complicated
+                    //This is so laughably messy it's not even funny
                     else {
-                        let prefixes = ["Probably", "Most likely", "Almost certainly", "Definitely"];
-                        message.channel.send(`${prefixes[Math.floor(Math.random() * prefixes.length)]} option ${Math.ceil(Math.random() * (orAmount + 1))}`);
+                        let orResponses = ["The first option", "The second option"];
+                        let optionCount = Math.max(2, (userMsg.match(/,/g) || []).length + 1);  //Option count is atleast 2, or the amount of commas + 1
+
+                        if (optionCount == 2) {
+                            orResponses.push.apply(orResponses, ["The former", "The latter"]);
+                        }
+                        else {
+                            if (Math.random() > 0.5) {
+                                let prefixes = ["Definitely", "Most likely", "Probably", "Absolutely", "Undoubtedly", "I'm actually not sure, but it's not"];
+                                orResponses = [`${prefixes[Math.floor(Math.random() * prefixes.length)]} option ${Math.ceil(Math.random() * optionCount)}`];
+                            }
+                            else {
+                                orResponses.push("The last option");
+                                if (optionCount > 3) {
+                                    orResponses.push("The penultimate option");
+                                }
+                            }
+                        }
+
+                        message.channel.send(orResponses[Math.floor(Math.random() * orResponses.length)]);
                     }
                     break;
                 
@@ -142,7 +159,13 @@ module.exports = {
 
                 //WHO responses
                 case MessageTypes.WHO:
-                    message.channel.send(message.channel.members.random().displayName);
+                    if (Math.random() > 0.25) {
+                        message.channel.send(message.channel.members.random().displayName);
+                    }
+                    else {
+                        let whoResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/who_responses.txt`);
+                        message.channel.send(whoResponses[Math.floor(Math.random() * whoResponses.length)]);
+                    }
                     break;
                 
                 
@@ -151,6 +174,13 @@ module.exports = {
                 case MessageTypes.WHERE:
                     let whereResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/where_responses.txt`);
                     whereResponses.push(`Somewhere in ${message.channel.members.random().displayName}'s house`);
+                    whereResponses.push(`Right behind ${message.channel.members.random().displayName}`);
+                    whereResponses.push(`Over in ${message.channel.members.random().displayName}'s city. but watch out`);
+                    whereResponses.push(`Only ${message.channel.members.random().displayName} knows, ask them`);
+                    whereResponses.push(`${Math.floor(Math.random() * 1000)} miles north`);
+                    whereResponses.push(`${Math.floor(Math.random() * 1000)} miles south`);
+                    whereResponses.push(`Somewhere in ${bot.guilds.random().name}`);
+                    whereResponses.push(`Over in ${bot.guilds.random().name}. But you have to be a member there so don't bother`);
 
                     message.channel.send(whereResponses[Math.floor(Math.random() * whereResponses.length)]);
                     break;
@@ -172,13 +202,21 @@ module.exports = {
                     if (pastTense) {
                         whenResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/when_past_responses.txt`);
                         whenResponses.push(`About ${Math.ceil(Math.random() * 23)} hours and ${Math.ceil(Math.random() * 59)} minutes ago`);
-                        whenResponses.push(`On ${message.channel.members.random().displayName}'s next birthday`);
+                        whenResponses.push(`When ${message.channel.members.random().displayName} was born`);
+                        whenResponses.push(`During ${message.channel.members.random().displayName}'s last birthday`);
+                        whenResponses.push(`When ${bot.guilds.random().name} was first created`);
+                        whenResponses.push(`Back when ${bot.guilds.random().name} was but a humble idea`);
                     }
                     else {
-                        whenResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/when_past_responses.txt`);
+                        whenResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/when_future_responses.txt`);
                         whenResponses.push(`In about ${Math.ceil(Math.random() * 23)} hours and ${Math.ceil(Math.random() * 59)} minutes`);
                         whenResponses.push(`On ${message.channel.members.random().displayName}'s last birthday`);
+                        whenResponses.push(`On ${message.channel.members.random().displayName}'s next birthday`);
+                        whenResponses.push(`When ${bot.guilds.random().name} finally dies`);
+                        whenResponses.push(`When ${message.channel.members.random().displayName} dies. but watch out`);
+                        whenResponses.push(`After ${message.channel.members.random().displayName} becomes the first person to visit mars`);
                     }
+
                     message.channel.send(whenResponses[Math.floor(Math.random() * whenResponses.length)]);
                     break;
                 
@@ -196,7 +234,8 @@ module.exports = {
 
                     switch (quantityType) {
                         case 0:
-                            message.channel.send("I can't answer that :(");
+                            //message.channel.send("I can't answer that :(");
+                            message.channel.send({ embed: { image: { url: "https://cdn.discordapp.com/attachments/527341248214990850/597251600515334144/ConcernFrog.png" } } });
                             break;
 
                         case 1:
