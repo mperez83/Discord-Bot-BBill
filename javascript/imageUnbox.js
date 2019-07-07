@@ -79,44 +79,50 @@ module.exports.unboxImage = function(message) {
         message.channel.send(newEmbed);
         message.channel.send({ files: [`${photoLoc + selectedImage}`] })
             .then(function(msg) {
-                const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 15000 });
-                collector.on('collect', message => {
 
-                    msg = message.content.toLowerCase();
-                    if (msg == "common" || msg == "uncommon" || msg == "rare" || msg == "epic" || msg == "legendary") {
+                if (jsonObj.rarity == "Not set yet") {
 
-                        switch (msg) {
-                            case "common":
-                                jsonObj.rarity = "Common";
-                                break;
+                    const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 15000 });
+                    collector.on('collect', message => {
 
-                            case "uncommon":
-                                jsonObj.rarity = "Uncommon";
-                                break;
+                        msg = message.content.toLowerCase();
+                        if (msg == "common" || msg == "uncommon" || msg == "rare" || msg == "epic" || msg == "legendary") {
+
+                            switch (msg) {
+                                case "common":
+                                    jsonObj.rarity = "Common";
+                                    break;
+
+                                case "uncommon":
+                                    jsonObj.rarity = "Uncommon";
+                                    break;
+                                
+                                case "rare":
+                                    jsonObj.rarity = "Rare";
+                                    break;
+
+                                case "epic":
+                                    jsonObj.rarity = "Epic";
+                                    break;
+                                
+                                case "legendary":
+                                    jsonObj.rarity = "Legendary";
+                                    break;
+                            }
                             
-                            case "rare":
-                                jsonObj.rarity = "Rare";
-                                break;
+                            dataJson[selectedImage] = jsonObj;
+                            fs.writeFileSync(dataLoc, JSON.stringify(dataJson, null, 4), function(err) {if (err) return err;});
 
-                            case "epic":
-                                jsonObj.rarity = "Epic";
-                                break;
-                            
-                            case "legendary":
-                                jsonObj.rarity = "Legendary";
-                                break;
+                            message.react("✅");
+                            utilitiesModule.incrementUserDataValue(message.author, "Billie-Bucks", 1);
+                            collector.stop();
+
                         }
-                        
-                        dataJson[selectedImage] = jsonObj;
-                        fs.writeFileSync(dataLoc, JSON.stringify(dataJson, null, 4), function(err) {if (err) return err;});
 
-                        message.react("✅");
-                        utilitiesModule.incrementUserDataValue(message.author, "Billie-Bucks", 1);
-                        collector.stop();
+                    });
+                    
+                }
 
-                    }
-
-                });
             })
             .catch(console.error);
     });
