@@ -2,6 +2,7 @@ const fs = require("fs");
 
 
 
+//Returns random line from list_of_names_to_insult_people_with as a string
 module.exports.getRandomNameInsult = function(user) {
     this.incrementUserDataValue(user, "socialDeviancy", 1);
     let nameInsults = fs.readFileSync("./data/general_data/list_of_names_to_insult_people_with.txt").toString().split("\n");
@@ -11,6 +12,17 @@ module.exports.getRandomNameInsult = function(user) {
 
 
 
+//Return array consisting of every read line from a text file
+//also removes the hyphens from the beginning of the lines
+module.exports.readHyphenTextFile = function(fileLocation) {
+    let readLines = fs.readFileSync(fileLocation).toString().split("\n");
+    for (let i = 0; i < readLines.length; i++) readLines[i] = readLines[i].substring(1);
+    return readLines;
+}
+
+
+
+//Attempts to read JSON file, and creates a new one if the provided fileDir doesn't exist
 module.exports.readJSONFile = function(fileDir, callback) {
     fs.readFile(fileDir, function readFileCallback(err, data) {
         if (err) {
@@ -29,6 +41,7 @@ module.exports.readJSONFile = function(fileDir, callback) {
 
 
 
+//Increases a value inside userData.json of a given user by a given amount
 module.exports.incrementUserDataValue = function(user, valueName, amount) {
     this.readJSONFile("./data/general_data/userData.json", function (userDataJson) {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
@@ -40,6 +53,7 @@ module.exports.incrementUserDataValue = function(user, valueName, amount) {
 
 
 
+//Attempt to give a user a new "Powerful" role
 module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
     let powerfulRole = guild.roles.find("name", "Powerful");
     if (!powerfulRole) {
@@ -57,6 +71,7 @@ module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
 
 
 
+//Return url of an image posted in the current channel, or null if there were no images in the last 10 messages
 module.exports.getMostRecentImageURL = function(message) {
 
     return message.channel.fetchMessages({ limit: 10 })
@@ -116,6 +131,8 @@ module.exports.getMostRecentImageURL = function(message) {
 
 
 
+//Send a message to the bill-bayou of every server bbill is in
+//if bill-bayou doesn't exist in the server, create it
 module.exports.sendGlobalMessage = function(bot, msg) {
     let guilds = bot.guilds;
     for (let i = 0; i < guilds.size; i++) {
@@ -136,6 +153,9 @@ module.exports.sendGlobalMessage = function(bot, msg) {
 
 
 
+//Remove X stuff from Y array
+//Because javascript is almost entirely pass by reference, we don't need to return anything (everything we
+//do to arrayToRemoveStuffFrom affects the passed in array no matter where it is)
 module.exports.removeElementsFromArray = function(arrayToRemoveStuffFrom, stuffToRemove) {
 
     for (let i = 0; i < arrayToRemoveStuffFrom.length; i++) {
