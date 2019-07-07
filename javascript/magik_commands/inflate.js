@@ -92,7 +92,7 @@ module.exports.run = async (bot, message, args) => {
                             .write(`./graphics/${filename}.png`, function (err) {
                                 if (err) console.error(err);
                                 if (inflateAmount == 69) {
-                                    message.channel.send({ files: [`./graphics/gotcha.png`] })
+                                    message.channel.send({ files: [`./graphics/misc/gotcha.png`] })
                                         .then(function(msg) {
                                             fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
                                         })

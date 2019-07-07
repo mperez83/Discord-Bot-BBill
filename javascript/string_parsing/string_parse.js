@@ -50,7 +50,7 @@ module.exports = {
         if (userMsg == "quieres?") {
             let dudCheck = Math.floor(Math.random() * 20);
             if (dudCheck == 0) {
-                //message.channel.send({ files: ["./graphics/quieres.png"] });
+                //message.channel.send({ files: ["./graphics/misc/quieres.png"] });
                 message.channel.send({
                     embed: {
                         image: {
@@ -60,7 +60,7 @@ module.exports = {
                 });
             }
             else {
-                //message.channel.send({ files: ["./graphics/anti-quieres.png"] });
+                //message.channel.send({ files: ["./graphics/misc/anti-quieres.png"] });
                 message.channel.send({
                     embed: {
                         image: {
@@ -96,7 +96,7 @@ module.exports = {
             }
             else {
                 if (ACount >= Math.ceil(userMsg.length / 2)) {
-                    //message.channel.send({ files: ["./graphics/AaAAAaaaAAaAaaaaAaAAAAAaAaAa.jpg"] });
+                    //message.channel.send({ files: ["./graphics/misc/AaAAAaaaAAaAaaaaAaAAAAAaAaAa.jpg"] });
                     message.channel.send({
                         embed: {
                             image: {
@@ -139,7 +139,7 @@ module.exports = {
 
         //Bring out the dancing lobsters
         if (userMsg == "bring out the dancing lobsters") {
-            //message.channel.send({ files: ["./graphics/dancing lobsters.gif"] });
+            //message.channel.send({ files: ["./graphics/misc/dancing lobsters.gif"] });
             message.channel.send({
                 embed: {
                     image: {

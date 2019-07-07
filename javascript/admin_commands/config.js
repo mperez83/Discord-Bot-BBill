@@ -54,6 +54,11 @@ module.exports.run = async (bot, message, args) => {
                     config[args[0]] = args[1];
                     message.channel.send(`Set config key "${args[0]}" to ${args[1]}`);
                     fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
+                    
+                    //Specific stuff for if the key was construction_mode
+                    if (args[0] == "construction_mode") {
+                        bot.user.setAvatar((args[1] == "true") ? `./graphics/misc/inactive_bill.png` : `./graphics/misc/active_bill.png`);
+                    }
                 }
                 else {
                     message.channel.send(`Config key "${args[0]}" is a boolean, so you have to provide a boolean as the second arg. ${utilitiesModule.getRandomNameInsult(message.author)}`);

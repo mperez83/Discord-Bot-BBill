@@ -1,7 +1,7 @@
 module.exports.run = async (bot, message, args) => {
-    //message.channel.send({ files: ["./graphics/sfw_sasuke.jpg"] });
-    //message.channel.send({ files: ["./graphics/sfw_sasuke.jpg"] });
-    //message.channel.send({ files: ["./graphics/sfw_sasuke.jpg"] });
+    //message.channel.send({ files: ["./graphics/misc/sfw_sasuke.jpg"] });
+    //message.channel.send({ files: ["./graphics/misc/sfw_sasuke.jpg"] });
+    //message.channel.send({ files: ["./graphics/misc/sfw_sasuke.jpg"] });
 
     message.channel.send({
         embed: {
