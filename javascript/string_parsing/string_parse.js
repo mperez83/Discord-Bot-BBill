@@ -1,5 +1,7 @@
-const config = require("../../data/general_data/config.json");
 const utilitiesModule = require('../utilities');
+const config = require("../../data/general_data/config.json");
+
+
 
 module.exports = {
 

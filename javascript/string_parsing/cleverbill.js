@@ -1,4 +1,5 @@
 const fs = require("fs");
+
 const utilitiesModule = require('../utilities');
 
 const responseDir = "./javascript/string_parsing/cleverbill_utilities";

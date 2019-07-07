@@ -13,95 +13,59 @@ const utilitiesModule = require("./utilities");
 
 
 
-//Loading basic commands
-fs.readdir("./javascript/commands/", (err, files) => {
+//Load all commands
+fs.readdir("./javascript/commands/", (err, cmdDirs) => {
     if (err) console.error(err);
-
-    let jsFiles = files.filter(f => f.split(".").pop() === "js");   //Gets the name of every .js file in the commands folder
-    if (jsFiles.length <= 0) {
-        console.log("No commands to load!");
-        return;
-    }
-
-    console.log(`Loading ${jsFiles.length} commands!`);
-
-    jsFiles.forEach((f, i) => {
-        let props = require(`./commands/${f}`);
-        console.log(`${i + 1}: ${f} loaded!`);
-        bot.commands.set(props.help.name, props);
-    });
-
+    
     console.log();
+
+    //Do this here so we can get around any async bullshit
+    utilitiesModule.readJSONFile("./data/general_data/commandData.json", function (cmdDataJson) {
+
+        for (let i = 0; i < cmdDirs.length; i++) {
+            fs.readdir(`./javascript/commands/${cmdDirs[i]}/`, (err, files) => {
+                if (err) console.error(err);
+
+                //Gets the name of every .js file from the directory we're in
+                let jsFiles = files.filter(f => f.split(".").pop() === "js");
+                if (jsFiles.length <= 0) {
+                    console.log(`No commands to load in directory ${cmdDirs[i]}!\n`);
+                    return;
+                }
+
+                console.log(`Loading ${jsFiles.length} commands from directory '${cmdDirs[i]}'!`);
+
+                //Scrub through all of the jsFiles and add them to the bot.commands collection
+                jsFiles.forEach((jsFile, index) => {
+                    let props = require(`./commands/${cmdDirs[i]}/${jsFile}`);
+                    bot.commands.set(props.help.name, props);
+                    let consoleMsg = `${index + 1}: ${jsFile} loaded!`;
+
+                    //Check if the command is in commandData.json
+                    let cmdName = jsFile.slice(0, -3);
+                    if (!cmdDataJson[cmdName]) {
+                        consoleMsg += ` (no entry found in commandData.json, adding now)`;
+                        cmdDataJson[cmdName] = { calls: 0 };
+                        fs.writeFileSync("./data/general_data/commandData.json", JSON.stringify(cmdDataJson, null, 4), function(err) { if (err) return err; });
+                    }
+
+                    console.log(consoleMsg);
+                });
+
+                console.log();
+            });
+        }
+
+    });
 });
 
-//Loading magik commands
-fs.readdir("./javascript/magik_commands/", (err, files) => {
-    if (err) console.error(err);
 
-    let jsFiles = files.filter(f => f.split(".").pop() === "js");
-    if (jsFiles.length <= 0) {
-        console.log("No commands to load!");
-        return;
-    }
-
-    console.log(`Loading ${jsFiles.length} magik commands!`);
-
-    jsFiles.forEach((f, i) => {
-        let props = require(`./magik_commands/${f}`);
-        console.log(`${i + 1}: ${f} loaded!`);
-        bot.commands.set(props.help.name, props);
-    });
-
-    console.log();
-});
-
-//Loading pokemon commands
-fs.readdir("./javascript/pokemon_commands/", (err, files) => {
-    if (err) console.error(err);
-
-    let jsFiles = files.filter(f => f.split(".").pop() === "js");
-    if (jsFiles.length <= 0) {
-        console.log("No commands to load!");
-        return;
-    }
-
-    console.log(`Loading ${jsFiles.length} pokemon commands!`);
-
-    jsFiles.forEach((f, i) => {
-        let props = require(`./pokemon_commands/${f}`);
-        console.log(`${i + 1}: ${f} loaded!`);
-        bot.commands.set(props.help.name, props);
-    });
-
-    console.log();
-});
-
-//Loading admin commands
-fs.readdir("./javascript/admin_commands/", (err, files) => {
-    if (err) console.error(err);
-
-    let jsFiles = files.filter(f => f.split(".").pop() === "js");
-    if (jsFiles.length <= 0) {
-        console.log("No commands to load!");
-        return;
-    }
-
-    console.log(`Loading ${jsFiles.length} admin commands!`);
-
-    jsFiles.forEach((f, i) => {
-        let props = require(`./admin_commands/${f}`);
-        console.log(`${i + 1}: ${f} loaded!`);
-        bot.commands.set(props.help.name, props);
-    });
-
-    console.log();
-});
 
 //Ensure that the bot only starts working after it is ready
 bot.on("ready", () => {
     console.log("Logged in! Serving in " + bot.guilds.array().length + " servers");
 
-    //Update bill's id in the config file if something is wrong
+    //Update bill's id in the config file if his current id doesn't match the one in his config file
     if (!config.id) {
         console.log("Bot ID doesn't exist in config file, adding it now");
         config.id = bot.user.id;
