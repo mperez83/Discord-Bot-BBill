@@ -117,7 +117,8 @@ module.exports = {
 
                 //Non-question responses
                 case undefined:
-                    message.channel.send(`You have to ask something, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+                    let nonQuestionResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/non_question_responses.txt`);
+                    message.channel.send(nonQuestionResponses[Math.floor(Math.random() * nonQuestionResponses.length)]);
                     break;
                 
                 
