@@ -48,3 +48,4 @@ It's a relatively simple bot with virtually no practical purposes; I'm mostly wo
 - gm
 - request-promise
 - garfield
+- get-folder-size
