@@ -8,7 +8,7 @@ const config = require("../data/general_data/config.json");
 
 const cleverbillModule = require("./string_parsing/cleverbill");
 const informalCommandsModule = require("./string_parsing/string_parse");
-const messageEvents = require("./joke_modules/messageEvents");
+const messageEvents = require("./string_parsing/messageEvents");
 const utilitiesModule = require("./utilities");
 
 
@@ -96,10 +96,10 @@ bot.on("message", (message) => {
     }
 
     //Events checking
-    messageEvents.checkForRandomEvents(message);
+    messageEvents.handleEvents(message);
     
     //String parsing
-    informalCommandsModule.parseTextForBadEmotes(message);
+    if (informalCommandsModule.parseTextForBadEmotes(message)) return;
     if (informalCommandsModule.parseTextForAtEveryone(message)) return;
     if (informalCommandsModule.parseTextForSpecificString(message)) return;
     if (informalCommandsModule.parseTextForLooseString(message, bot)) return;

@@ -21,7 +21,7 @@ module.exports = {
             }
         }
 
-        //Don't return true/false, just increment the value and move on
+        return false;
 
     },
 

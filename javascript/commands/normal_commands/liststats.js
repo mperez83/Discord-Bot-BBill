@@ -1,7 +1,7 @@
 const utilitiesModule = require('../../utilities');
 
 const dataLoc = "./data/general_data/userData.json";
-const unnecessaryStats = ["nextValidPowerCheck", "username"];
+const unnecessaryStats = ["nextValidPowerCheck", "username", "asciiTyped"];
 
 
 
