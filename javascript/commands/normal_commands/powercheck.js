@@ -30,7 +30,7 @@ module.exports.run = async (bot, message, args) => {
                 if (hoursLeft <= 0 && minutesLeft <= 0 && secondsLeft <= 0)
                     message.reply(`your current power level is ${userDataJson[message.author.id].power}, and you may reassess your power right now`);
                 else
-                    message.reply(`your current power level is **${userDataJson[message.author.id].power}**, and you may reassess your power in **${hoursLeft} hours, ${minutesLeft} minutes, and ${secondsLeft} seconds**`);
+                    message.reply(`your current power level is **${userDataJson[message.author.id].power}**, and you may reassess your power in **${hoursLeft} hour${(hoursLeft != 1) ? 's' : ''}, ${minutesLeft} minute${(minutesLeft != 1) ? 's' : ''}, and ${secondsLeft} second${(secondsLeft != 1) ? 's' : ''}**`);
             }
         }
     

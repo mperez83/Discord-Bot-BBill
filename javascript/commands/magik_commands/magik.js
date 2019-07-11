@@ -7,6 +7,8 @@ const rp = require("request-promise");
 const utilitiesModule = require('../../utilities');
 const config = require("../../../data/general_data/config.json");
 
+const maxFileSize = 0.1;
+
 
 
 module.exports.run = async (bot, message, args) => {
@@ -67,60 +69,35 @@ module.exports.run = async (bot, message, args) => {
 
             rp(options)
                 .then(function (response) {
+                    let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
-    
-                    if (fileSize > 2) {
-                        message.channel.send(`I don't want to fuck with anything around the size of 2mb, ${utilitiesModule.getRandomNameInsult(message.author)}`);
-                        return;
+                    let setToReduce = false;
+
+                    if (fileSize > maxFileSize) {
+                        message.channel.send(`This image is ~${fileSize}mb, I gotta chop it down until it's lower than ${maxFileSize}mb (might take a bit, be patient)`);
+                        setToReduce = true;
                     }
                     else {
-                        message.channel.send(`alright hold on, doing work on a ~${fileSize}mb image`);
-
-                        let filename = Date.now();
-        
-                        //Directly write method (not asynchronous??)
-                        gm(request(foundURL))
-                            .filter("Gaussian")
-                            .minify()
-                            .minify()
-                            .minify()
-                            .magnify()
-                            .magnify()
-                            .magnify()
-                            .write(`./graphics/${filename}.png`, function (err) {
-                                if (err) console.error(err);
-                                message.channel.send({ files: [`./graphics/${filename}.png`] })
-                                    .then(function(msg) {
-                                        fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
-                                    })
-                                    .catch(console.error);
-                            });
-                        
-                        /*imageMagick(request(foundURL))
-                            .command("convert")
-                            .in(`./graphics/${filename}.png`)
-                            .in("-liquid-rescale", "50x100%\!")
-                            .out(`./graphics/${filename}.png`)
-                            .write(`./graphics/${filename}.png`, function (err) {
-                                if (err) console.error(err);
-                                message.channel.send({ files: [`./graphics/${filename}.png`] })
-                                    .then(function(msg) {
-                                        fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
-                                    })
-                                    .catch(console.error);
-                            });*/
-        
-                        /*imageMagick(request(foundURL))
-                            .resize(240, 240)
-                            .write(`./graphics/${filename}.png`, function (err) {
-                                if (err) console.error(err);
-                                message.channel.send({ files: [`./graphics/${filename}.png`] })
-                                    .then(function(msg) {
-                                        fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
-                                    })
-                                    .catch(console.error);
-                            });*/
+                        message.channel.send(`alright hold on, performing magik on a ~${fileSize}mb image`);
                     }
+
+                    //Do operations on image and save it to disk
+                    gm(request(foundURL))
+                        .write(`./graphics/${filename}.png`, function (err) {
+                            //Start recursion if we need to
+                            if (setToReduce) {
+                                reduceImageFileSize(message, filename, 1);
+                            }
+
+                            //Otherwise, just post it
+                            else {
+                                message.channel.send({ files: [`./graphics/${filename}.png`] })
+                                    .then(function(msg) {
+                                        fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                    })
+                                    .catch(console.error);
+                            }
+                        });
                 })
                 .catch(function (err) {
                     console.error(err);
@@ -133,4 +110,25 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "magik"
+}
+
+function reduceImageFileSize(message, filename, chopNum) {
+    gm(`./graphics/${filename}.png`)
+        .minify()
+        .write(`./graphics/${filename}.png`, function (err) {
+            let stats = fs.statSync(`./graphics/${filename}.png`);
+            let fileSize = (stats["size"] / 1000000.0).toFixed(2);
+
+            if (fileSize > maxFileSize) {
+                reduceImageFileSize(message, filename, chopNum+1);
+            }
+            else {
+                message.channel.send(`Alright I had to chop it ${chopNum} time${(chopNum > 1) ? 's' : ''}, posting now`);
+                message.channel.send({ files: [`./graphics/${filename}.png`] })
+                    .then(function(msg) {
+                        fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                    })
+                    .catch(console.error);
+            }
+        });
 }

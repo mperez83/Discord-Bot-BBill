@@ -92,7 +92,7 @@ module.exports.run = async (bot, message, args) => {
                 ahm.awardAchievement(message, ahm.achievement_list_enum.TIME_DILATION);
             }
 
-            message.reply(`your next power level check is in ** ${hoursLeft} hours, ${minutesLeft} minutes, and ${secondsLeft} seconds**`);
+            message.reply(`you may reassess your power in ** ${hoursLeft} hour${(hoursLeft != 1) ? 's' : ''}, ${minutesLeft} minute${(minutesLeft != 1) ? 's' : ''}, and ${secondsLeft} second${(secondsLeft != 1) ? 's' : ''}**`);
         }
 
     });
