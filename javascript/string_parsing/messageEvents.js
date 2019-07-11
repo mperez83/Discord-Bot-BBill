@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 const utilitiesModule = require('../utilities');
+const ahm = require("../achievementHandler");
 const config = require("../../data/general_data/config.json");
 
 const emojiSampling = [
@@ -40,8 +41,6 @@ module.exports = {
             fs.writeFileSync("./data/general_data/userData.json", JSON.stringify(userDataJson, null, 4));
         });
 
-        //If the user has gone over 10000 characters, make bbill react and reset their asciiTyped stat
-
         //1 in 10000 chance of big bill reacting with 20 random emoji
         if (Math.ceil(Math.random() * 10000) == 69) {
             let clonedArrayOfEmoji = [...emojiSampling];
@@ -51,6 +50,11 @@ module.exports = {
                 message.react(clonedArrayOfEmoji[randomIndex]);
                 clonedArrayOfEmoji.splice(randomIndex, 1);
             }
+        }
+
+        //If the user says the secret phrase, give them the achievement
+        if (message.content == "rusty bullet holes") {
+            ahm.awardAchievement(message, ahm.achievement_list_enum.SECRET_PHRASE);
         }
 
     }
