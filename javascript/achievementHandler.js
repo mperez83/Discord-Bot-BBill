@@ -15,7 +15,8 @@ const achievement_list_enum =
     SECRET_PORYGON: "Secret Porygon",
     LOVELY_KOMUGI: "Lovely Komugi",
     SOCIAL_DEVIANT: "Social Deviant",
-    SHIBA_LOVER: "Shiba Lover"
+    SHIBA_LOVER: "Shiba Lover",
+    LOYAL_LABOURER: "Loyal Labourer"
 }
 
 const achievement_list = 
@@ -88,6 +89,13 @@ const achievement_list =
     {
         description: "Unboxed over 1000 shibes",
         gamer_score: 20,
+        secret: false
+    },
+
+    "Loyal Labourer":
+    {
+        description: "Crafted over 500 items",
+        gamer_score: 10,
         secret: false
     }
 
