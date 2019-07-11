@@ -5,6 +5,7 @@ const request = require("request");
 const rp = require("request-promise");
 
 const utilitiesModule = require('../../utilities');
+const magikUtilities = require('../../magikUtilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.1;
@@ -52,11 +53,9 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    let foundURL;
-
     utilitiesModule.getMostRecentImageURL(message).then(requestedURL => {
 
-        foundURL = requestedURL;
+        let foundURL = requestedURL;
 
         if (!foundURL) {
             return;
@@ -69,35 +68,47 @@ module.exports.run = async (bot, message, args) => {
 
             rp(options)
                 .then(function (response) {
+
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
-                    let setToReduce = false;
 
+                    //If we need to do recursive filesize reduction, we need to write the file to disk first
                     if (fileSize > maxFileSize) {
-                        message.channel.send(`This image is ~${fileSize}mb, I gotta chop it down until it's lower than ${maxFileSize}mb (might take a bit, be patient)`);
-                        setToReduce = true;
+                        message.channel.send(`This image is **~${fileSize}mb**, I gotta chop it down until it's lower than **${maxFileSize}mb** (might take a bit, be patient)`);
+                        gm(request(foundURL))
+                            .write(`./graphics/${filename}.png`, function (err) {
+                                if (err) console.error(err);
+
+                                magikUtilities.reduceImageFileSize(message, filename, 1, maxFileSize, () => {
+                                    gm(`./graphics/${filename}.png`)
+                                        .write(`./graphics/${filename}.png`, function (err) {
+                                            if (err) console.error(err);
+
+                                            message.channel.send({ files: [`./graphics/${filename}.png`] })
+                                                .then(function(msg) {
+                                                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                                })
+                                                .catch(console.error);
+                                        });
+                                });
+                            });
                     }
+
+                    //Otherwise, just do magik on the image directly
                     else {
-                        message.channel.send(`alright hold on, performing magik on a ~${fileSize}mb image`);
-                    }
-
-                    //Do operations on image and save it to disk
-                    gm(request(foundURL))
-                        .write(`./graphics/${filename}.png`, function (err) {
-                            //Start recursion if we need to
-                            if (setToReduce) {
-                                reduceImageFileSize(message, filename, 1);
-                            }
-
-                            //Otherwise, just post it
-                            else {
+                        message.channel.send(`alright hold on, doing magik on a ~${fileSize}mb image`);
+                        gm(request(foundURL))
+                            .write(`./graphics/${filename}.png`, function (err) {
+                                if (err) console.error(err);
+                                
                                 message.channel.send({ files: [`./graphics/${filename}.png`] })
                                     .then(function(msg) {
                                         fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
                                     })
                                     .catch(console.error);
-                            }
-                        });
+                            });
+                    }
+
                 })
                 .catch(function (err) {
                     console.error(err);
