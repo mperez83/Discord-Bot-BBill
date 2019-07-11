@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 const utilitiesModule = require('../../utilities');
+const ahm = require("../../achievementHandler");
 
 const dataLoc = "./data/general_data/userData.json";
 
@@ -83,6 +84,13 @@ module.exports.run = async (bot, message, args) => {
             let secondsLeft = Math.floor((differenceMS / 1000) % 60);
             let minutesLeft = Math.floor((differenceMS / (1000 * 60)) % 60);
             let hoursLeft = Math.floor((differenceMS / (1000 * 60 * 60)) % 24);
+
+            if (hoursLeft == 24 && minutesLeft == 0 && secondsLeft == 0) {
+                ahm.awardAchievement(message, ahm.achievement_list_enum.POWER_HUNGRY);
+            }
+            else if (hoursLeft == 0 && minutesLeft == 0 && secondsLeft == 0) {
+                ahm.awardAchievement(message, ahm.achievement_list_enum.TIME_DILATION);
+            }
 
             message.reply(`your next power level check is in ** ${hoursLeft} hours, ${minutesLeft} minutes, and ${secondsLeft} seconds**`);
         }

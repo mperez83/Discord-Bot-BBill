@@ -1,4 +1,5 @@
 const utilitiesModule = require('../utilities');
+const ahm = require("../achievementHandler");
 const config = require("../../data/general_data/config.json");
 
 
@@ -168,6 +169,21 @@ module.exports = {
                     }
                 })
                 .catch(console.error);
+        }
+
+        //If the user says the secret phrase, give them the achievement
+        if (userMsg == "rusty bullet holes") {
+            ahm.awardAchievement(message, ahm.achievement_list_enum.SECRET_PHRASE);
+        }
+
+        //If the user says 420, check the time to see if they get the achievement
+        if (userMsg == "420") {
+            let today = new Date();
+            let curHour = (today.getUTCHours() > 12) ? today.getUTCHours() - 12 : today.getUTCHours();
+            let curMinute = today.getUTCMinutes();
+            if (curHour == 4 && curMinute == 20) {
+                ahm.awardAchievement(message, ahm.achievement_list_enum.FOUR_TWENTY);
+            }
         }
 
         return false;

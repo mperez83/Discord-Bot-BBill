@@ -41,7 +41,7 @@ module.exports = {
             fs.writeFileSync("./data/general_data/userData.json", JSON.stringify(userDataJson, null, 4));
         });
 
-        //1 in 10000 chance of big bill reacting with 20 random emoji
+        //1 in 10,000 chance of big bill reacting with 20 random emoji
         if (Math.ceil(Math.random() * 10000) == 69) {
             let clonedArrayOfEmoji = [...emojiSampling];
 
@@ -52,9 +52,9 @@ module.exports = {
             }
         }
 
-        //If the user says the secret phrase, give them the achievement
-        if (message.content == "rusty bullet holes") {
-            ahm.awardAchievement(message, ahm.achievement_list_enum.SECRET_PHRASE);
+        //1 in 100,000 chance of big bill giving the Just Really Lucky achievement
+        if (Math.ceil(Math.random() * 100000) == 69) {
+            ahm.awardAchievement(message, ahm.achievement_list_enum.JUST_REALLY_LUCKY);
         }
 
     }

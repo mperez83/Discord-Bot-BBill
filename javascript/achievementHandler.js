@@ -11,7 +11,8 @@ const achievement_list_enum =
     POWER_HUNGRY: "Power hungry",
     TIME_DILATION: "Time dilation",
     JUST_REALLY_LUCKY: "Just really lucky",
-    SECRET_PHRASE: "Secret phrase"
+    SECRET_PHRASE: "Secret phrase",
+    SECRET_PORYGON: "Secret porygon"
 }
 
 const achievement_list = 
@@ -56,6 +57,13 @@ const achievement_list =
     {
         description: "Say the secret phrase",
         gamer_score: 10,
+        secret: true
+    },
+
+    "Secret porygon":
+    {
+        description: "Found the secret porygon",
+        gamer_score: 5,
         secret: true
     }
 
@@ -141,7 +149,6 @@ function awardAchievement(message, achName) {
         }
 
         if (userAchObj.achievements[achName] == true) {
-            console.log("already own");
             return;
         }
         else {

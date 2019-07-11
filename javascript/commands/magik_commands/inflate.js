@@ -2,7 +2,9 @@ const fs = require("fs");
 const gm = require("gm");
 const request = require("request");
 const rp = require("request-promise");
+
 const utilitiesModule = require('../../utilities');
+const ahm = require("../../achievementHandler");
 const config = require("../../../data/general_data/config.json");
 
 
@@ -97,6 +99,7 @@ module.exports.run = async (bot, message, args) => {
                                             fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
                                         })
                                         .catch(console.error);
+                                    ahm.awardAchievement(message, ahm.achievement_list_enum.SECRET_PORYGON);
                                 }
                                 else {
                                     message.channel.send({ files: [`./graphics/${filename}.png`] })

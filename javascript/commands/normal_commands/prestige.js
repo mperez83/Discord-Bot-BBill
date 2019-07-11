@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 const utilitiesModule = require('../../utilities');
+const ahm = require("../../achievementHandler");
 
 const dataLoc = "./data/general_data/userData.json";
 
@@ -41,6 +42,7 @@ module.exports.run = async (bot, message, args) => {
             utilitiesModule.incrementUserDataValue(message.author, "prestigeLevel", 1);
             fs.writeFileSync(dataLoc, JSON.stringify(userDataJson, null, 4));
             message.reply(`you're now 1 better than everyone else`);
+            ahm.awardAchievement(message, ahm.achievement_list_enum.FIRST_PRESTIGE);
             return;
         }
         else {
