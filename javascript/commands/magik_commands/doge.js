@@ -1,5 +1,6 @@
 const fs = require("fs");
 const gm = require("gm");
+
 const utilitiesModule = require("../../utilities");
 const config = require("../../../data/general_data/config.json");
 
@@ -8,7 +9,7 @@ const config = require("../../../data/general_data/config.json");
 module.exports.run = async (bot, message, args) => {
 
     if (args.length > 0) {
-        message.channel.send(`doge doesn't take parameters, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+        message.channel.send(`doge doesn't take parameters, ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 

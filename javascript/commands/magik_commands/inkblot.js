@@ -2,6 +2,7 @@ const fs = require("fs");
 const gm = require("gm");
 const request = require("request");
 const rp = require("request-promise");
+
 const utilitiesModule = require('../../utilities');
 const config = require("../../../data/general_data/config.json");
 
@@ -10,13 +11,13 @@ const config = require("../../../data/general_data/config.json");
 module.exports.run = async (bot, message, args) => {
 
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message.author)}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 
     //If the user tried to supply some kind of argument, cut that shit right off
     if (args.length > 0) {
-        message.channel.send(`Inkblot doesn't use parameters, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+        message.channel.send(`Inkblot doesn't use parameters, ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -42,7 +43,7 @@ module.exports.run = async (bot, message, args) => {
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
         
                     if (fileSize > 0.5) {
-                        message.channel.send(`I don't want to inkify anything around the size of 0.5mb, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+                        message.channel.send(`I don't want to inkify anything around the size of 0.5mb, ${utilitiesModule.getRandomNameInsult(message)}`);
                         return;
                     }
                     else {

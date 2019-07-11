@@ -33,6 +33,7 @@ module.exports = {
 
         if (message.mentions.everyone) {
             message.channel.send(">:0");
+            utilitiesModule.incrementUserDataValue(message.author, "socialDeviancy", Math.ceil(Math.random() * 5));
             return true;
         }
 

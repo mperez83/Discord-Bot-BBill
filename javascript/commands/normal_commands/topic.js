@@ -9,7 +9,7 @@ const dataLoc = "./data/general_data/serverData.json";
 module.exports.run = async (bot, message, args) => {
 
     if (message.channel.type == "dm") {
-        message.channel.send(`you can't use this in a dm, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+        message.channel.send(`you can't use this in a dm, ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 

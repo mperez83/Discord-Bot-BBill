@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
     //If no name is entered, set the name of the audio file to some random filename from the audio folder
     if (inputAudioName.length == 0) {
         if (audioFiles.length == 0) {
-            message.channel.send(`There are no audio files to play yet, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+            message.channel.send(`There are no audio files to play yet, ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
         }
         else {

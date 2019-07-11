@@ -4,7 +4,7 @@ module.exports.run = async (bot, message, args) => {
 
     //if this message wasn't sent by ME, return
     if (message.author.id != "205106238697111552") {
-        message.channel.send(`unauthorized access, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+        message.channel.send(`unauthorized access, ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 

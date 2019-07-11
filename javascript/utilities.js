@@ -1,14 +1,24 @@
 const fs = require("fs");
 
+const ahm = require("./achievementHandler");
+
+const userDataLoc = "./data/general_data/userData.json";
+
 
 
 //Returns random line from list_of_names_to_insult_people_with as a string
-module.exports.getRandomNameInsult = function(user) {
-    this.incrementUserDataValue(user, "socialDeviancy", 1);
+function getRandomNameInsult(message) {
+    incrementUserDataValue(message.author, "socialDeviancy", 1);
+    let socialDeviancyStat = getUserDataValue(message.author, "socialDeviancy");
+    if (socialDeviancyStat != undefined && socialDeviancyStat >= 100) {
+        ahm.awardAchievement(message, ahm.achievement_list_enum.SOCIAL_DEVIANT);
+    }
+
     let nameInsults = fs.readFileSync("./data/general_data/list_of_names_to_insult_people_with.txt").toString().split("\n");
     for (let i = 0; i < nameInsults.length; i++) nameInsults[i] = nameInsults[i].substring(1);
     return nameInsults[Math.floor(Math.random() * nameInsults.length)];
 }
+module.exports.getRandomNameInsult = getRandomNameInsult;
 
 
 
@@ -23,7 +33,7 @@ module.exports.readHyphenTextFile = function(fileLocation) {
 
 
 //Attempts to read JSON file, and creates a new one if the provided fileDir doesn't exist
-module.exports.readJSONFile = function(fileDir, callback) {
+function readJSONFile(fileDir, callback) {
     fs.readFile(fileDir, function readFileCallback(err, data) {
         if (err) {
             //console.error(err);
@@ -38,18 +48,31 @@ module.exports.readJSONFile = function(fileDir, callback) {
         }
     });
 }
+module.exports.readJSONFile = readJSONFile;
+
+
+
+//Get a value inside userData.json of a given user
+function getUserDataValue(user, valueName) {
+    readJSONFile(userDataLoc, function (userDataJson) {
+        if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
+        return userDataJson[user.id][valueName];
+    });
+}
+module.exports.getUserDataValue = getUserDataValue;
 
 
 
 //Increases a value inside userData.json of a given user by a given amount
-module.exports.incrementUserDataValue = function(user, valueName, amount) {
-    this.readJSONFile("./data/general_data/userData.json", function (userDataJson) {
+function incrementUserDataValue(user, valueName, amount) {
+    readJSONFile(userDataLoc, function (userDataJson) {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
         if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
         userDataJson[user.id][valueName] += amount;
-        fs.writeFileSync("./data/general_data/userData.json", JSON.stringify(userDataJson, null, 4));
+        fs.writeFileSync(userDataLoc, JSON.stringify(userDataJson, null, 4));
     });
 }
+module.exports.incrementUserDataValue = incrementUserDataValue;
 
 
 
@@ -113,11 +136,11 @@ module.exports.getMostRecentImageURL = function(message) {
         let errorMessage;
 
         if (!validURL) {
-            errorMessage = `I didn't find any messages containing images whatsoever in the last ten messages, ${this.getRandomNameInsult(message.author)}`;
+            errorMessage = `I didn't find any messages containing images whatsoever in the last ten messages, ${getRandomNameInsult(message)}`;
         }
 
         else if (validURL.match(/\.(jpeg|jpg|gif|png)(\?v=1)*$/) == null) {
-            errorMessage = `The image url I found doesn't have a valid file extension. ${this.getRandomNameInsult(message.author)}`;
+            errorMessage = `The image url I found doesn't have a valid file extension. ${getRandomNameInsult(message)}`;
             validURL = null;
         }
 

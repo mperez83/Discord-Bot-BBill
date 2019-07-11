@@ -12,7 +12,7 @@ module.exports.run = async (bot, message, args) => {
 
         //If the user tried to supply some kind of argument, cut that shit right off
         if (args.length > 0) {
-            message.channel.send(`do not tarnish your presige call with arguments, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+            message.channel.send(`do not tarnish your presige call with arguments, ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
         }
 
@@ -46,7 +46,7 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
         else {
-            message.reply(`you are not eligible to prestige, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+            message.reply(`you are not eligible to prestige, ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
         }
 

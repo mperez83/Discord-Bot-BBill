@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const fs = require("fs");
 
 const utilitiesModule = require("./utilities");
+const ahm = require("./achievementHandler");
 const config = require("../data/general_data/config.json");
 
 
@@ -47,6 +48,7 @@ module.exports.unboxImage = function(message) {
         if (selectedImage == "komugi shibe 1.jpg") {
             newEmbed.addField(`Holy shit, a ${selectedImage}!!`, `There was a 1/${shibes.length} chance of that happening!`);
             newEmbed.setColor("#ff0000");
+            ahm.awardAchievement(message, ahm.achievement_list_enum.LOVELY_KOMUGI);
         }
         else {
             newEmbed.addField(`${selectedImage}`, `Amount unboxed: ${jsonObj.amount}`);
@@ -81,6 +83,13 @@ module.exports.unboxImage = function(message) {
             .then(function(msg) {
 
                 if (jsonObj.rarity == "Not set yet") {
+
+                    if (selectedImage == "komugi shibe 1.jpg") {
+                        jsonObj.rarity = "Legendary";
+                        dataJson[selectedImage] = jsonObj;
+                        fs.writeFileSync(dataLoc, JSON.stringify(dataJson, null, 4), function(err) {if (err) return err;});
+                        return;
+                    }
 
                     const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 15000 });
                     collector.on('collect', message => {

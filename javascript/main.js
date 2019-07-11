@@ -90,7 +90,7 @@ bot.on("message", (message) => {
     if (config.construction_mode == "true") {
         if (message.author.id != "205106238697111552") {
             if (message.content.startsWith(config.prefix))
-                message.channel.send(`I'm currently in construction_mode, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+                message.channel.send(`I'm currently in construction_mode, ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
         }
     }

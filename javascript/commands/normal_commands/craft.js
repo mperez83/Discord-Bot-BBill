@@ -157,12 +157,12 @@ const patterns = [
 module.exports.run = async (bot, message, args) => {
 
     if (message.channel.type == "dm") {
-        message.channel.send(`you can't craft without an audience, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+        message.channel.send(`you can't craft without an audience, ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 
     if (message.guild.emojis.size == 0) {
-        message.channel.send(`This server doesn't have any emojis, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+        message.channel.send(`This server doesn't have any emojis, ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 

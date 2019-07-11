@@ -73,7 +73,7 @@ module.exports = {
 
             //If the user just @'s Big Bill with no message, call them an idiot
             if (!userMsg) {
-                message.channel.send(`What? ${utilitiesModule.getRandomNameInsult(message.author)}`);
+                message.channel.send(`What? ${utilitiesModule.getRandomNameInsult(message)}`);
                 return true;
             }
 

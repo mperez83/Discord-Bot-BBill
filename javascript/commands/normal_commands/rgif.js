@@ -9,7 +9,7 @@ module.exports.run = async (bot, message, args) => {
     args = args.join(" ");
     
     if (args.length == 0) {
-        message.channel.send(`I can't search for nothing, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+        message.channel.send(`I can't search for nothing, ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
         else if (!data.items || data.items.length == 0) {
-            message.channel.send(`No result for "${args}", ${utilitiesModule.getRandomNameInsult(message.author)}`);
+            message.channel.send(`No result for "${args}", ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
         }
         let randResult = data.items[Math.floor(Math.random() * data.items.length)];

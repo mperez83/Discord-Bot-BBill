@@ -8,17 +8,17 @@ module.exports.run = async (bot, message, args) => {
 
     //if this message wasn't sent by ME, return
     if (message.author.id != "205106238697111552") {
-        message.channel.send(`unauthorized access, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+        message.channel.send(`unauthorized access, ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 
     //Parameter count checks
     if (args.length == 0) {
-        message.channel.send(`Not enough args, ${utilitiesModule.getRandomNameInsult(message.author)} (!config requires 1 arg for a key query, or 2 args to set a key/value)`);
+        message.channel.send(`Not enough args, ${utilitiesModule.getRandomNameInsult(message)} (!config requires 1 arg for a key query, or 2 args to set a key/value)`);
         return;
     }
     else if (args.length > 2) {
-        message.channel.send(`Too many args, ${utilitiesModule.getRandomNameInsult(message.author)} (!config requires 1 arg for a key query, or 2 args to set a key/value value)`);
+        message.channel.send(`Too many args, ${utilitiesModule.getRandomNameInsult(message)} (!config requires 1 arg for a key query, or 2 args to set a key/value value)`);
         return;
     }
 
@@ -31,7 +31,7 @@ module.exports.run = async (bot, message, args) => {
     //Key query
     if (args.length == 1) {
         if (!config[args[0]]) {
-            message.channel.send(`There is no key named "${args[0]}" in the config file, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+            message.channel.send(`There is no key named "${args[0]}" in the config file, ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
         }
         else {
@@ -43,7 +43,7 @@ module.exports.run = async (bot, message, args) => {
     //Key/value set
     else {
         if (!config[args[0]]) {
-            message.channel.send(`There is no key named "${args[0]}" in the config file, ${utilitiesModule.getRandomNameInsult(message.author)}`);
+            message.channel.send(`There is no key named "${args[0]}" in the config file, ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
         }
         else {
@@ -61,7 +61,7 @@ module.exports.run = async (bot, message, args) => {
                     }
                 }
                 else {
-                    message.channel.send(`Config key "${args[0]}" is a boolean, so you have to provide a boolean as the second arg. ${utilitiesModule.getRandomNameInsult(message.author)}`);
+                    message.channel.send(`Config key "${args[0]}" is a boolean, so you have to provide a boolean as the second arg. ${utilitiesModule.getRandomNameInsult(message)}`);
                     return;
                 }
             }
@@ -69,7 +69,7 @@ module.exports.run = async (bot, message, args) => {
             //Check if it's a number
             else if (!isNaN(config[args[0]])) {
                 if (isNaN(args[1])) {
-                    message.channel.send(`Config key "${args[0]}" is a number, so you have to provide a number as the second arg. ${utilitiesModule.getRandomNameInsult(message.author)}`);
+                    message.channel.send(`Config key "${args[0]}" is a number, so you have to provide a number as the second arg. ${utilitiesModule.getRandomNameInsult(message)}`);
                     return;
                 }
                 else {

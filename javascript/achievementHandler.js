@@ -6,19 +6,22 @@ const achievementDataLoc = "./data/general_data/userAchievementData.json";
 
 const achievement_list_enum =
 {
-    FIRST_PRESTIGE: "First prestige!",
+    FIRST_PRESTIGE: "First Prestige!",
     FOUR_TWENTY: "420",
-    POWER_HUNGRY: "Power hungry",
-    TIME_DILATION: "Time dilation",
-    JUST_REALLY_LUCKY: "Just really lucky",
-    SECRET_PHRASE: "Secret phrase",
-    SECRET_PORYGON: "Secret porygon"
+    POWER_HUNGRY: "Power Hungry",
+    TIME_DILATION: "Time Dilation",
+    JUST_REALLY_LUCKY: "Just Really Lucky",
+    SECRET_PHRASE: "Secret Phrase",
+    SECRET_PORYGON: "Secret Porygon",
+    LOVELY_KOMUGI: "Lovely Komugi",
+    SOCIAL_DEVIANT: "Social Deviant",
+    SHIBA_LOVER: "Shiba Lover"
 }
 
 const achievement_list = 
 {
 
-    "First prestige!":
+    "First Prestige!":
     {
         description: "Prestige for the first time",
         gamer_score: 10,
@@ -32,39 +35,60 @@ const achievement_list =
         secret: false
     },
 
-    "Power hungry":
+    "Power Hungry":
     {
         description: "Attempt to do a power call immediately after having done one",
         gamer_score: 5,
         secret: false
     },
 
-    "Time dilation":
+    "Time Dilation":
     {
         description: "Attempt to do a power call with 0h 0m 0s left",
         gamer_score: 15,
         secret: false
     },
 
-    "Just really lucky":
+    "Just Really Lucky":
     {
         description: "There's a 1 in 500,000 chance every message to get this achievement",
         gamer_score: 0,
         secret: true
     },
 
-    "Secret phrase":
+    "Secret Phrase":
     {
         description: "Say the secret phrase",
         gamer_score: 10,
         secret: true
     },
 
-    "Secret porygon":
+    "Secret Porygon":
     {
         description: "Found the secret porygon",
         gamer_score: 5,
         secret: true
+    },
+
+    "Lovely Komugi":
+    {
+        description: "Unboxed a legendary komugi",
+        gamer_score: 20,
+        secret: false
+    },
+
+    "Social Deviant":
+    {
+        description: "Be a special snowflake",
+        gamer_score: 5,
+        secret: false
+    },
+
+    "Shiba Lover":
+    {
+        description: "Unboxed over 1000 shibes",
+        gamer_score: 20,
+        secret: false
     }
 
 }

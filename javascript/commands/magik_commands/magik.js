@@ -3,6 +3,7 @@ const gm = require("gm");
 const imageMagick = require('gm').subClass({imageMagick: true});
 const request = require("request");
 const rp = require("request-promise");
+
 const utilitiesModule = require('../../utilities');
 const config = require("../../../data/general_data/config.json");
 
