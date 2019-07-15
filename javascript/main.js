@@ -149,9 +149,9 @@ bot.on("messageReactionAdd", (messageReaction, user) => {
 
 //Create event for when users update their info (such as their username)
 bot.on("userUpdate", (oldUser, newUser) => {
-    console.log("SOMEONE updated their STATS");
+    console.log(`${oldUser.username} updated their info`);
     if (newUser.username != utilitiesModule.getUserDataValue(newUser, "username")) {
-        console.log("the user updated their username, updating their userData now");
+        console.log(`${oldUser.username} updated their username to ${newUser.username}, updating their userData now`);
         utilitiesModule.updateUserDataValue(newUser, "username", newUser.username);
     }
 });
