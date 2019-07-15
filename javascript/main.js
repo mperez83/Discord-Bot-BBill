@@ -118,6 +118,9 @@ bot.on("message", (message) => {
     //Special command check (currently only !doge is a special command)
     if (command.match(/^do+ge$/)) command = "doge";
 
+    //If the command is all caps, change it to garfield
+    if (command == command.toUpperCase()) command = "garfield";
+
     let cmd = bot.commands.get(command);
     if (cmd) {
         //Increment command call count

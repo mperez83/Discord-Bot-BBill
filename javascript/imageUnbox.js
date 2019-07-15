@@ -12,12 +12,23 @@ module.exports.unboxImage = function(message) {
     let command = message.content.split(/\s+/g)[0];
     command = command.slice(config.prefix.length);
 
-    let photoLoc = `./graphics/${command}s/`;
-    let dataLoc = `./data/image_data/${command}Data.json`;
+    let photoLoc = ``;
+    let dataLoc = ``;
+
+    if (Math.floor(Math.random() * 100) < 5) {
+        photoLoc = `./graphics/komugi/`;
+        dataLoc = `./data/image_data/shibeData.json`;
+    }
+    else {
+        photoLoc = `./graphics/${command}s/`;
+        dataLoc = `./data/image_data/${command}Data.json`;
+    }
 
 
 
     utilitiesModule.readJSONFile(dataLoc, function (dataJson) {
+
+        if (Math.floor(Math.random() * 100) < 5) komugiWipe = true;
 
         let images = fs.readdirSync(photoLoc);
         let selectedImage = images[Math.floor(Math.random() * images.length)];
