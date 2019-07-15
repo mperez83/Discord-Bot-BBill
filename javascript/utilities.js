@@ -76,6 +76,17 @@ module.exports.incrementUserDataValue = incrementUserDataValue;
 
 
 
+//Updates a value inside userData.json of a given user to some value
+function updateUserDataValue(user, valueName, newValue) {
+    readJSONFile(userDataLoc, function (userDataJson) {
+        if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
+        userDataJson[user.id][valueName] = newValue;
+        fs.writeFileSync(userDataLoc, JSON.stringify(userDataJson, null, 4));
+    });
+}
+module.exports.updateUserDataValue = updateUserDataValue;
+
+
 //Attempt to give a user a new "Powerful" role
 module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
     let powerfulRole = guild.roles.find("name", "Powerful");

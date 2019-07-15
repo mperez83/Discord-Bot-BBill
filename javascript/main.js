@@ -80,7 +80,7 @@ bot.on("ready", () => {
 
 
 
-//Create an event listener for messages
+//Create event listener for messages
 bot.on("message", (message) => {
 
     //Don't even consider messages from bbill
@@ -134,6 +134,42 @@ bot.on("message", (message) => {
 
 });
 
+
+
+//Create event listener for reactions
+bot.on("messageReactionAdd", (messageReaction, user) => {
+    if (messageReaction.me) return;
+
+    if (messageReaction.emoji.name == "❗") {
+        utilitiesModule.incrementUserDataValue(user, "imposterScore", 1);
+    }
+});
+
+
+
+//Create event for when users update their info (such as their username)
+bot.on("userUpdate", (oldUser, newUser) => {
+    console.log("SOMEONE updated their STATS");
+    if (newUser.username != utilitiesModule.getUserDataValue(newUser, "username")) {
+        console.log("the user updated their username, updating their userData now");
+        utilitiesModule.updateUserDataValue(newUser, "username", newUser.username);
+    }
+});
+
+
+
+//Create event for when users within a guild update their info (such as their nickname)
+bot.on("guildMemberUpdate", (oldMember, newMember) => {
+    if (oldMember.nickname != newMember.nickname) {
+        if (newMember.nickname == "Big Bill") {
+            utilitiesModule.incrementUserDataValue(newMember.user, "imposterScore", 1);
+        }
+    }
+});
+
+
+
+//Log bbill in
 bot.login(config.token)
     .then(/*console.log*/)
     .catch(console.error);
