@@ -91,22 +91,14 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    //Save image to disk before doing operations
-                    gm(request(foundURL))
-                        .write(`./graphics/${filename}.png`, function(err) {
-                            if (err) console.error(err);
+                    let msg = `Starting undulate process`;
+                    if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
+                    if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
+                    message.channel.send(msg);
 
-                            //If the image is too big, reduce it before performing the operations
-                            if (fileSize > maxFileSize) {
-                                message.channel.send(`This image is **~${fileSize}mb**, I gotta chop it down until it's lower than **${maxFileSize}mb** (might take a bit, be patient)`);
-                                magikUtilities.reduceImageFileSize(message, filename, 1, maxFileSize, () => {
-                                    performUndulationMagick(message, filename, gifFrames, intensity);
-                                });
-                            }
-                            else {
-                                performUndulationMagick(message, filename, gifFrames, intensity);
-                            }
-                        });
+                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                        performUndulationMagik(message, filename, gifFrames, intensity);
+                    });
 
                 })
                 .catch(function (err) {
@@ -124,8 +116,8 @@ module.exports.help = {
 
 
 
-function performUndulationMagick(message, filename, gifFrames, intensity) {
-    message.channel.send(`alright hold on, creating an undulated gif`);
+function performUndulationMagik(message, filename, gifFrames, intensity) {
+    //message.channel.send(`Undulating a gif`);
 
     let writeRequests = 0;
     for (let i = 0; i < gifFrames; i++) {

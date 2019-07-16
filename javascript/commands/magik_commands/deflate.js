@@ -19,7 +19,6 @@ module.exports.run = async (bot, message, args) => {
     }
 
     let deflateAmount = 1;
-    let appendSuggestion = false;
 
     //If the user didn't supply a strength level, keep the deflation level normal
     if (args.length == 0) {
@@ -42,7 +41,6 @@ module.exports.run = async (bot, message, args) => {
                 return;
             }
             else if (args[0] > 1 && args[0] <= 99) {
-                appendSuggestion = true;
                 //message.channel.send(`making a black hole huh`);
             }
             else if (args[0] > 99) {
@@ -83,50 +81,17 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    //If we need to do recursive filesize reduction, we need to write the file to disk first
-                    if (fileSize > maxFileSize) {
-                        message.channel.send(`This image is **~${fileSize}mb**, I gotta chop it down until it's lower than **${maxFileSize}mb** (might take a bit, be patient)`);
-                        gm(request(foundURL))
-                            .write(`./graphics/${filename}.png`, function (err) {
-                                if (err) console.error(err);
+                    let msg = `Starting deflation process`;
+                    if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
+                    if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
+                    message.channel.send(msg);
 
-                                magikUtilities.reduceImageFileSize(message, filename, 1, maxFileSize, () => {
-                                    gm(`./graphics/${filename}.png`)
-                                        .implode(deflateAmount)
-                                        .write(`./graphics/${filename}.png`, function (err) {
-                                            if (err) console.error(err);
-
-                                            message.channel.send({ files: [`./graphics/${filename}.png`] })
-                                                .then(function(msg) {
-                                                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
-                                                })
-                                                .catch(console.error);
-                                        });
-                                });
-                            });
-                    }
-
-                    //Otherwise, just do magik on the image directly
-                    else {
-                        let msg = `alright hold on, deflating a ~${fileSize}mb image`;
-                        if (appendSuggestion) msg += ` (for best results, keep deflation strength less than 1)`;
-                        message.channel.send(msg);
-
-                        gm(request(foundURL))
-                            .implode(deflateAmount)
-                            .write(`./graphics/${filename}.png`, function (err) {
-                                if (err) console.error(err);
-
-                                message.channel.send({ files: [`./graphics/${filename}.png`] })
-                                    .then(function(msg) {
-                                        fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
-                                    })
-                                    .catch(console.error);
-                            });
-                    }
+                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                        performDeflateMagik(message, filename, deflateAmount);
+                    });
 
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.error(err);
                 });
         }
@@ -137,4 +102,22 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "deflate"
+}
+
+
+
+function performDeflateMagik(message, filename, deflateAmount) {
+    //message.channel.send(`Deflating the image...`);
+
+    gm(`./graphics/${filename}.png`)
+        .implode(deflateAmount)
+        .write(`./graphics/${filename}.png`, function (err) {
+            if (err) console.error(err);
+
+            message.channel.send({ files: [`./graphics/${filename}.png`] })
+                .then(function(msg) {
+                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                })
+                .catch(console.error);
+        });
 }

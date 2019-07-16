@@ -8,7 +8,7 @@ const magikUtilities = require('../../magikUtilities');
 const ahm = require("../../achievementHandler");
 const config = require("../../../data/general_data/config.json");
 
-const maxFileSize = 2;
+const maxFileSize = 0.1;
 
 
 
@@ -20,7 +20,6 @@ module.exports.run = async (bot, message, args) => {
     }
 
     let inflateAmount = 1;
-    let appendSuggestion = false;
 
     //If the user didn't supply a strength level, keep the inflation level normal
     if (args.length == 0) {
@@ -43,7 +42,6 @@ module.exports.run = async (bot, message, args) => {
                 return;
             }
             else if (args[0] > 2 && args[0] <= 99) {
-                appendSuggestion = true;
                 //message.channel.send(`kinky mf huh`);
             }
             else if (args[0] > 99) {
@@ -81,53 +79,20 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    //If we need to do recursive filesize reduction, we need to write the file to disk first
-                    if (fileSize > maxFileSize && inflateAmount != 69) {
-                        message.channel.send(`This image is **~${fileSize}mb**, I gotta chop it down until it's lower than **${maxFileSize}mb** (might take a bit, be patient)`);
-                        gm(request(foundURL))
-                            .write(`./graphics/${filename}.png`, function (err) {
-                                if (err) console.error(err);
+                    let msg = `Starting inflation process`;
+                    if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
+                    if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
+                    message.channel.send(msg);
 
-                                magikUtilities.reduceImageFileSize(message, filename, 1, maxFileSize, () => {
-                                    gm(`./graphics/${filename}.png`)
-                                        .implode(-inflateAmount)
-                                        .write(`./graphics/${filename}.png`, function (err) {
-                                            if (err) console.error(err);
-
-                                            message.channel.send({ files: [`./graphics/${filename}.png`] })
-                                                .then(function(msg) {
-                                                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
-                                                })
-                                                .catch(console.error);
-                                        });
-                                });
-                            });
+                    if (inflateAmount == 69) {
+                        message.channel.send({ files: [`./graphics/misc/gotcha.png`] });
+                        ahm.awardAchievement(message, ahm.achievement_list_enum.SECRET_PORYGON);
+                        return;
                     }
 
-                    //Otherwise, just do magik on the image directly
-                    else {
-                        let msg = `alright hold on, inflating a ~${fileSize}mb image`;
-                        if (appendSuggestion) msg += ` (for best results, keep inflation strength less than 2)`;
-                        message.channel.send(msg);
-
-                        if (inflateAmount == 69) {
-                            message.channel.send({ files: [`./graphics/${filename}.png`] });
-                            ahm.awardAchievement(message, ahm.achievement_list_enum.SECRET_PORYGON);
-                        }
-                        else {
-                            gm(request(foundURL))
-                                .implode(-inflateAmount)
-                                .write(`./graphics/${filename}.png`, function (err) {
-                                    if (err) console.error(err);
-
-                                    message.channel.send({ files: [`./graphics/${filename}.png`] })
-                                        .then(function(msg) {
-                                            fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
-                                        })
-                                        .catch(console.error);
-                                });
-                        }
-                    }
+                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                        performInflateMagik(message, filename, inflateAmount);
+                    });
 
                 })
                 .catch(function (err) {
@@ -141,4 +106,22 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "inflate"
+}
+
+
+
+function performInflateMagik(message, filename, inflateAmount) {
+    //message.channel.send(`Inflating the image...`);
+
+    gm(`./graphics/${filename}.png`)
+        .implode(-inflateAmount)
+        .write(`./graphics/${filename}.png`, function (err) {
+            if (err) console.error(err);
+
+            message.channel.send({ files: [`./graphics/${filename}.png`] })
+                .then(function(msg) {
+                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                })
+                .catch(console.error);
+        });
 }

@@ -45,77 +45,14 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    //If we need to do recursive filesize reduction, we need to write the file to disk first
-                    if (fileSize > maxFileSize) {
-                        message.channel.send(`This image is **~${fileSize}mb**, I gotta chop it down until it's lower than **${maxFileSize}mb** (might take a bit, be patient)`);
-                        gm(request(foundURL))
-                            .write(`./graphics/${filename}.png`, function (err) {
-                                if (err) console.error(err);
+                    let msg = `Starting inkblot process`;
+                    if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
+                    if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
+                    message.channel.send(msg);
 
-                                magikUtilities.reduceImageFileSize(message, filename, 1, maxFileSize, () => {
-                                    gm(`./graphics/${filename}.png`)
-                                        .size(function getSize(err, size) {
-                                            if (err) console.error(err);
-
-                                            let maxSingeAmount = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
-                                            let singeAmount = (maxSingeAmount < 99) ? maxSingeAmount : 99;
-
-                                            gm(`./graphics/${filename}.png`)
-                                                .charcoal(1)
-                                                .charcoal(1)
-                                                .charcoal(1)
-                                                .charcoal(1)
-                                                .charcoal(singeAmount / 2)
-                                                .charcoal(singeAmount)
-                                                .charcoal(singeAmount)
-                                                .charcoal(singeAmount)
-                                                .charcoal(singeAmount)
-                                                .write(`./graphics/${filename}.png`, function (err) {
-                                                    if (err) console.error(err);
-
-                                                    message.channel.send({ files: [`./graphics/${filename}.png`] })
-                                                        .then(function(msg) {
-                                                            fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
-                                                        })
-                                                        .catch(console.error);
-                                                });
-                                        });
-                                });
-                            });
-                    }
-
-                    //Otherwise, just do magik on the image directly
-                    else {
-                        message.channel.send(`alright hold on, blotting a ~${fileSize}mb image (takes a while, be patient)`);
-
-                        gm(request(foundURL))
-                            .size(function getSize(err, size) {
-                                if (err) console.error(err);
-
-                                let maxSingeAmount = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
-                                let singeAmount = (maxSingeAmount < 99) ? maxSingeAmount : 99;
-
-                                gm(request(foundURL))
-                                    .charcoal(1)
-                                    .charcoal(1)
-                                    .charcoal(1)
-                                    .charcoal(1)
-                                    .charcoal(singeAmount / 2)
-                                    .charcoal(singeAmount)
-                                    .charcoal(singeAmount)
-                                    .charcoal(singeAmount)
-                                    .charcoal(singeAmount)
-                                    .write(`./graphics/${filename}.png`, function (err) {
-                                        if (err) console.error(err);
-
-                                        message.channel.send({ files: [`./graphics/${filename}.png`] })
-                                            .then(function(msg) {
-                                                fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
-                                            })
-                                            .catch(console.error);
-                                    });
-                            });
-                    }
+                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                        performInkblotMagik(message, filename);
+                    });
 
                 })
                 .catch(function (err) {
@@ -129,4 +66,38 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "inkblot"
+}
+
+
+
+function performInkblotMagik(message, filename) {
+    //message.channel.send(`Inkblotting the image...`);
+
+    gm(`./graphics/${filename}.png`)
+        .size(function getSize(err, size) {
+            if (err) console.error(err);
+
+            let maxSingeAmount = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
+            let singeAmount = (maxSingeAmount < 99) ? maxSingeAmount : 99;
+
+            gm(`./graphics/${filename}.png`)
+                .charcoal(1)
+                .charcoal(1)
+                .charcoal(1)
+                .charcoal(1)
+                .charcoal(singeAmount / 2)
+                .charcoal(singeAmount)
+                .charcoal(singeAmount)
+                .charcoal(singeAmount)
+                .charcoal(singeAmount)
+                .write(`./graphics/${filename}.png`, function (err) {
+                    if (err) console.error(err);
+
+                    message.channel.send({ files: [`./graphics/${filename}.png`] })
+                        .then(function(msg) {
+                            fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                        })
+                        .catch(console.error);
+                });
+        });
 }
