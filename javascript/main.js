@@ -169,6 +169,14 @@ bot.on("guildMemberUpdate", (oldMember, newMember) => {
 
 
 
+//Create event for when bbill hits the rateLimit
+bot.on("rateLimit", (rateLimitInfo) => {
+    //console.log(rateLimitInfo);
+    //I feel like I should do something here but I'm not sure what
+});
+
+
+
 //Log bbill in
 bot.login(config.token)
     .then(/*console.log*/)

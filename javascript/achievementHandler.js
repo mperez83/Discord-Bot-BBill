@@ -52,7 +52,7 @@ const achievement_list =
 
     "Just Really Lucky":
     {
-        description: "There's a 1 in 500,000 chance every message to get this achievement",
+        description: "There's a 1 in 100,000 chance every message to get this achievement",
         gamer_score: 0,
         secret: true
     },
@@ -66,7 +66,7 @@ const achievement_list =
 
     "Secret Porygon":
     {
-        description: "Found the secret porygon",
+        description: "Find the secret porygon",
         gamer_score: 5,
         secret: true
     },
