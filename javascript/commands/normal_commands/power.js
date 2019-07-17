@@ -42,8 +42,7 @@ module.exports.run = async (bot, message, args) => {
                 power *= 0.1;
             }*/
             if (power == 69) {
-                message.reply(`your power level is **69.** You have attained the POWERFUL role.`);
-                utilitiesModule.bequeathPowerfulStatus(message.guild, message.member);
+                message.reply(`your power level is **69.**`);
                 utilitiesModule.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 69!!!`);
             }
             else if (power == 100) {

@@ -1,13 +1,12 @@
 const fs = require("fs");
 const gm = require("gm");
-const imageMagick = require('gm').subClass({imageMagick: true});
 const rp = require("request-promise");
 
 const utilitiesModule = require('../../utilities');
 const magikUtilities = require('../../magikUtilities');
 const config = require("../../../data/general_data/config.json");
 
-const maxFileSize = 0.001;
+const maxFileSize = 0.256;
 
 
 
@@ -39,14 +38,19 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    let msg = `Starting magik process`;
-                    if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
-                    if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
-                    message.channel.send(msg);
+                    if (fileSize < maxFileSize) {
+                        message.channel.send(`That image is already small enough to be an emote, ${utilitiesModule.getRandomNameInsult(message)}`);
+                        return;
+                    }
+                    else {
+                        let msg = `Starting emotify process`;
+                        if (fileSize > maxFileSize) msg += ` (the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
+                        message.channel.send(msg);
 
-                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performMagik(message, filename);
-                    });
+                        magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                            performEmotifyMagik(message, filename);
+                        });
+                    }
 
                 })
                 .catch(function (err) {
@@ -59,13 +63,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "magik"
+    name: "emotify"
 }
 
 
 
-function performMagik(message, filename) {
-    //message.channel.send(`Casting a spell on the image...`);
+function performEmotifyMagik(message, filename) {
+    //message.channel.send(`Emotifying the image...`);
 
     gm(`./graphics/${filename}.png`)
         .write(`./graphics/${filename}.png`, function (err) {

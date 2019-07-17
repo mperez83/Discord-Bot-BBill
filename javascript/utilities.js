@@ -37,7 +37,7 @@ function readJSONFile(fileDir, callback) {
     fs.readFile(fileDir, function readFileCallback(err, data) {
         if (err) {
             //console.error(err);
-            let tempData = {}
+            let tempData = {};
             fs.writeFile(fileDir, JSON.stringify(tempData, null, 4), function (err) {
                 if (err) throw err;
                 callback(tempData);
@@ -87,7 +87,7 @@ function updateUserDataValue(user, valueName, newValue) {
 module.exports.updateUserDataValue = updateUserDataValue;
 
 
-//Attempt to give a user a new "Powerful" role
+//Attempt to give a user a new "Powerful" role (DEPRECATED)
 module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
     let powerfulRole = guild.roles.find("name", "Powerful");
     if (!powerfulRole) {

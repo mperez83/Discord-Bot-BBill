@@ -1,6 +1,5 @@
 const fs = require("fs");
 const gm = require("gm");
-const request = require("request");
 const rp = require("request-promise");
 
 const utilitiesModule = require('../../utilities');
