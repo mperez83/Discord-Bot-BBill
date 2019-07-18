@@ -6,9 +6,9 @@ const utilitiesModule = require('../../utilities');
 const magikUtilities = require('../../magikUtilities');
 const config = require("../../../data/general_data/config.json");
 
-const maxFileSize = 0.5;
-const maxGifFrameCount = 10;
-const maxIntensity = 2;
+const maxFileSize = 0.25;
+const maxGifFrameCount = 30;
+const maxIntensity = 10;
 
 
 
@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    let gifFrameCount = 6;
+    let gifFrameCount = 20;
     let intensity = 1;
 
     if (args.length == 0) {
@@ -30,36 +30,36 @@ module.exports.run = async (bot, message, args) => {
 
     else if (args.length == 1 || args.length == 2) {
         if (isNaN(args[0])) {
-            message.channel.send(`The provided frame amount isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`The provided intensity isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
         }
         else {
-            if (args[0] < 2) {
-                message.channel.send(`Gifs are composed of more than one frame, ${utilitiesModule.getRandomNameInsult(message)}`);
+            if (args[0] <= 0) {
+                message.channel.send(`Can't have an intensity of 0 or less, ${utilitiesModule.getRandomNameInsult(message)}`);
                 return;
             }
-            else if (args[0] > maxGifFrameCount) {
-                message.channel.send(`I really don't want to go higher than ${maxGifFrameCount} frames, ${utilitiesModule.getRandomNameInsult(message)}`);
+            else if (args[0] > maxIntensity) {
+                message.channel.send(`Max intensity is ${maxIntensity}, ${utilitiesModule.getRandomNameInsult(message)}`);
                 return;
             }
-            gifFrameCount = args[0];
+            intensity = args[0];
         }
 
         if (args.length == 2) {
             if (isNaN(args[1])) {
-                message.channel.send(`The provided intensity isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`The provided frame amount isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
                 return;
             }
             else {
-                if (args[1] <= 0) {
-                    message.channel.send(`Can't have an intensity of 0 or less, ${utilitiesModule.getRandomNameInsult(message)}`);
+                if (args[1] < 2) {
+                    message.channel.send(`Gifs are composed of more than one frame, ${utilitiesModule.getRandomNameInsult(message)}`);
                     return;
                 }
-                else if (args[1] > maxIntensity) {
-                    message.channel.send(`Max intensity is ${maxIntensity}, ${utilitiesModule.getRandomNameInsult(message)}`);
+                else if (args[1] > maxGifFrameCount) {
+                    message.channel.send(`I really don't want to go higher than ${maxGifFrameCount} frames, ${utilitiesModule.getRandomNameInsult(message)}`);
                     return;
                 }
-                intensity = args[1];
+                gifFrameCount = args[1];
             }
         }
     }
@@ -118,13 +118,24 @@ module.exports.help = {
 function performUndulationMagik(message, filename, gifFrameCount, intensity) {
     //message.channel.send(`Undulating a gif...`);
 
+    let implodeValues = [];
+    for (let i = 0; i < gifFrameCount; i++) {
+        let curDeg = 360 * (i / gifFrameCount);
+        let newImplodeValue = Math.sin(curDeg * Math.PI / 180.0);
+        newImplodeValue -= 0.75;
+        newImplodeValue *= 0.5;
+        newImplodeValue *= intensity;
+        if (newImplodeValue < 0.01 && newImplodeValue > -0.01) newImplodeValue = 0.01;
+        implodeValues.push(newImplodeValue);
+    }
+
     let writeRequests = 0;
     for (let i = 0; i < gifFrameCount; i++) {
 
         writeRequests++;
 
         gm(`./graphics/${filename}.png`)
-            .implode((Math.random() - 0.5) * intensity)
+            .implode(implodeValues[i])
             .write(`./graphics/${filename}-${i}.png`, function (err) {
                 if (err) console.error(err);
                 

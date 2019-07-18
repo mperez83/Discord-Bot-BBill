@@ -56,7 +56,7 @@ module.exports.run = async (bot, message, args) => {
             }
             else {
                 if (args[1] < 2) {
-                    message.channel.send(`Anything less than 2 is bad, ${utilitiesModule.getRandomNameInsult(message)}`);
+                    message.channel.send(`A frame delay that's less than 2 is bad, ${utilitiesModule.getRandomNameInsult(message)}`);
                     return;
                 }
                 else if (args[1] > maxFrameDelay) {
@@ -148,7 +148,56 @@ module.exports.help = {
 function performIntensifyMagik(message, filename, gifFrameCount, gifFrameDelay, intensity) {
     //message.channel.send(`Intensifying a gif..`);
 
-    let writeRequests = 0;
+    //Get the size early on, so we don't have to repeatedly later on
+    gm(`./graphics/${filename}.png`)
+        .size(function getSize(err, size) {
+            if (err) console.error(err);
+
+            let cropWidth = size.width - (size.width * (0.01 * intensity));
+            let cropHeight = size.height - (size.height * (0.01 * intensity));
+
+            let writeRequests = 0;
+            for (let i = 0; i < gifFrameCount; i++) {
+
+                writeRequests++;
+
+                let cropXOffset = Math.random() * (size.width * (0.01 * intensity));
+                let cropYOffset = Math.random() * (size.height * (0.01 * intensity));
+
+                //Actually perform crop manipulations
+                gm(`./graphics/${filename}.png`)
+                    .crop(cropWidth, cropHeight, cropXOffset, cropYOffset, false)
+                    .repage(cropWidth, cropHeight, 0, 0)
+                    .write(`./graphics/${filename}-${i}.png`, function (err) {
+                        if (err) console.error(err);
+                        
+                        writeRequests--;
+        
+                        //If we've written all of the intensed images, generate the gif and post it
+                        if (writeRequests == 0) {
+                            fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; }); //Delete this because we don't need it anymore
+        
+                            magikUtilities.generateGif(message, filename, gifFrameCount, gifFrameDelay, () => {
+        
+                                //Once the gif is generated, post it
+                                message.channel.send({ files: [`./graphics/${filename}.gif`] })
+                                    .then(function(msg) {
+                                        fs.unlink(`./graphics/${filename}.gif`, function(err) {if (err) throw err; });
+                                        for (let i = 0; i < gifFrameCount; i++) {
+                                            fs.unlink(`./graphics/${filename}-${i}.png`, function(err) { if (err) throw err; });
+                                        }
+                                    })
+                                    .catch(console.error);
+        
+                            });
+                        }
+                    });
+
+            }
+
+        });
+
+    /*let writeRequests = 0;
     for (let i = 0; i < gifFrameCount; i++) {
 
         writeRequests++;
@@ -192,5 +241,5 @@ function performIntensifyMagik(message, filename, gifFrameCount, gifFrameDelay, 
                     });
             });
 
-    }
+    }*/
 }
