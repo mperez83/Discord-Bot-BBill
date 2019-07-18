@@ -2,13 +2,13 @@ const fs = require("fs");
 const gm = require("gm");
 const rp = require("request-promise");
 
-const utilitiesModule = require('../../utilities');
-const magikUtilities = require('../../magikUtilities');
+const utilitiesModule = require('../javascript/utilities');
+const magikUtilities = require('../javascript/magikUtilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.25;
+const maxBPM = 180;
 const maxIntensity = 10;
-const maxGifFrameCount = 30;
 
 
 
@@ -21,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    let gifFrameCount = 20;
+    let bpm = 120;
     let intensity = 1;
 
     if (args.length == 0) {
@@ -30,36 +30,36 @@ module.exports.run = async (bot, message, args) => {
 
     else if (args.length == 1 || args.length == 2) {
         if (isNaN(args[0])) {
-            message.channel.send(`The provided intensity isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`The provided BPM isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
         }
         else {
-            if (args[0] <= 0) {
-                message.channel.send(`Can't have an intensity of 0 or less, ${utilitiesModule.getRandomNameInsult(message)}`);
+            if (args[0] < 80) {
+                message.channel.send(`Minimum BPM is 80, ${utilitiesModule.getRandomNameInsult(message)}`);
                 return;
             }
-            else if (args[0] > maxIntensity) {
-                message.channel.send(`Max intensity is ${maxIntensity}, ${utilitiesModule.getRandomNameInsult(message)}`);
+            else if (args[0] > maxBPM) {
+                message.channel.send(`Max BPM is ${maxBPM}, ${utilitiesModule.getRandomNameInsult(message)}`);
                 return;
             }
-            intensity = args[0];
+            bpm = args[0];
         }
 
         if (args.length == 2) {
             if (isNaN(args[1])) {
-                message.channel.send(`The provided frame amount isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`The provided intensity isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
                 return;
             }
             else {
-                if (args[1] < 2) {
-                    message.channel.send(`Gifs are composed of more than one frame, ${utilitiesModule.getRandomNameInsult(message)}`);
+                if (args[1] <= 0) {
+                    message.channel.send(`Can't have an intensity of 0 or less, ${utilitiesModule.getRandomNameInsult(message)}`);
                     return;
                 }
-                else if (args[1] > maxGifFrameCount) {
-                    message.channel.send(`I really don't want to go higher than ${maxGifFrameCount} frames, ${utilitiesModule.getRandomNameInsult(message)}`);
+                else if (args[1] > maxIntensity) {
+                    message.channel.send(`Max intensity is ${maxIntensity}, ${utilitiesModule.getRandomNameInsult(message)}`);
                     return;
                 }
-                gifFrameCount = args[1];
+                intensity = args[1];
             }
         }
     }
@@ -90,13 +90,13 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    let msg = `Starting undulate process`;
+                    let msg = `Starting BPM process`;
                     if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
                     magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performUndulationMagik(message, filename, gifFrameCount, intensity);
+                        performBPMMagik(message, filename, bpm, intensity);
                     });
 
                 })
@@ -110,13 +110,15 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "undulate"
+    name: "bpm"
 }
 
 
 
-function performUndulationMagik(message, filename, gifFrameCount, intensity) {
-    //message.channel.send(`Undulating a gif...`);
+function performBPMMagik(message, filename, bpm, intensity) {
+    //message.channel.send(`Making a gif that beats to the provided BPM...`);
+
+    let gifFrameCount = 30;
 
     let implodeValues = [];
     for (let i = 0; i < gifFrameCount; i++) {
@@ -128,6 +130,8 @@ function performUndulationMagik(message, filename, gifFrameCount, intensity) {
         if (newImplodeValue < 0.01 && newImplodeValue > -0.01) newImplodeValue = 0.01;
         implodeValues.push(newImplodeValue);
     }
+
+    let gifDelay = (6000 / bpm) / (gifFrameCount / 2);
 
     let writeRequests = 0;
     for (let i = 0; i < gifFrameCount; i++) {
@@ -145,7 +149,7 @@ function performUndulationMagik(message, filename, gifFrameCount, intensity) {
                 if (writeRequests == 0) {
                     fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
 
-                    magikUtilities.generateGif(message, filename, gifFrameCount, 6, () => {
+                    magikUtilities.generateGif(message, filename, gifFrameCount, gifDelay, () => {
 
                         //Once the gif is generated, post it
                         message.channel.send({ files: [`./graphics/${filename}.gif`] })
