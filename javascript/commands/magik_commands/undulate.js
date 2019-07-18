@@ -7,7 +7,7 @@ const magikUtilities = require('../../magikUtilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.5;
-const maxGifFrames = 10;
+const maxGifFrameCount = 10;
 const maxIntensity = 2;
 
 
@@ -21,11 +21,11 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    let gifFrames = 6;
+    let gifFrameCount = 6;
     let intensity = 1;
 
     if (args.length == 0) {
-        //keep gifFrames and intensity at their default values
+        //keep gifFrameCount and intensity at their default values
     }
 
     else if (args.length == 1 || args.length == 2) {
@@ -38,11 +38,11 @@ module.exports.run = async (bot, message, args) => {
                 message.channel.send(`Gifs are composed of more than one frame, ${utilitiesModule.getRandomNameInsult(message)}`);
                 return;
             }
-            else if (args[0] > maxGifFrames) {
-                message.channel.send(`I really don't want to go higher than ${maxGifFrames} frames, ${utilitiesModule.getRandomNameInsult(message)}`);
+            else if (args[0] > maxGifFrameCount) {
+                message.channel.send(`I really don't want to go higher than ${maxGifFrameCount} frames, ${utilitiesModule.getRandomNameInsult(message)}`);
                 return;
             }
-            gifFrames = args[0];
+            gifFrameCount = args[0];
         }
 
         if (args.length == 2) {
@@ -96,7 +96,7 @@ module.exports.run = async (bot, message, args) => {
                     message.channel.send(msg);
 
                     magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performUndulationMagik(message, filename, gifFrames, intensity);
+                        performUndulationMagik(message, filename, gifFrameCount, intensity);
                     });
 
                 })
@@ -115,11 +115,11 @@ module.exports.help = {
 
 
 
-function performUndulationMagik(message, filename, gifFrames, intensity) {
-    //message.channel.send(`Undulating a gif`);
+function performUndulationMagik(message, filename, gifFrameCount, intensity) {
+    //message.channel.send(`Undulating a gif...`);
 
     let writeRequests = 0;
-    for (let i = 0; i < gifFrames; i++) {
+    for (let i = 0; i < gifFrameCount; i++) {
 
         writeRequests++;
 
@@ -130,36 +130,26 @@ function performUndulationMagik(message, filename, gifFrames, intensity) {
                 
                 writeRequests--;
 
-                //If we've written all of the undulated images, generate the gif and post it
+                //If we've written all of the undulated images, delete the source image and generate the gif
                 if (writeRequests == 0) {
-                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; }); //Delete this because we don't need it anymore
-                    generateGif(message, filename, gifFrames);
+                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+
+                    magikUtilities.generateGif(message, filename, gifFrameCount, 6, () => {
+
+                        //Once the gif is generated, post it
+                        message.channel.send({ files: [`./graphics/${filename}.gif`] })
+                            .then(function(msg) {
+                                fs.unlink(`./graphics/${filename}.gif`, function(err) { if (err) throw err; });
+                                for (let i = 0; i < gifFrameCount; i++) {
+                                    fs.unlink(`./graphics/${filename}-${i}.png`, function(err) { if (err) throw err; });
+                                }
+                            })
+                            .catch(console.error);
+
+                    });
+
                 }
             });
 
     }
-}
-
-function generateGif(message, filename, gifFrames) {
-    let gifImg = gm();
-
-    for (let i = 0; i < gifFrames; i++) {
-        gifImg
-            .in(`./graphics/${filename}-${i}.png`);
-    }
-
-    gifImg
-        .delay(6)
-        .write(`./graphics/${filename}.gif`, function(err){
-            if (err) throw err;
-
-            message.channel.send({ files: [`./graphics/${filename}.gif`] })
-                .then(function(msg) {
-                    for (let i = 0; i < gifFrames; i++) {
-                        fs.unlink(`./graphics/${filename}-${i}.png`, function(err) { if (err) throw err; });
-                    }
-                    fs.unlink(`./graphics/${filename}.gif`, function(err) { if (err) throw err; });
-                })
-                .catch(console.error);
-        });
 }

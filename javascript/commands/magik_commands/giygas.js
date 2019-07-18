@@ -6,7 +6,7 @@ const utilitiesModule = require('../../utilities');
 const magikUtilities = require('../../magikUtilities');
 const config = require("../../../data/general_data/config.json");
 
-const maxFileSize = 0.5;
+const maxFileSize = 0.25;
 
 
 
@@ -46,13 +46,13 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    let msg = `Starting ultra process`;
+                    let msg = `Starting giygas process`;
                     if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
                     magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performUltraMagik(message, filename);
+                        performGiygasMagik(message, filename);
                     });
 
                 })
@@ -66,25 +66,35 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "ultra"
+    name: "giygas"
 }
 
 
 
-function performUltraMagik(message, filename) {
-    //message.channel.send(`Supercharging the image...`);
+function performGiygasMagik(message, filename) {
+    //message.channel.send(`??? the image...`);
 
     gm(`./graphics/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);
 
-            let sharpenIntensity = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
-            if (sharpenIntensity > 99) sharpenIntensity = 99;
+            let swirlAmount = 360 + (Math.random() * 360);
+            if (Math.random() > 0.5) swirlAmount *= -1;
+
+            let maxRadius = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
+            let singeAmount = (maxRadius < 99) ? maxRadius : 99;
 
             gm(`./graphics/${filename}.png`)
-                .blur(sharpenIntensity)
-                .sharpen(sharpenIntensity)
-                .modulate(100, 500)
+                .swirl(swirlAmount)
+                .charcoal(1)
+                .charcoal(1)
+                .charcoal(1)
+                .charcoal(1)
+                .charcoal(singeAmount / 2)
+                .charcoal(singeAmount)
+                .charcoal(singeAmount)
+                .charcoal(singeAmount)
+                .charcoal(singeAmount)
                 .write(`./graphics/${filename}.png`, function (err) {
                     if (err) console.error(err);
 

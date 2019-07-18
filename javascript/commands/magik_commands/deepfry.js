@@ -1,28 +1,35 @@
 const fs = require("fs");
 const gm = require("gm");
-const imageMagick = require('gm').subClass({imageMagick: true});
 const rp = require("request-promise");
 
 const utilitiesModule = require('../../utilities');
 const magikUtilities = require('../../magikUtilities');
 const config = require("../../../data/general_data/config.json");
 
-const maxFileSize = 0.001;
+const maxFileSize = 0.25;
 
 
 
 module.exports.run = async (bot, message, args) => {
-
+    
     if (config.lite_mode == "true") {
         message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message)}`);
         return;
     }
 
+    //If the user tried to supply some kind of argument, cut that shit right off
+    if (args.length > 0) {
+        message.channel.send(`no parameters here, ${utilitiesModule.getRandomNameInsult(message)}`);
+        return;
+    }
 
+
+
+    let foundURL;
 
     utilitiesModule.getMostRecentImageURL(message).then(requestedURL => {
 
-        let foundURL = requestedURL;
+        foundURL = requestedURL;
 
         if (!foundURL) {
             return;
@@ -39,13 +46,13 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    let msg = `Starting magik process`;
+                    let msg = `Booting up the fryer`;
                     if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
                     magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performMagik(message, filename);
+                        performDeepFryMagik(message, filename);
                     });
 
                 })
@@ -59,13 +66,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "magik"
+    name: "deepfry"
 }
 
 
 
-function performMagik(message, filename) {
-    //message.channel.send(`Casting a spell on the image...`);
+function performDeepFryMagik(message, filename) {
+    //message.channel.send(`Deepfrying the image...`);
 
     gm(`./graphics/${filename}.png`)
         .size(function getSize(err, size) {
@@ -74,6 +81,17 @@ function performMagik(message, filename) {
             let maxRadius = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
 
             gm(`./graphics/${filename}.png`)
+                //.blur(2, 8)
+                .spread(4)
+                .sharpen(100, 20)
+                .noise("gaussian")
+                .sharpen(100, 20)
+                .blur(1, 5)
+                .sharpen(100, 20)
+                //.noise("gaussian")
+                //.noise("multiplicative")
+                //.noise("impulse")
+                //.noise("poisson")
                 .write(`./graphics/${filename}.png`, function (err) {
                     if (err) console.error(err);
 
