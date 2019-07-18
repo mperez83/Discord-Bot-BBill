@@ -75,7 +75,7 @@ function performCarboniteMagik(message, filename) {
     //message.channel.send(`Freezing the image in carbonite...`);
 
     gm(`./graphics/${filename}.png`)
-        .shade(90, 15)
+        .shade(270, 15)
         .write(`./graphics/${filename}.png`, function (err) {
             if (err) console.error(err);
 

@@ -7,7 +7,7 @@ const magikUtilities = require('../../magikUtilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.5;
-const maxIntensity = 20;
+const maxIntensity = 90;
 const maxFrameDelay = 10;
 const maxGifFrameCount = 20;
 
@@ -22,7 +22,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    let intensity = 1;
+    let intensity = 5;
     let gifFrameDelay = 5;
     let gifFrameCount = 10;
 
@@ -31,6 +31,7 @@ module.exports.run = async (bot, message, args) => {
     }
 
     else if (args.length == 1 || args.length == 2 || args.length == 3) {
+        //Intensity
         if (isNaN(args[0])) {
             message.channel.send(`The provided intensity isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
             return;
@@ -47,6 +48,7 @@ module.exports.run = async (bot, message, args) => {
             intensity = args[0];
         }
 
+        //Frame delay
         if (args.length == 2) {
             if (isNaN(args[1])) {
                 message.channel.send(`The provided frame delay isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
@@ -65,6 +67,7 @@ module.exports.run = async (bot, message, args) => {
             }
         }
 
+        //Frame count
         if (args.length == 3) {
             if (isNaN(args[2])) {
                 message.channel.send(`The provided frame amount isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
@@ -110,9 +113,16 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    let msg = `Starting intensify process`;
-                    if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
-                    if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
+                    let msg = '';
+
+                    if (intensity == 69) {
+                        msg = `heh....... nice.....................................`;
+                    }
+                    else {
+                        msg = `Starting intensify process`;
+                        if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
+                        if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
+                    }
                     message.channel.send(msg);
 
                     magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {

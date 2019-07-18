@@ -201,13 +201,17 @@ module.exports.writeAndShrinkImage = writeAndShrinkImage;
 function generateGif(message, filename, gifFrameCount, gifFrameDelay, callback) {
     let gifImg = gm();
 
+    gifImg
+        .delay(gifFrameDelay)
+        //.dispose(2);
+        .in(`-dispose`, `2`);
+
     for (let i = 0; i < gifFrameCount; i++) {
         gifImg
             .in(`./graphics/${filename}-${i}.png`);
     }
 
     gifImg
-        .delay(gifFrameDelay)
         .write(`./graphics/${filename}.gif`, function(err){
             if (err) throw err;
             callback();
