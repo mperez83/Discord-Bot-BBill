@@ -8,8 +8,8 @@ const config = require("../data/general_data/config.json");
 
 const cleverbillModule = require("./string_parsing/cleverbill");
 const informalCommandsModule = require("./string_parsing/string_parse");
-const messageEvents = require("./string_parsing/messageEvents");
-const utilitiesModule = require("./utilities");
+const messageEvents = require("./string_parsing/message_events");
+const genUtils = require("./command_utilities/general_utilities");
 
 
 
@@ -20,7 +20,7 @@ fs.readdir("./javascript/commands/", (err, cmdDirs) => {
     console.log();
 
     //Do this here so we can get around any async bullshit
-    utilitiesModule.readJSONFile("./data/general_data/commandData.json", function (cmdDataJson) {
+    genUtils.readJSONFile("./data/general_data/command_data.json", function (cmdDataJson) {
 
         for (let i = 0; i < cmdDirs.length; i++) {
             fs.readdir(`./javascript/commands/${cmdDirs[i]}/`, (err, files) => {
@@ -41,12 +41,12 @@ fs.readdir("./javascript/commands/", (err, cmdDirs) => {
                     bot.commands.set(props.help.name, props);
                     let consoleMsg = `${index + 1}: ${jsFile} loaded!`;
 
-                    //Check if the command is in commandData.json
+                    //Check if the command is in command_data.json
                     let cmdName = jsFile.slice(0, -3);
                     if (!cmdDataJson[cmdName]) {
-                        consoleMsg += ` (no entry found in commandData.json, adding now)`;
+                        consoleMsg += ` (no entry found in command_data.json, adding now)`;
                         cmdDataJson[cmdName] = { calls: 0 };
-                        fs.writeFileSync("./data/general_data/commandData.json", JSON.stringify(cmdDataJson, null, 4), function(err) { if (err) return err; });
+                        fs.writeFileSync("./data/general_data/command_data.json", JSON.stringify(cmdDataJson, null, 4), function(err) { if (err) return err; });
                     }
 
                     console.log(consoleMsg);
@@ -90,7 +90,7 @@ bot.on("message", (message) => {
     if (config.construction_mode == "true") {
         if (message.author.id != "205106238697111552") {
             if (message.content.startsWith(config.prefix))
-                message.channel.send(`I'm currently in construction_mode, ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`I'm currently in construction_mode, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
     }
@@ -124,10 +124,10 @@ bot.on("message", (message) => {
     let cmd = bot.commands.get(command);
     if (cmd) {
         //Increment command call count
-        utilitiesModule.readJSONFile("./data/general_data/commandData.json", function (commandDataJson) {
+        genUtils.readJSONFile("./data/general_data/command_data.json", function (commandDataJson) {
             if (!commandDataJson[command]) commandDataJson[command] = { calls: 0 };
             commandDataJson[command].calls++;
-            fs.writeFileSync("./data/general_data/commandData.json", JSON.stringify(commandDataJson, null, 4), function(err) {if (err) return err;});
+            fs.writeFileSync("./data/general_data/command_data.json", JSON.stringify(commandDataJson, null, 4), function(err) {if (err) return err;});
         });
         cmd.run(bot, message, args);
     }
@@ -141,7 +141,7 @@ bot.on("messageReactionAdd", (messageReaction, user) => {
     if (messageReaction.me) return;
 
     if (messageReaction.emoji.name == "❗") {
-        utilitiesModule.incrementUserDataValue(user, "imposterScore", 1);
+        genUtils.incrementUserDataValue(user, "imposterScore", 1);
     }
 });
 
@@ -152,7 +152,7 @@ bot.on("userUpdate", (oldUser, newUser) => {
     console.log(`${oldUser.username} updated their info`);
     if (oldUser.username != newUser.username) {
         console.log(`${oldUser.username} updated their username to ${newUser.username}, updating their userData now`);
-        utilitiesModule.updateUserDataValue(newUser, "username", newUser.username);
+        genUtils.updateUserDataValue(newUser, "username", newUser.username);
     }
 });
 
@@ -162,7 +162,7 @@ bot.on("userUpdate", (oldUser, newUser) => {
 bot.on("guildMemberUpdate", (oldMember, newMember) => {
     if (oldMember.nickname != newMember.nickname) {
         if (newMember.nickname == "Big Bill") {
-            utilitiesModule.incrementUserDataValue(newMember.user, "imposterScore", 1);
+            genUtils.incrementUserDataValue(newMember.user, "imposterScore", 1);
         }
     }
 });

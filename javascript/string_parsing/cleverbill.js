@@ -1,6 +1,4 @@
-const fs = require("fs");
-
-const utilitiesModule = require('../utilities');
+const genUtils = require('../command_utilities/general_utilities');
 
 const responseDir = "./javascript/string_parsing/cleverbill_utilities";
 
@@ -73,7 +71,7 @@ module.exports = {
 
             //If the user just @'s Big Bill with no message, call them an idiot
             if (!userMsg) {
-                message.channel.send(`What? ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`What? ${genUtils.getRandomNameInsult(message)}`);
                 return true;
             }
 
@@ -117,7 +115,7 @@ module.exports = {
 
                 //Non-question responses
                 case undefined:
-                    let nonQuestionResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/non_question_responses.txt`);
+                    let nonQuestionResponses = genUtils.readHyphenTextFile(`${responseDir}/non_question_responses.txt`);
                     message.channel.send(nonQuestionResponses[Math.floor(Math.random() * nonQuestionResponses.length)]);
                     break;
                 
@@ -127,7 +125,7 @@ module.exports = {
                 case MessageTypes.EIGHT_BALL:
                     //If there are no "or"s, it's a simple question
                     if (!msgArray.includes("or")) {
-                        let eightBallResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/eight_ball_responses.txt`);
+                        let eightBallResponses = genUtils.readHyphenTextFile(`${responseDir}/eight_ball_responses.txt`);
                         message.channel.send(eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)]);
                     }
 
@@ -165,7 +163,7 @@ module.exports = {
                         message.channel.send(message.channel.members.random().displayName);
                     }
                     else {
-                        let whoResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/who_responses.txt`);
+                        let whoResponses = genUtils.readHyphenTextFile(`${responseDir}/who_responses.txt`);
                         message.channel.send(whoResponses[Math.floor(Math.random() * whoResponses.length)]);
                     }
                     break;
@@ -174,7 +172,7 @@ module.exports = {
                 
                 //WHERE responses
                 case MessageTypes.WHERE:
-                    let whereResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/where_responses.txt`);
+                    let whereResponses = genUtils.readHyphenTextFile(`${responseDir}/where_responses.txt`);
                     whereResponses.push(`Somewhere in ${message.channel.members.random().displayName}'s house`);
                     whereResponses.push(`Right behind ${message.channel.members.random().displayName}`);
                     whereResponses.push(`Over in ${message.channel.members.random().displayName}'s city. but watch out`);
@@ -202,7 +200,7 @@ module.exports = {
                     }
                     
                     if (pastTense) {
-                        whenResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/when_past_responses.txt`);
+                        whenResponses = genUtils.readHyphenTextFile(`${responseDir}/when_past_responses.txt`);
                         whenResponses.push(`About ${Math.ceil(Math.random() * 23)} hours and ${Math.ceil(Math.random() * 59)} minutes ago`);
                         whenResponses.push(`When ${message.channel.members.random().displayName} was born`);
                         whenResponses.push(`During ${message.channel.members.random().displayName}'s last birthday`);
@@ -210,7 +208,7 @@ module.exports = {
                         whenResponses.push(`Back when ${bot.guilds.random().name} was but a humble idea`);
                     }
                     else {
-                        whenResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/when_future_responses.txt`);
+                        whenResponses = genUtils.readHyphenTextFile(`${responseDir}/when_future_responses.txt`);
                         whenResponses.push(`In about ${Math.ceil(Math.random() * 23)} hours and ${Math.ceil(Math.random() * 59)} minutes`);
                         whenResponses.push(`On ${message.channel.members.random().displayName}'s last birthday`);
                         whenResponses.push(`On ${message.channel.members.random().displayName}'s next birthday`);
@@ -241,12 +239,12 @@ module.exports = {
                             break;
 
                         case 1:
-                            howResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/how_much_responses.txt`);
+                            howResponses = genUtils.readHyphenTextFile(`${responseDir}/how_much_responses.txt`);
                             message.channel.send(howResponses[Math.floor(Math.random() * howResponses.length)]);
                             break;
 
                         case 2:
-                            howResponses = utilitiesModule.readHyphenTextFile(`${responseDir}/how_many_responses.txt`);
+                            howResponses = genUtils.readHyphenTextFile(`${responseDir}/how_many_responses.txt`);
                             howResponses.push(Math.floor(Math.random() * 100));
                             howResponses.push(Math.floor(Math.random() * 10000));
                             howResponses.push(Math.floor(Math.random() * 100) - 100);

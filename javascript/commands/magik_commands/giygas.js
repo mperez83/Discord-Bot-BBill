@@ -2,8 +2,8 @@ const fs = require("fs");
 const gm = require("gm");
 const rp = require("request-promise");
 
-const utilitiesModule = require('../../utilities');
-const magikUtilities = require('../../magikUtilities');
+const genUtils = require('../../command_utilities/general_utilities');
+const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.25;
@@ -13,13 +13,13 @@ const maxFileSize = 0.25;
 module.exports.run = async (bot, message, args) => {
     
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
     //If the user tried to supply some kind of argument, cut that shit right off
     if (args.length > 0) {
-        message.channel.send(`no parameters here, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`no parameters here, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
 
     let foundURL;
 
-    utilitiesModule.getMostRecentImageURL(message).then(requestedURL => {
+    genUtils.getMostRecentImageURL(message).then(requestedURL => {
 
         foundURL = requestedURL;
 
@@ -51,7 +51,7 @@ module.exports.run = async (bot, message, args) => {
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
-                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                    magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
                         performGiygasMagik(message, filename);
                     });
 
@@ -74,7 +74,7 @@ module.exports.help = {
 function performGiygasMagik(message, filename) {
     //message.channel.send(`??? the image...`);
 
-    gm(`./graphics/${filename}.png`)
+    gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);
 
@@ -84,7 +84,7 @@ function performGiygasMagik(message, filename) {
             let maxRadius = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
             let singeAmount = (maxRadius < 99) ? maxRadius : 99;
 
-            gm(`./graphics/${filename}.png`)
+            gm(`${magikUtils.workshopLoc}/${filename}.png`)
                 .swirl(swirlAmount)
                 .charcoal(1)
                 .charcoal(1)
@@ -95,12 +95,12 @@ function performGiygasMagik(message, filename) {
                 .charcoal(singeAmount)
                 .charcoal(singeAmount)
                 .charcoal(singeAmount)
-                .write(`./graphics/${filename}.png`, function (err) {
+                .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {
                     if (err) console.error(err);
 
-                    message.channel.send({ files: [`./graphics/${filename}.png`] })
+                    message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.png`] })
                         .then(function(msg) {
-                            fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                            fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
                         })
                         .catch(console.error);
                 });

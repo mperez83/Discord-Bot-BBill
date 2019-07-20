@@ -1,8 +1,8 @@
 const fs = require("fs");
 
-const ahm = require("./achievementHandler");
+const ahm = require("./achievement_handler");
 
-const userDataLoc = "./data/general_data/userData.json";
+const userDataLoc = "./data/general_data/user_data.json";
 
 
 
@@ -87,7 +87,7 @@ function updateUserDataValue(user, valueName, newValue) {
 module.exports.updateUserDataValue = updateUserDataValue;
 
 
-//Attempt to give a user a new "Powerful" role (DEPRECATED)
+//(DEPRECATED) Attempt to give a user a new "Powerful" role
 module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
     let powerfulRole = guild.roles.find("name", "Powerful");
     if (!powerfulRole) {

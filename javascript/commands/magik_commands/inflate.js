@@ -2,9 +2,9 @@ const fs = require("fs");
 const gm = require("gm");
 const rp = require("request-promise");
 
-const utilitiesModule = require('../../utilities');
-const magikUtilities = require('../../magikUtilities');
-const ahm = require("../../achievementHandler");
+const genUtils = require('../../command_utilities/general_utilities');
+const magikUtils = require('../../command_utilities/magik_utilities');
+const ahm = require("../../command_utilities/achievement_handler");
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.1;
@@ -14,7 +14,7 @@ const maxFileSize = 0.1;
 module.exports.run = async (bot, message, args) => {
 
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -28,12 +28,12 @@ module.exports.run = async (bot, message, args) => {
     //If the user supplied a strength level for the inflation, do tons of bullshit checking
     else if (args.length == 1) {
         if (isNaN(args[0])) {
-            message.channel.send(`That's not a fucking number, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`That's not a fucking number, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
         else {
             if (args[0] < 0) {
-                message.channel.send(`Go use !deflate to do reverse inflates, ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`Go use !deflate to do reverse inflates, ${genUtils.getRandomNameInsult(message)}`);
                 return;
             }
             else if (args[0] == 0) {
@@ -44,7 +44,7 @@ module.exports.run = async (bot, message, args) => {
                 //message.channel.send(`kinky mf huh`);
             }
             else if (args[0] > 99) {
-                message.channel.send(`I'm not letting you go higher than 99, ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`I'm not letting you go higher than 99, ${genUtils.getRandomNameInsult(message)}`);
                 return;
             }
             inflateAmount = args[0];
@@ -53,13 +53,13 @@ module.exports.run = async (bot, message, args) => {
 
     //If the user supplied more than one parameter, return
     else {
-        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Too many parameters, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
 
 
-    utilitiesModule.getMostRecentImageURL(message).then(returnedURL => {
+    genUtils.getMostRecentImageURL(message).then(returnedURL => {
 
         let foundURL = returnedURL;
 
@@ -89,7 +89,7 @@ module.exports.run = async (bot, message, args) => {
                         return;
                     }
 
-                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                    magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
                         performInflateMagik(message, filename, inflateAmount);
                     });
 
@@ -112,14 +112,14 @@ module.exports.help = {
 function performInflateMagik(message, filename, inflateAmount) {
     //message.channel.send(`Inflating the image...`);
 
-    gm(`./graphics/${filename}.png`)
+    gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .implode(-inflateAmount)
-        .write(`./graphics/${filename}.png`, function (err) {
+        .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {
             if (err) console.error(err);
 
-            message.channel.send({ files: [`./graphics/${filename}.png`] })
+            message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.png`] })
                 .then(function(msg) {
-                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                    fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
                 })
                 .catch(console.error);
         });

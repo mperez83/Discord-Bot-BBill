@@ -2,8 +2,8 @@ const fs = require("fs");
 const gm = require("gm");
 const rp = require("request-promise");
 
-const utilitiesModule = require('../../utilities');
-const magikUtilities = require('../../magikUtilities');
+const genUtils = require('../../command_utilities/general_utilities');
+const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 2;
@@ -13,13 +13,13 @@ const maxFileSize = 2;
 module.exports.run = async (bot, message, args) => {
     
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
     //If the user tried to supply some kind of argument, cut that shit right off
     if (args.length > 0) {
-        message.channel.send(`no parameters here, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`no parameters here, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
 
     let foundURL;
 
-    utilitiesModule.getMostRecentImageURL(message).then(requestedURL => {
+    genUtils.getMostRecentImageURL(message).then(requestedURL => {
 
         foundURL = requestedURL;
 
@@ -51,7 +51,7 @@ module.exports.run = async (bot, message, args) => {
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
-                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                    magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
                         performCarboniteMagik(message, filename);
                     });
 
@@ -74,14 +74,14 @@ module.exports.help = {
 function performCarboniteMagik(message, filename) {
     //message.channel.send(`Freezing the image in carbonite...`);
 
-    gm(`./graphics/${filename}.png`)
+    gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .shade(270, 15)
-        .write(`./graphics/${filename}.png`, function (err) {
+        .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {
             if (err) console.error(err);
 
-            message.channel.send({ files: [`./graphics/${filename}.png`] })
+            message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.png`] })
                 .then(function(msg) {
-                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                    fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
                 })
                 .catch(console.error);
         });

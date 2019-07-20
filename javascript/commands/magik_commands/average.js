@@ -2,8 +2,8 @@ const fs = require("fs");
 const gm = require("gm");
 const rp = require("request-promise");
 
-const utilitiesModule = require('../../utilities');
-const magikUtilities = require('../../magikUtilities');
+const genUtils = require('../../command_utilities/general_utilities');
+const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.25;
@@ -15,18 +15,18 @@ const implodeIntensity = 1.25;
 module.exports.run = async (bot, message, args) => {
 
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
     if (args.length > 0) {
-        message.channel.send(`Average doesn't use parameters, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Average doesn't use parameters, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
 
 
-    utilitiesModule.getMostRecentImageURL(message).then(requestedURL => {
+    genUtils.getMostRecentImageURL(message).then(requestedURL => {
 
         let foundURL = requestedURL;
 
@@ -50,7 +50,7 @@ module.exports.run = async (bot, message, args) => {
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
-                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                    magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
                         performAverageMagik(message, filename);
                     });
 
@@ -78,35 +78,35 @@ function performAverageMagik(message, filename) {
 
         writeRequests++;
 
-        gm(`./graphics/${filename}.png`)
+        gm(`${magikUtils.workshopLoc}/${filename}.png`)
             .implode((Math.random() - 0.75) * implodeIntensity)
-            .write(`./graphics/${filename}-${i}.png`, function (err) {
+            .write(`${magikUtils.workshopLoc}/${filename}-${i}.png`, function (err) {
                 if (err) console.error(err);
                 
                 writeRequests--;
 
                 //If we've written all of the images, average them and post it
                 if (writeRequests == 0) {
-                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; }); //Delete this because we don't need it anymore
+                    fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; }); //Delete this because we don't need it anymore
 
                     let avgImg = gm();
 
                     for (let i = 0; i < imageCount; i++) {
                         avgImg
-                            .in(`./graphics/${filename}-${i}.png`);
+                            .in(`${magikUtils.workshopLoc}/${filename}-${i}.png`);
                     }
 
                     avgImg
                         .average()
-                        .write(`./graphics/${filename}.png`, function(err){
+                        .write(`${magikUtils.workshopLoc}/${filename}.png`, function(err){
                             if (err) throw err;
 
-                            message.channel.send({ files: [`./graphics/${filename}.png`] })
+                            message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.png`] })
                                 .then(function(msg) {
                                     for (let i = 0; i < imageCount; i++) {
-                                        fs.unlink(`./graphics/${filename}-${i}.png`, function(err) { if (err) throw err; });
+                                        fs.unlink(`${magikUtils.workshopLoc}/${filename}-${i}.png`, function(err) { if (err) throw err; });
                                     }
-                                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                                    fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
                                 })
                                 .catch(console.error);
                         });

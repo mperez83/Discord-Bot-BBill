@@ -2,8 +2,8 @@ const fs = require("fs");
 const gm = require("gm");
 const rp = require("request-promise");
 
-const utilitiesModule = require('../../utilities');
-const magikUtilities = require('../../magikUtilities');
+const genUtils = require('../../command_utilities/general_utilities');
+const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 2;
@@ -13,7 +13,7 @@ const maxFileSize = 2;
 module.exports.run = async (bot, message, args) => {
 
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -27,12 +27,12 @@ module.exports.run = async (bot, message, args) => {
     //If the user supplied a strength level for the deflation, do tons of bullshit checking
     else if (args.length == 1) {
         if (isNaN(args[0])) {
-            message.channel.send(`That's not a fucking number, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`That's not a fucking number, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
         else {
             if (args[0] < 0) {
-                message.channel.send(`Go use !inflate to do reverse deflates, ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`Go use !inflate to do reverse deflates, ${genUtils.getRandomNameInsult(message)}`);
                 return;
             }
             else if (args[0] == 0) {
@@ -43,7 +43,7 @@ module.exports.run = async (bot, message, args) => {
                 //message.channel.send(`making a black hole huh`);
             }
             else if (args[0] > 99) {
-                message.channel.send(`I'm not letting you go higher than 99, ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`I'm not letting you go higher than 99, ${genUtils.getRandomNameInsult(message)}`);
                 return;
             }
             deflateAmount = args[0];
@@ -52,7 +52,7 @@ module.exports.run = async (bot, message, args) => {
 
     //If the user supplied more than one parameter, return
     else {
-        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Too many parameters, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -61,7 +61,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    utilitiesModule.getMostRecentImageURL(message).then(returnedURL => {
+    genUtils.getMostRecentImageURL(message).then(returnedURL => {
 
         let foundURL = returnedURL;
 
@@ -85,7 +85,7 @@ module.exports.run = async (bot, message, args) => {
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
-                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                    magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
                         performDeflateMagik(message, filename, deflateAmount);
                     });
 
@@ -108,14 +108,14 @@ module.exports.help = {
 function performDeflateMagik(message, filename, deflateAmount) {
     //message.channel.send(`Deflating the image...`);
 
-    gm(`./graphics/${filename}.png`)
+    gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .implode(deflateAmount)
-        .write(`./graphics/${filename}.png`, function (err) {
+        .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {
             if (err) console.error(err);
 
-            message.channel.send({ files: [`./graphics/${filename}.png`] })
+            message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.png`] })
                 .then(function(msg) {
-                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                    fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
                 })
                 .catch(console.error);
         });

@@ -1,6 +1,6 @@
 const urban = require("urban-dictionary");
 
-const utilitiesModule = require('../../utilities');
+const genUtils = require('../../command_utilities/general_utilities');
 
 
 
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
     if (args.length == 0) {
         urban.random((error, entry) => {
             if (error) {
-                message.channel.send(`Something went wrong, ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`Something went wrong, ${genUtils.getRandomNameInsult(message)}`);
             }
             else {
                 text = `**Word**: ${entry.word} (<${entry.permalink}>)
@@ -28,7 +28,7 @@ module.exports.run = async (bot, message, args) => {
     else {
         urban.term(args, (error, entries, tags, sounds) => {
             if (error) {
-                message.channel.send(`No match found for '${args}', ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`No match found for '${args}', ${genUtils.getRandomNameInsult(message)}`);
             }
             else {
                 text = `**Word**: ${entries[0].word} (<${entries[0].permalink}>)
@@ -41,7 +41,7 @@ module.exports.run = async (bot, message, args) => {
         });
     }
 
-    utilitiesModule.incrementUserDataValue(message.author, "urbanCalls", 1);
+    genUtils.incrementUserDataValue(message.author, "urbanCalls", 1);
 }
 
 module.exports.help = {

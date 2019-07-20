@@ -1,32 +1,32 @@
 const fs = require("fs");
 
-const utilitiesModule = require("../../utilities");
+const genUtils = require("../../command_utilities/general_utilities");
 
-const dataLoc = "./data/general_data/indexImageData.json";
+const dataLoc = "./data/general_data/index_image_data.json";
 
 
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile(dataLoc, function (indexListJson) {
+    genUtils.readJSONFile(dataLoc, function (indexListJson) {
 
         if (args.length == 0) {
-            message.channel.send(`I can't index nothing, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`I can't index nothing, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
 
         let inputIndexName = args.join(" ");
         
         if (inputIndexName.length > 50) {
-            message.channel.send(`Index names can't be longer than 50 characters, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`Index names can't be longer than 50 characters, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
 
         if (indexListJson[inputIndexName]) {
-            message.channel.send(`That name is already indexed, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`That name is already indexed, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
 
-        utilitiesModule.getMostRecentImageURL(message).then(validURL => {
+        genUtils.getMostRecentImageURL(message).then(validURL => {
 
             if (!validURL) {
                 return;
@@ -36,7 +36,7 @@ module.exports.run = async (bot, message, args) => {
                 for (var indexEntry in indexListJson) {
                     if (indexListJson.hasOwnProperty(indexEntry)) {
                         if (validURL == indexListJson[indexEntry].url) {
-                            message.channel.send(`That image is already indexed under "${indexEntry}", ${utilitiesModule.getRandomNameInsult(message)}`);
+                            message.channel.send(`That image is already indexed under "${indexEntry}", ${genUtils.getRandomNameInsult(message)}`);
                             return;
                         }
                     }
@@ -51,7 +51,7 @@ module.exports.run = async (bot, message, args) => {
                 message.channel.send(`Successfully indexed "${inputIndexName}"!`);
 
                 if (message.channel.type == "dm") {
-                    utilitiesModule.incrementUserDataValue(message.author, "stealthyBastardPoints", 1);
+                    genUtils.incrementUserDataValue(message.author, "stealthyBastardPoints", 1);
                 }
             }
 

@@ -1,8 +1,6 @@
 const fs = require("fs");
 const getSize = require('get-folder-size');
 
-const utilitiesModule = require('../../utilities');
-
 
 
 module.exports.run = async (bot, message, args) => {

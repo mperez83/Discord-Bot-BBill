@@ -1,10 +1,9 @@
 const fs = require("fs");
 const gm = require("gm");
-const imageMagick = require('gm').subClass({imageMagick: true});
 const rp = require("request-promise");
 
-const utilitiesModule = require('../../utilities');
-const magikUtilities = require('../../magikUtilities');
+const genUtils = require('../../command_utilities/general_utilities');
+const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 2;
@@ -14,13 +13,13 @@ const maxFileSize = 2;
 module.exports.run = async (bot, message, args) => {
 
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
 
 
-    utilitiesModule.getMostRecentImageURL(message).then(requestedURL => {
+    genUtils.getMostRecentImageURL(message).then(requestedURL => {
 
         let foundURL = requestedURL;
 
@@ -44,7 +43,7 @@ module.exports.run = async (bot, message, args) => {
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
-                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                    magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
                         performRainbowMagik(message, filename);
                     });
 
@@ -67,22 +66,22 @@ module.exports.help = {
 function performRainbowMagik(message, filename) {
     //message.channel.send(`Performing rainbow magik on the image...`);
 
-    gm(`./graphics/${filename}.png`)
+    gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);
 
             let maxRadius = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
 
-            gm(`./graphics/${filename}.png`)
+            gm(`${magikUtils.workshopLoc}/${filename}.png`)
                 .command(`convert`)
                 .in(`-size`, `100x100`)
                 .out(`plasma:fractal`)
-                .write(`./graphics/${filename}.png`, function (err) {
+                .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {
                     if (err) console.error(err);
 
-                    message.channel.send({ files: [`./graphics/${filename}.png`] })
+                    message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.png`] })
                         .then(function(msg) {
-                            fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                            fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
                         })
                         .catch(console.error);
                 });

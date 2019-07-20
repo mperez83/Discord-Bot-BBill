@@ -1,6 +1,6 @@
 const request = require("request");
 
-const utilitiesModule = require('../../utilities');
+const genUtils = require('../../command_utilities/general_utilities');
 const config = require("../../../data/general_data/config.json");
 
 
@@ -8,7 +8,7 @@ const config = require("../../../data/general_data/config.json");
 module.exports.run = async (bot, message, args) => {
     args = args.join(" ");
     if (args.length == 0) {
-        message.channel.send(`I can't search for nothing, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`I can't search for nothing, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -26,7 +26,7 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
         else if (!data.items || data.items.length == 0) {
-            message.channel.send(`No result for "${args}", ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`No result for "${args}", ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
         let firstResult = data.items[0];

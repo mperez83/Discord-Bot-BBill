@@ -2,8 +2,8 @@ const fs = require("fs");
 const gm = require("gm");
 const rp = require("request-promise");
 
-const utilitiesModule = require('../../utilities');
-const magikUtilities = require('../../magikUtilities');
+const genUtils = require('../../command_utilities/general_utilities');
+const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 2;
@@ -13,7 +13,7 @@ const maxFileSize = 2;
 module.exports.run = async (bot, message, args) => {
 
     if (config.lite_mode == "true") {
-        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Currently in lite_mode, can't use expensive commands. ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -27,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
     //If the user supplied a strength level for the singe, do some checks
     else if (args.length == 1) {
         if (isNaN(args[0])) {
-            message.channel.send(`The provided singe amount isn't a number, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`The provided singe amount isn't a number, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
         else {
@@ -37,13 +37,13 @@ module.exports.run = async (bot, message, args) => {
 
     //If the user supplied more than one parameter, return
     else {
-        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Too many parameters, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
 
 
-    utilitiesModule.getMostRecentImageURL(message).then(returnedURL => {
+    genUtils.getMostRecentImageURL(message).then(returnedURL => {
 
         let foundURL = returnedURL;
 
@@ -67,7 +67,7 @@ module.exports.run = async (bot, message, args) => {
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
-                    magikUtilities.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                    magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
                         performSingeMagik(message, filename, singeAmount);
                     });
 
@@ -90,21 +90,21 @@ module.exports.help = {
 function performSingeMagik(message, filename, singeAmount) {
     //message.channel.send(`Singing the image...`);
 
-    gm(`./graphics/${filename}.png`)
+    gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);
 
             let maxSingeAmount = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
             let finalSingeAmount = (maxSingeAmount < singeAmount) ? maxSingeAmount : singeAmount;
 
-            gm(`./graphics/${filename}.png`)
+            gm(`${magikUtils.workshopLoc}/${filename}.png`)
                 .charcoal(finalSingeAmount)
-                .write(`./graphics/${filename}.png`, function (err) {
+                .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {
                     if (err) console.error(err);
 
-                    message.channel.send({ files: [`./graphics/${filename}.png`] })
+                    message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.png`] })
                         .then(function(msg) {
-                            fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                            fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
                         })
                         .catch(console.error);
                 });

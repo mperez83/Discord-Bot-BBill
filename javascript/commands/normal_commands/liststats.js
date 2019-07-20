@@ -1,6 +1,6 @@
-const utilitiesModule = require('../../utilities');
+const genUtils = require('../../command_utilities/general_utilities');
 
-const dataLoc = "./data/general_data/userData.json";
+const dataLoc = "./data/general_data/user_data.json";
 const unnecessaryStats = ["nextValidPowerCheck", "username", "asciiTyped"];
 
 
@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
 
     //More than one parameter = abort
     if (args.length > 1) {
-        message.channel.send(`Too many parameters, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`Too many parameters, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -37,7 +37,7 @@ module.exports.run = async (bot, message, args) => {
 
         //If the argument provided by the user isn't a mention
         else {
-            message.channel.send(`You have to @ someone if you want their stats, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`You have to @ someone if you want their stats, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
 
@@ -50,7 +50,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    utilitiesModule.readJSONFile(dataLoc, function (userDataJson) {
+    genUtils.readJSONFile(dataLoc, function (userDataJson) {
 
         if (!userDataJson[userToIdentify.id]) userDataJson[userToIdentify.id] = {username: userToIdentify.username};
 
@@ -62,7 +62,7 @@ module.exports.run = async (bot, message, args) => {
 
         let propertyNames = Object.getOwnPropertyNames(userDataJson[userToIdentify.id]);
 
-        utilitiesModule.removeElementsFromArray(propertyNames, unnecessaryStats);
+        genUtils.removeElementsFromArray(propertyNames, unnecessaryStats);
 
         propertyNames.sort();
         for (let i = 0; i < propertyNames.length; i++) {

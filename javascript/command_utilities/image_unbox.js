@@ -1,9 +1,9 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
-const utilitiesModule = require("./utilities");
-const ahm = require("./achievementHandler");
-const config = require("../data/general_data/config.json");
+const genUtils = require("./general_utilities");
+const ahm = require("./achievement_handler");
+const config = require("../../data/general_data/config.json");
 
 
 
@@ -17,16 +17,16 @@ module.exports.unboxImage = function(message) {
 
     if (Math.floor(Math.random() * 100) < 5) {
         photoLoc = `./graphics/komugi/`;
-        dataLoc = `./data/image_data/shibeData.json`;
+        dataLoc = `./data/image_data/shibe_data.json`;
     }
     else {
         photoLoc = `./graphics/${command}s/`;
-        dataLoc = `./data/image_data/${command}Data.json`;
+        dataLoc = `./data/image_data/${command}_data.json`;
     }
 
 
 
-    utilitiesModule.readJSONFile(dataLoc, function (dataJson) {
+    genUtils.readJSONFile(dataLoc, function (dataJson) {
 
         if (Math.floor(Math.random() * 100) < 5) komugiWipe = true;
 
@@ -134,7 +134,7 @@ module.exports.unboxImage = function(message) {
                             fs.writeFileSync(dataLoc, JSON.stringify(dataJson, null, 4), function(err) {if (err) return err;});
 
                             message.react("✅");
-                            utilitiesModule.incrementUserDataValue(message.author, "Billie-Bucks", 1);
+                            genUtils.incrementUserDataValue(message.author, "Billie-Bucks", 1);
                             collector.stop();
 
                         }

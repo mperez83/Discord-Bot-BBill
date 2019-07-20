@@ -1,14 +1,14 @@
 const fs = require("fs");
 
-const utilitiesModule = require('../../utilities');
-const ahm = require("../../achievementHandler");
+const genUtils = require('../../command_utilities/general_utilities');
+const ahm = require("../../command_utilities/achievement_handler");
 
-const dataLoc = "./data/general_data/userData.json";
+const dataLoc = "./data/general_data/user_data.json";
 
 
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile(dataLoc, function (userDataJson) {
+    genUtils.readJSONFile(dataLoc, function (userDataJson) {
 
         let doPowerCheck = false;
         let currentDate = new Date();
@@ -43,14 +43,14 @@ module.exports.run = async (bot, message, args) => {
             }*/
             if (power == 69) {
                 message.reply(`your power level is **69.**`);
-                utilitiesModule.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 69!!!`);
+                genUtils.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 69!!!`);
             }
             else if (power == 100) {
                 message.reply("your power level is **100!** Congratulations!");
             }
             else if (power == 1) {
                 message.reply("your power level is **1.** smh");
-                utilitiesModule.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 1`);
+                genUtils.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 1`);
             }
             else {
                 message.reply(`your power level is **${power}**`);
@@ -58,7 +58,7 @@ module.exports.run = async (bot, message, args) => {
 
             if (power == 68 || power == 70) {
                 message.react("😂");
-                utilitiesModule.incrementUserDataValue(user, "chokes", 1);
+                genUtils.incrementUserDataValue(user, "chokes", 1);
             }
 
             userObj.power = power;
@@ -67,7 +67,7 @@ module.exports.run = async (bot, message, args) => {
             nextValidPowerCheck.setDate(currentDate.getDate() + 1);
             userObj.nextValidPowerCheck = JSON.stringify(nextValidPowerCheck);
 
-            utilitiesModule.incrementUserDataValue(user, "powerCalls", 1);
+            genUtils.incrementUserDataValue(user, "powerCalls", 1);
 
             //userDataJson[user.id] = userObj;
             fs.writeFileSync(dataLoc, JSON.stringify(userDataJson, null, 4), function(err) {if (err) return err;});

@@ -1,11 +1,11 @@
-const utilitiesModule = require('../../utilities');
+const genUtils = require('../../command_utilities/general_utilities');
 
-const dataLoc = "./data/general_data/userData.json";
+const dataLoc = "./data/general_data/user_data.json";
 
 
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile(dataLoc, function (userDataJson) {
+    genUtils.readJSONFile(dataLoc, function (userDataJson) {
 
         //Sort users in order of power and list them
         let powerRankingsString = `- - - - - - - - - -\n`;

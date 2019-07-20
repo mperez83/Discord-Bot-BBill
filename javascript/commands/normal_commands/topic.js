@@ -1,19 +1,19 @@
 const fs = require("fs");
 
-const utilitiesModule = require('../../utilities');
+const genUtils = require('../../command_utilities/general_utilities');
 
-const dataLoc = "./data/general_data/serverData.json";
+const dataLoc = "./data/general_data/server_data.json";
 
 
 
 module.exports.run = async (bot, message, args) => {
 
     if (message.channel.type == "dm") {
-        message.channel.send(`you can't use this in a dm, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`you can't use this in a dm, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
-    utilitiesModule.readJSONFile(dataLoc, function (serverDataJson) {
+    genUtils.readJSONFile(dataLoc, function (serverDataJson) {
 
         currentServer = message.guild.id;
         serverObj = serverDataJson[currentServer];

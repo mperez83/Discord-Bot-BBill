@@ -1,5 +1,5 @@
-const utilitiesModule = require('../../utilities');
-const ahm = require("../../achievementHandler");
+const genUtils = require('../../command_utilities/general_utilities');
+const ahm = require("../../command_utilities/achievement_handler");
 
 const patterns = [
 
@@ -188,12 +188,12 @@ const patterns = [
 module.exports.run = async (bot, message, args) => {
 
     if (message.channel.type == "dm") {
-        message.channel.send(`you can't craft without an audience, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`you can't craft without an audience, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
     if (message.guild.emojis.size == 0) {
-        message.channel.send(`This server doesn't have any emojis, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`This server doesn't have any emojis, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -234,8 +234,8 @@ module.exports.run = async (bot, message, args) => {
 
     message.channel.send(recipeMsg);
     
-    utilitiesModule.incrementUserDataValue(message.author, "itemsCrafted", 1);
-    if (utilitiesModule.getUserDataValue(message.author, "itemsCrafted")) {
+    genUtils.incrementUserDataValue(message.author, "itemsCrafted", 1);
+    if (genUtils.getUserDataValue(message.author, "itemsCrafted")) {
         ahm.awardAchievement(message, ahm.achievement_list_enum.LOYAL_LABOURER);
     }
 

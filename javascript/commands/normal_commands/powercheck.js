@@ -1,17 +1,17 @@
-const utilitiesModule = require('../../utilities');
+const genUtils = require('../../command_utilities/general_utilities');
 
-const dataLoc = "./data/general_data/userData.json";
+const dataLoc = "./data/general_data/user_data.json";
 
 
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile(dataLoc, function (userDataJson) {
+    genUtils.readJSONFile(dataLoc, function (userDataJson) {
 
         let user = message.author;
         let userObj = userDataJson[user.id];
 
         if (!userObj || !userObj.power) {
-            message.channel.send(`You have to run !power first, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`You have to run !power first, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
         else {
@@ -29,7 +29,7 @@ module.exports.run = async (bot, message, args) => {
             
             if (userObj.power == 69) {
                 message.reply(`your current power level is ${userObj.power}, which means you cannot reassess your power. Use '!prestige' to reset your power back to 0 and increase your prestige level`);
-                utilitiesModule.incrementUserDataValue(user, "flexCount", 1);
+                genUtils.incrementUserDataValue(user, "flexCount", 1);
             }
             else {
                 if (hoursLeft <= 0 && minutesLeft <= 0 && secondsLeft <= 0)

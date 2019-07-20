@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const utilitiesModule = require('../../utilities');
+const genUtils = require('../../command_utilities/general_utilities');
 
 
 
@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
     //If no name is entered, set the name of the audio file to some random filename from the audio folder
     if (inputAudioName.length == 0) {
         if (audioFiles.length == 0) {
-            message.channel.send(`There are no audio files to play yet, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`There are no audio files to play yet, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
         else {

@@ -1,5 +1,5 @@
-const utilitiesModule = require("../../utilities");
-const dataLoc = "./data/general_data/indexImageData.json";
+const genUtils = require("../../command_utilities/general_utilities");
+const dataLoc = "./data/general_data/index_image_data.json";
 
 
 
@@ -7,21 +7,21 @@ module.exports.run = async (bot, message, args) => {
 
     //if this message wasn't sent by ME, return
     if (message.author.id != "205106238697111552") {
-        message.channel.send(`unauthorized access, ${utilitiesModule.getRandomNameInsult(message)}`);
+        message.channel.send(`unauthorized access, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
-    utilitiesModule.readJSONFile(dataLoc, function (indexDataJson) {
+    genUtils.readJSONFile(dataLoc, function (indexDataJson) {
         
         if (args.length == 0) {
-            message.channel.send(`I need an index name in order to identify who did it, ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`I need an index name in order to identify who did it, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
 
         let inputIndexCall = args.join(" ");
 
         if (!indexDataJson[inputIndexCall]) {
-            message.channel.send(`There is no image indexed with the name "${inputIndexCall}", ${utilitiesModule.getRandomNameInsult(message)}`);
+            message.channel.send(`There is no image indexed with the name "${inputIndexCall}", ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
         else if (!indexDataJson[inputIndexCall].culprit) {

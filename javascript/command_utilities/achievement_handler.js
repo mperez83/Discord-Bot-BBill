@@ -1,8 +1,8 @@
 const fs = require("fs");
 
-const utilitiesModule = require("./utilities");
+const genUtils = require("./general_utilities");
 
-const achievementDataLoc = "./data/general_data/userAchievementData.json";
+const achievementDataLoc = "./data/general_data/user_achievement_data.json";
 
 const achievement_list_enum =
 {
@@ -112,7 +112,7 @@ module.exports.achievement_list_enum = achievement_list_enum;
 function getUserAchievementObj(userID, callback) {
 
     updateUserAchievementData(userID, () => {
-        utilitiesModule.readJSONFile(achievementDataLoc, function (uadJson) {
+        genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
             callback(uadJson[userID]);
         });
     });
@@ -127,7 +127,7 @@ function updateUserAchievementData(userID, callback) {
     let achNames = Object.keys(achievement_list);
     achNames.sort();
 
-    utilitiesModule.readJSONFile(achievementDataLoc, function (uadJson) {
+    genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
         if (!uadJson[userID]) uadJson[userID] = {achievements: {}, gamer_score: 0};
 
         for (let i = 0; i < achNames.length; i++) {
@@ -156,7 +156,7 @@ function resetUserAchievementData(userID, callback) {
     let achNames = Object.keys(achievement_list);
     achNames.sort();
 
-    utilitiesModule.readJSONFile(achievementDataLoc, function (uadJson) {
+    genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
         uadJson[userID] = {achievements: {}, gamer_score: 0};
 
         for (let i = 0; i < achNames.length; i++) {
@@ -185,7 +185,7 @@ function awardAchievement(message, achName) {
         }
         else {
             userAchObj.achievements[achName] = true;
-            utilitiesModule.readJSONFile(achievementDataLoc, function (uadJson) {
+            genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
                 uadJson[message.author.id].achievements = userAchObj.achievements;
                 uadJson[message.author.id].gamer_score += achievement_list[achName].gamer_score;
                 fs.writeFileSync(achievementDataLoc, JSON.stringify(uadJson, null, 4));

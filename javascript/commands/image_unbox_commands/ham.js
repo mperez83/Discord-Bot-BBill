@@ -1,4 +1,4 @@
-const imageUnboxModule = require("../../imageUnbox");
+const imageUnboxModule = require("../../command_utilities/image_unbox");
 
 
 

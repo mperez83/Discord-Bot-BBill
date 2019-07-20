@@ -1,14 +1,14 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
-const utilitiesModule = require("../../utilities");
+const genUtils = require("../../command_utilities/general_utilities");
 
-const dataLoc = "./data/general_data/indexImageData.json";
+const dataLoc = "./data/general_data/index_image_data.json";
 
 
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile(dataLoc, function (indexDataJson) {
+    genUtils.readJSONFile(dataLoc, function (indexDataJson) {
 
         let inputIndexCall;
         let randomCall = false;
@@ -24,7 +24,7 @@ module.exports.run = async (bot, message, args) => {
             }
 
             if (nameList.length == 0) {
-                message.channel.send(`There are no indices in the list yet, ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`There are no indices in the list yet, ${genUtils.getRandomNameInsult(message)}`);
                 return;
             }
             else {
@@ -38,7 +38,7 @@ module.exports.run = async (bot, message, args) => {
             inputIndexCall = args.join(" ");
 
             if (!indexDataJson[inputIndexCall]) {
-                message.channel.send(`There is no image indexed with the name "${inputIndexCall}", ${utilitiesModule.getRandomNameInsult(message)}`);
+                message.channel.send(`There is no image indexed with the name "${inputIndexCall}", ${genUtils.getRandomNameInsult(message)}`);
                 return;
             }
         }
@@ -75,7 +75,7 @@ module.exports.run = async (bot, message, args) => {
         //This is to update the directCalls property
         fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson, null, 4));
 
-        utilitiesModule.incrementUserDataValue(message.author, "indexCalls", 1);
+        genUtils.incrementUserDataValue(message.author, "indexCalls", 1);
         return;
 
     });

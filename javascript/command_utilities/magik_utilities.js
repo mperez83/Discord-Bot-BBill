@@ -142,15 +142,18 @@ const request = require("request");
         -Writes the file to disk!
 */
 
+const workshopLoc = "./graphics/magik_workshop";
+module.exports.workshopLoc = workshopLoc;
+
 
 
 function reduceImageFileSize(message, filename, chopNum, targetFileSize, callback) {
-    gm(`./graphics/${filename}.png`)
+    gm(`${workshopLoc}/${filename}.png`)
         .minify()
-        .write(`./graphics/${filename}.png`, function (err) {
+        .write(`${workshopLoc}/${filename}.png`, function (err) {
             if (err) console.error(err);
 
-            let stats = fs.statSync(`./graphics/${filename}.png`);
+            let stats = fs.statSync(`${workshopLoc}/${filename}.png`);
             let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
             if (fileSize > targetFileSize) {
@@ -168,7 +171,7 @@ module.exports.reduceImageFileSize = reduceImageFileSize;
 
 function writeImageToDisk(foundURL, filename, callback) {
     gm(request(foundURL))
-        .write(`./graphics/${filename}.png`, (err) => {
+        .write(`${workshopLoc}/${filename}.png`, (err) => {
             if (err) console.error(err);
             callback();
         });
@@ -180,7 +183,7 @@ module.exports.writeImageToDisk = writeImageToDisk;
 function writeAndShrinkImage(message, foundURL, filename, maxFileSize, callback) {
     writeImageToDisk(foundURL, filename, () => {
 
-        let stats = fs.statSync(`./graphics/${filename}.png`);
+        let stats = fs.statSync(`${workshopLoc}/${filename}.png`);
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
         if (fileSize > maxFileSize) {
@@ -198,7 +201,7 @@ module.exports.writeAndShrinkImage = writeAndShrinkImage;
 
 
 
-function generateGif(message, filename, gifFrameCount, gifFrameDelay, callback) {
+function generateGif(filename, gifFrameCount, gifFrameDelay, callback) {
     let gifImg = gm();
 
     gifImg
@@ -208,11 +211,11 @@ function generateGif(message, filename, gifFrameCount, gifFrameDelay, callback) 
 
     for (let i = 0; i < gifFrameCount; i++) {
         gifImg
-            .in(`./graphics/${filename}-${i}.png`);
+            .in(`${workshopLoc}/${filename}-${i}.png`);
     }
 
     gifImg
-        .write(`./graphics/${filename}.gif`, function(err){
+        .write(`${workshopLoc}/${filename}.gif`, function(err){
             if (err) throw err;
             callback();
         });

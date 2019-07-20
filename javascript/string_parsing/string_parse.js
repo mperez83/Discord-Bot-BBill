@@ -1,5 +1,5 @@
-const utilitiesModule = require('../utilities');
-const ahm = require("../achievementHandler");
+const genUtils = require('../command_utilities/general_utilities');
+const ahm = require("../command_utilities/achievement_handler");
 const config = require("../../data/general_data/config.json");
 
 
@@ -18,7 +18,7 @@ module.exports = {
 
         for (let i = 0; i < badEmotes.length; i++) {
             if (message.content.includes(badEmotes[i])) {
-                utilitiesModule.incrementUserDataValue(message.author, "sin", 1);
+                genUtils.incrementUserDataValue(message.author, "sin", 1);
             }
         }
 
@@ -33,7 +33,7 @@ module.exports = {
 
         if (message.mentions.everyone) {
             message.channel.send(">:0");
-            utilitiesModule.incrementUserDataValue(message.author, "socialDeviancy", Math.ceil(Math.random() * 5));
+            genUtils.incrementUserDataValue(message.author, "socialDeviancy", Math.ceil(Math.random() * 5));
             return true;
         }
 

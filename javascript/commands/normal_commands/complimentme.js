@@ -1,10 +1,10 @@
-const utilitiesModule = require('../../utilities');
+const genUtils = require('../../command_utilities/general_utilities');
 
 
 
 module.exports.run = async (bot, message, args) => {
     message.channel.send(`no`);
-    //utilitiesModule.incrementUserDataValue(message.author, "falseHope", 1);
+    //genUtils.incrementUserDataValue(message.author, "falseHope", 1);
 }
 
 module.exports.help = {
