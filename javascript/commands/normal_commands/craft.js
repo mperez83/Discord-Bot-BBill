@@ -1,6 +1,22 @@
 const genUtils = require('../../command_utilities/general_utilities');
 const ahm = require("../../command_utilities/achievement_handler");
 
+const normalEmotes = [
+    '😀', '😬', '😁', '😂', '😃', '😄', '😅', '😆', '😇', '😉',
+    '😊', '🙂', '🙃', '☺', '😋', '😌', '😍', '😘', '😗', '😙',
+    '😚', '😜', '😝', '😛', '🤑', '🤓', '😎', '🤗', '😏', '😶',
+    '😐', '😑', '😒', '🙄', '🤔', '😳', '😞', '😟', '😠', '😡',
+    '😔', '😕', '🙁', '☹', '😣', '😖', '😫', '😩', '😤', '😮',
+    '😱', '😨', '😰', '😯', '😦', '😧', '😢', '😥', '😪', '😓',
+    '😭', '😵', '😲', '🤐', '😷', '🤒', '🤕', '😴',
+    '💩', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾',
+    '👏', '🖕', '👁', '👀', '🤠', '🤡', '🤢', '🤣', '🤤', '🤥',
+    '🤧', '👮', '🚶', '🏃', '🐶', '🐱', '🐭', '🐹', '🐻', '🐵',
+    '🐺', '⭐', '🦍', '🦊', '🍑', '🍆', '🥑', '🥚', '💎', '🔫',
+    '💣', '⚔', '🛡', '☠', '💯', '❤', '💛', '💚', '💙', '💜',
+    '☢', '♋', '❓', '💲', '💬', '🖤', '🅰', '🏳', '🌈'
+]
+
 const patterns = [
 
     //Block
@@ -192,12 +208,41 @@ module.exports.run = async (bot, message, args) => {
         return;
     }
 
-    if (message.guild.emojis.size == 0) {
-        message.channel.send(`This server doesn't have any emojis, ${genUtils.getRandomNameInsult(message)}`);
-        return;
+
+
+    let ingredientList = [];
+    let ingredientListType;
+
+    let diceRoll = Math.random() * 100;
+    if (diceRoll > 50) ingredientListType = 1;
+    else ingredientListType = 2;
+
+    if (message.guild.emojis.size == 0) ingredientListType = 0; //ingredientListType 0 is only for servers that have no custom emojis
+
+    switch (ingredientListType) {
+
+        //Only default emotes
+        case 0:
+            ingredientList = normalEmotes.slice(0);
+            break;
+
+        //Only custom emotes
+        case 1:
+            let guildEmotes = message.guild.emojis.array();
+            for (let i = 0; i < guildEmotes.length; i++) {
+                ingredientList.push(guildEmotes[i]);
+            }
+            break;
+
+        //Both
+        case 2:
+            ingredientList = normalEmotes.slice(0);
+            let guildEmotes2 = message.guild.emojis.array();    //For some reason, javascript won't let me have guildEmotes in this case as well as
+            for (let i = 0; i < guildEmotes2.length; i++) {     //the above case, so I have to make it guildEmotes2
+                ingredientList.push(guildEmotes2[i]);
+            }
+            break;
     }
-
-
 
     let pattern = patterns[Math.floor(Math.random() * patterns.length)];
     let middleRow = Math.floor(pattern.length / 2);
@@ -216,9 +261,10 @@ module.exports.run = async (bot, message, args) => {
                 recipeMsg += `${emptySpace}`;
             }
             else {
-                let curIngredient = ingredients[pattern[row][col]];
+                let curIngredient = ingredients[pattern[row][col]]; //curIngredient is the entry for whatever number ingredient we're on (like 0, 1, 2, etc)
                 if (!curIngredient) {
-                    curIngredient = {emoji: message.guild.emojis.random()};
+                    let randomIngredient = Math.floor(Math.random() * ingredientList.length);
+                    curIngredient = {emoji: ingredientList[randomIngredient]};
                     ingredients[pattern[row][col]] = curIngredient;
                 }
                 recipeMsg += `${curIngredient.emoji}`;
@@ -227,7 +273,7 @@ module.exports.run = async (bot, message, args) => {
         }
 
         //If this is the middle row, append the craft result part
-        if (row == middleRow) recipeMsg += `   ➡   ${message.guild.emojis.random()}`;
+        if (row == middleRow) recipeMsg += `   ➡   ${ingredientList[Math.floor(Math.random() * ingredientList.length)]}`;
         recipeMsg += `\n`;
 
     }

@@ -115,8 +115,13 @@ bot.on("message", (message) => {
     if (!command.startsWith(config.prefix)) return;
     command = command.slice(config.prefix.length);  //Slice off command prefix
 
-    //Special command check (currently only !doge is a special command)
+    //Special command checks
     if (command.match(/^do+ge$/)) command = "doge";
+
+    if (command == "ungulate") {
+        command = "rimage";
+        args = ["lil wayne"];
+    }
 
     //If the command is all caps, change it to garfield
     if (command == command.toUpperCase()) command = "garfield";
