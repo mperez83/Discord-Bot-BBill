@@ -15,7 +15,10 @@ function getRandomNameInsult(message) {
     }
 
     let nameInsults = fs.readFileSync("./data/general_data/list_of_names_to_insult_people_with.txt").toString().split("\n");
-    for (let i = 0; i < nameInsults.length; i++) nameInsults[i] = nameInsults[i].substring(1);
+    for (let i = 0; i < nameInsults.length; i++) {
+        nameInsults[i] = nameInsults[i].substring(1);               //Removes hyphen
+        nameInsults[i] = nameInsults[i].replace(/\r?\n|\r/g, '');   //Removes newline character
+    }
     return nameInsults[Math.floor(Math.random() * nameInsults.length)];
 }
 module.exports.getRandomNameInsult = getRandomNameInsult;
@@ -200,4 +203,25 @@ module.exports.removeElementsFromArray = function(arrayToRemoveStuffFrom, stuffT
         }
     }
 
+}
+
+
+
+//Verify if the input numerical value is valid
+//Return codes:
+//0 = Good
+//1 = Value is not a number
+//2 = Value is less than min value
+//3 = Value is greater than min value
+module.exports.verifyNumVal = function(value, minValue, maxValue) {
+    if (isNaN(value)) {
+        return 1;
+    }
+    else if (value < minValue) {
+        return 2;
+    }
+    else if (value > maxValue) {
+        return 3;
+    }
+    return 0;
 }

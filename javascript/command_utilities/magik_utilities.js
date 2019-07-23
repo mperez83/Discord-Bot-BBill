@@ -1,5 +1,6 @@
 const fs = require("fs");
 const gm = require("gm");
+const imageMagick = require('gm').subClass({imageMagick: true});
 const request = require("request");
 
 /*
@@ -147,6 +148,11 @@ module.exports.workshopLoc = workshopLoc;
 
 
 
+
+
+
+
+//For GraphicsMagick stuff
 function reduceImageFileSize(message, filename, chopNum, targetFileSize, callback) {
     gm(`${workshopLoc}/${filename}.png`)
         .minify()
@@ -198,6 +204,69 @@ function writeAndShrinkImage(message, foundURL, filename, maxFileSize, callback)
     });
 }
 module.exports.writeAndShrinkImage = writeAndShrinkImage;
+
+
+
+
+
+
+
+//For ImageMagick stuff
+function imReduceImageFileSize(message, filename, chopNum, targetFileSize, callback) {
+    imageMagick(`${workshopLoc}/${filename}.png`)
+        .in(`-scale`, `50%`)
+        .write(`${workshopLoc}/${filename}.png`, function (err) {
+            if (err) console.error(err);
+
+            let stats = fs.statSync(`${workshopLoc}/${filename}.png`);
+            let fileSize = (stats["size"] / 1000000.0).toFixed(2);
+
+            if (fileSize > targetFileSize) {
+                imReduceImageFileSize(message, filename, chopNum+1, targetFileSize, callback);
+            }
+            else {
+                //message.channel.send(`Image chopped **${chopNum}** time${(chopNum > 1) ? 's' : ''}`);
+                callback();
+            }
+        });
+}
+module.exports.imReduceImageFileSize = imReduceImageFileSize;
+
+
+
+function imWriteImageToDisk(foundURL, filename, callback) {
+    gm(request(foundURL))
+        .write(`${workshopLoc}/${filename}.png`, (err) => {
+            if (err) console.error(err);
+            callback();
+        });
+}
+module.exports.imWriteImageToDisk = imWriteImageToDisk;
+
+
+
+function imWriteAndShrinkImage(message, foundURL, filename, maxFileSize, callback) {
+    imWriteImageToDisk(foundURL, filename, () => {
+
+        let stats = fs.statSync(`${workshopLoc}/${filename}.png`);
+        let fileSize = (stats["size"] / 1000000.0).toFixed(2);
+
+        if (fileSize > maxFileSize) {
+            imReduceImageFileSize(message, filename, 1, maxFileSize, () => {
+                callback();
+            });
+        }
+        else {
+            callback();
+        }
+        
+    });
+}
+module.exports.imWriteAndShrinkImage = imWriteAndShrinkImage;
+
+
+
+
 
 
 
