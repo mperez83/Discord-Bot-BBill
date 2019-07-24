@@ -72,8 +72,6 @@ module.exports.help = {
 
 
 function performCarboniteMagik(message, filename) {
-    //message.channel.send(`Freezing the image in carbonite...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .shade(270, 15)
         .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {

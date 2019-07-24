@@ -13,6 +13,12 @@ const maxFileSize = 3;
 
 module.exports.run = async (bot, message, args) => {
 
+    //if this message wasn't sent by ME, return
+    if (message.author.id != "205106238697111552") {
+        message.channel.send(`unauthorized access, ${genUtils.getRandomNameInsult(message)}`);
+        return;
+    }
+
     if (config.lite_mode == "true") {
         message.channel.send(`Currently in lite_mode, can't use expensive commands. ${genUtils.getRandomNameInsult(message)}`);
         return;

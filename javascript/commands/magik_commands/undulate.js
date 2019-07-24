@@ -116,8 +116,6 @@ module.exports.help = {
 
 
 function performUndulationMagik(message, filename, gifFrameCount, intensity) {
-    //message.channel.send(`Undulating a gif...`);
-
     let implodeValues = [];
     for (let i = 0; i < gifFrameCount; i++) {
         let curDeg = 360 * (i / gifFrameCount);

@@ -64,8 +64,6 @@ module.exports.help = {
 
 
 function performRainbowMagik(message, filename) {
-    //message.channel.send(`Performing rainbow magik on the image...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);

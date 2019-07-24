@@ -72,8 +72,6 @@ module.exports.help = {
 
 
 function performGiygasMagik(message, filename) {
-    //message.channel.send(`??? the image...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);

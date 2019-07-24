@@ -72,8 +72,6 @@ module.exports.help = {
 
 
 function performSpiderMagik(message, filename) {
-    //message.channel.send(`Hatching...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);

@@ -146,8 +146,6 @@ module.exports.help = {
 
 
 function performIntensifyMagik(message, filename, gifFrameCount, gifFrameDelay, intensity) {
-    //message.channel.send(`Intensifying a gif..`);
-
     //Get the size early on, so we don't have to repeatedly later on
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {

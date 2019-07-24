@@ -65,8 +65,6 @@ module.exports.help = {
 
 
 function performMagik(message, filename) {
-    //message.channel.send(`Casting a spell on the image...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);

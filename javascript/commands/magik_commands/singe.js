@@ -88,8 +88,6 @@ module.exports.help = {
 
 
 function performSingeMagik(message, filename, singeAmount) {
-    //message.channel.send(`Singing the image...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);

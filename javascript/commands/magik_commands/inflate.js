@@ -110,8 +110,6 @@ module.exports.help = {
 
 
 function performInflateMagik(message, filename, inflateAmount) {
-    //message.channel.send(`Inflating the image...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .implode(-inflateAmount)
         .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {

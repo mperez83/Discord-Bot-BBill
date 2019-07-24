@@ -71,8 +71,6 @@ module.exports.help = {
 
 
 function performAverageMagik(message, filename) {
-    //message.channel.send(`Averaging an image..`);
-
     let writeRequests = 0;
     for (let i = 0; i < imageCount; i++) {
 

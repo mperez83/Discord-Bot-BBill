@@ -106,8 +106,6 @@ module.exports.help = {
 
 
 function performDeflateMagik(message, filename, deflateAmount) {
-    //message.channel.send(`Deflating the image...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .implode(deflateAmount)
         .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {

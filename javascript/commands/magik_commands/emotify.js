@@ -69,8 +69,6 @@ module.exports.help = {
 
 
 function performEmotifyMagik(message, filename) {
-    //message.channel.send(`Emotifying the image...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {
             if (err) console.error(err);

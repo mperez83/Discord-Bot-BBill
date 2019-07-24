@@ -72,8 +72,6 @@ module.exports.help = {
 
 
 function performDeepFryMagik(message, filename) {
-    //message.channel.send(`Deepfrying the image...`);
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size(function getSize(err, size) {
             if (err) console.error(err);
