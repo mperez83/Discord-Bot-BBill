@@ -207,21 +207,57 @@ module.exports.removeElementsFromArray = function(arrayToRemoveStuffFrom, stuffT
 
 
 
+//Verify if the provided args are in the correct format
+module.exports.getArgLetterAndValue = function(args, message) {
+
+    //Check that there's an even number of arguments
+    if ((args.length % 2) != 0) {
+        message.channel.send(`Invalid argument format, ${getRandomNameInsult(message)} (there should be an even amount of inputs)`);
+        return undefined;
+    }
+
+    //Check that the current argument starts with a hyphen
+    if (args[0][0] != '-') {
+        message.channel.send(`Invalid argument provided, ${getRandomNameInsult(message)} (the argument you want to provide needs to start with a hyphen)`);
+        return undefined;
+    }
+
+    //Check that the current argument is exactly 2 characters long
+    if (args[0].length != 2) {
+        message.channel.send(`Invalid argument provided, ${getRandomNameInsult(message)} (the start of an argument should be a hyphen and a letter, e.g. -d)`);
+        return undefined;
+    }
+
+    //If nothing above proc'd, return the letter and value
+    let returnObject = {letter: args[0][1], value: args[1]};
+    args.splice(0, 2);
+    return returnObject;
+
+}
+
+
+
 //Verify if the input numerical value is valid
-//Return codes:
-//0 = Good
-//1 = Value is not a number
-//2 = Value is less than min value
-//3 = Value is greater than min value
-module.exports.verifyNumVal = function(value, minValue, maxValue) {
+module.exports.verifyNumVal = function(value, minValue, maxValue, valueName, message) {
+
+    //If the value isn't a number
     if (isNaN(value)) {
-        return 1;
+        message.channel.send(`${valueName} must be a number, ${getRandomNameInsult(message)}`);
+        return undefined;
     }
-    else if (value < minValue) {
-        return 2;
+
+    //If the value is less than the minimum value
+    if (value < minValue) {
+        message.channel.send(`${valueName} must be equal to or greater than ${minValue}, ${getRandomNameInsult(message)}`);
+        return undefined;
     }
-    else if (value > maxValue) {
-        return 3;
+
+    //If the value is greater than the max value
+    if (value > maxValue) {
+        message.channel.send(`${valueName} must be equal to or less than ${maxValue}, ${getRandomNameInsult(message)}`);
+        return undefined;
     }
-    return 0;
+
+    return value;
+
 }

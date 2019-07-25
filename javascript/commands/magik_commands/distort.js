@@ -8,6 +8,7 @@ const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 1;
+
 const minScalePercentage = 25;
 const maxScalePercentage = 200;
 
@@ -27,42 +28,24 @@ module.exports.run = async (bot, message, args) => {
     //Verify parameters
     while (args.length > 0) {
 
-        if ((args.length % 2) != 0) {
-            message.channel.send(`Invalid argument format, ${genUtils.getRandomNameInsult(message)} (there should be an even amount of inputs)`);
+        let letterValue = genUtils.getArgLetterAndValue(args, message);
+
+        if (!letterValue) {
             return;
         }
 
-        if (args[0][0] != '-') {
-            message.channel.send(`Invalid argument provided, ${genUtils.getRandomNameInsult(message)} (the argument you want to provide needs to start with a hyphen)`);
-            return;
-        }
-        else {
+        switch(letterValue.letter) {
+            //Scale
+            case 's':
+                scalePercentage = genUtils.verifyNumVal(letterValue.value, minScalePercentage, maxScalePercentage, "Scale Percentage", message);
+                if (!scalePercentage) return;
+                break;
 
-            if (args[0].length != 2) {
-                message.channel.send(`Invalid argument provided, ${genUtils.getRandomNameInsult(message)} (the start of an argument should be a hyphen and a letter, e.g. -s)`);
+            //Unknown argument
+            default:
+                message.channel.send(`Unknown parameter '${args[0][1]}', ${genUtils.getRandomNameInsult(message)} (valid rainbow parameters are 'd' and 'm')`);
                 return;
-            }
-
-            let result;
-
-            switch(args[0][1]) {
-                //Scale
-                case 's':
-                    result = genUtils.verifyNumVal(args[1], minScalePercentage, maxScalePercentage);
-                    if (result == 0) scalePercentage = args[1];
-                    else if (result == 1) { message.channel.send(`Provided scale value isn't a number, ${genUtils.getRandomNameInsult(message)}`); return; }
-                    else if (result == 2) { message.channel.send(`Provided scale value must be equal to or greater than ${minScalePercentage}, ${genUtils.getRandomNameInsult(message)}`); return; }
-                    else if (result == 3) { message.channel.send(`Provided scale value must be equal to or less than ${maxScalePercentage}, ${genUtils.getRandomNameInsult(message)}`); return; }
-                    break;
-
-                //Unknown argument
-                default:
-                    message.channel.send(`Unknown parameter '${args[0][1]}', ${genUtils.getRandomNameInsult(message)} (valid irradiate parameters are 's', 'f', and 'd')`);
-                    return;
-            }
-
         }
-        args.splice(0, 2);
 
     }
 

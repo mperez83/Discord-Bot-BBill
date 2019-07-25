@@ -8,6 +8,7 @@ const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.5;
+
 const minScalePercentage = 25;
 const maxScalePercentage = 200;
 const minGifFrameCount = 2;
@@ -87,6 +88,48 @@ module.exports.run = async (bot, message, args) => {
 
         }
         args.splice(0, 2);
+
+    }
+
+
+
+    let scalePercentage = 50;
+    let gifFrameCount = 12;
+    let gifFrameDelay = 6;
+
+    //Verify parameters
+    while (args.length > 0) {
+
+        let letterValue = genUtils.getArgLetterAndValue(args, message);
+
+        if (!letterValue) {
+            return;
+        }
+
+        switch(letterValue.letter) {
+            //Scale
+            case 's':
+                scalePercentage = genUtils.verifyNumVal(letterValue.value, minScalePercentage, maxScalePercentage, "Scale Percentage", message);
+                if (!scalePercentage) return;
+                break;
+            
+            //Frame Count
+            case 'f':
+                gifFrameCount = genUtils.verifyNumVal(letterValue.value, minGifFrameCount, maxGifFrameCount, "Frame Count", message);
+                if (!gifFrameCount) return;
+                break;
+            
+            //Frame Delay
+            case 'd':
+                gifFrameDelay = genUtils.verifyNumVal(letterValue.value, minGifFrameDelay, maxGifFrameDelay, "Frame Delay", message);
+                if (!gifFrameDelay) return;
+                break;
+
+            //Unknown argument
+            default:
+                message.channel.send(`Unknown parameter '${args[0][1]}', ${genUtils.getRandomNameInsult(message)} (valid rainbow parameters are 'd' and 'm')`);
+                return;
+        }
 
     }
 
