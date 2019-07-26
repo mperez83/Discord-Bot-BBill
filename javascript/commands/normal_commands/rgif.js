@@ -6,6 +6,7 @@ const config = require("../../../data/general_data/config.json");
 
 
 module.exports.run = async (bot, message, args) => {
+
     args = args.join(" ");
     
     if (args.length == 0) {
@@ -14,7 +15,7 @@ module.exports.run = async (bot, message, args) => {
     }
 
     let page = 1 + Math.floor(Math.random() * 5) * 10;
-    request(`https://www.googleapis.com/customsearch/v1?key=${config.youtube_api_key}&cx=${config.google_custom_search}&q=${(args.replace(/\s/g, '+'))}&searchType=image&alt=json&num=10&start=${page}&fileType=gif`, function (err, res, body) {
+    request(`https://www.googleapis.com/customsearch/v1?key=${config.youtube_api_key}&cx=${config.google_custom_search}&q=${(args.replace(/\s/g, '+'))}&searchType=image&alt=json&num=10&start=${page}&fileType=gif`, (err, res, body) => {
         let data, error;
         try {
             data = JSON.parse(body);
@@ -33,6 +34,7 @@ module.exports.run = async (bot, message, args) => {
         let randResult = data.items[Math.floor(Math.random() * data.items.length)];
         message.channel.send(`${randResult.title}\n${randResult.link}`);
     });
+
 }
 
 module.exports.help = {

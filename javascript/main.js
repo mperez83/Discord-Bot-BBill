@@ -46,7 +46,7 @@ fs.readdir("./javascript/commands/", (err, cmdDirs) => {
                     if (!cmdDataJson[cmdName]) {
                         consoleMsg += ` (no entry found in command_data.json, adding now)`;
                         cmdDataJson[cmdName] = { calls: 0 };
-                        fs.writeFileSync("./data/general_data/command_data.json", JSON.stringify(cmdDataJson, null, 4), function(err) { if (err) return err; });
+                        fs.writeFile("./data/general_data/command_data.json", JSON.stringify(cmdDataJson, null, 4), function(err) { if (err) return err; });
                     }
 
                     console.log(consoleMsg);
@@ -69,12 +69,12 @@ bot.on("ready", () => {
     if (!config.id) {
         console.log("Bot ID doesn't exist in config file, adding it now");
         config.id = bot.user.id;
-        fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
+        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
     }
     else if (config.id != bot.user.id) {
         console.log("Bot ID doesn't match one listed in config file, updating it now");
         config.id = bot.user.id;
-        fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
+        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
     }
 });
 
@@ -102,8 +102,8 @@ bot.on("message", (message) => {
     if (informalCommandsModule.parseTextForBadEmotes(message)) return;
     if (informalCommandsModule.parseTextForAtEveryone(message)) return;
     if (informalCommandsModule.parseTextForSpecificString(message)) return;
-    if (informalCommandsModule.parseTextForLooseString(message, bot)) return;
-    if (cleverbillModule.parseTextForQuestions(bot, message)) return;
+    if (informalCommandsModule.parseTextForLooseString(message)) return;
+    if (cleverbillModule.parseTextForQuestions(message, bot)) return;
 
 
 
@@ -114,6 +114,7 @@ bot.on("message", (message) => {
 
     if (!command.startsWith(config.prefix)) return;
     command = command.slice(config.prefix.length);  //Slice off command prefix
+    command = command.toLowerCase();
 
     //Special command checks
     if (command.match(/^do+ge$/)) command = "doge";
@@ -123,8 +124,8 @@ bot.on("message", (message) => {
         args = ["lil wayne"];
     }
 
-    //If the command is all caps, change it to garfield
-    if (command == command.toUpperCase()) command = "garfield";
+    //If the command is invalid, change it to garfield
+    if (!bot.commands.get(command)) command = "garfield";
 
     let cmd = bot.commands.get(command);
     if (cmd) {
@@ -132,7 +133,7 @@ bot.on("message", (message) => {
         genUtils.readJSONFile("./data/general_data/command_data.json", function (commandDataJson) {
             if (!commandDataJson[command]) commandDataJson[command] = { calls: 0 };
             commandDataJson[command].calls++;
-            fs.writeFileSync("./data/general_data/command_data.json", JSON.stringify(commandDataJson, null, 4), function(err) {if (err) return err;});
+            fs.writeFile("./data/general_data/command_data.json", JSON.stringify(commandDataJson, null, 4), function(err) {if (err) return err;});
         });
         cmd.run(bot, message, args);
     }

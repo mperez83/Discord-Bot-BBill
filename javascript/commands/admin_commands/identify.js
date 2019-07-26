@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
         return;
     }
 
-    genUtils.readJSONFile(dataLoc, function (indexDataJson) {
+    genUtils.readJSONFile(dataLoc, (indexDataJson) => {
         
         if (args.length == 0) {
             message.channel.send(`I need an index name in order to identify who did it, ${genUtils.getRandomNameInsult(message)}`);

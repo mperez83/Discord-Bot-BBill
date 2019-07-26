@@ -71,7 +71,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    genUtils.getMostRecentImageURL(message).then(requestedURL => {
+    genUtils.getMostRecentImageURL(message).then((requestedURL) => {
 
         let foundURL = requestedURL;
 
@@ -85,7 +85,7 @@ module.exports.run = async (bot, message, args) => {
             };
 
             rp(options)
-                .then(function (response) {
+                .then((response) => {
 
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
@@ -100,7 +100,7 @@ module.exports.run = async (bot, message, args) => {
                     });
 
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.error(err);
                 });
         }
@@ -134,23 +134,23 @@ function performUndulationMagik(message, filename, gifFrameCount, intensity) {
 
         gm(`${magikUtils.workshopLoc}/${filename}.png`)
             .implode(implodeValues[i])
-            .write(`${magikUtils.workshopLoc}/${filename}-${i}.png`, function (err) {
+            .write(`${magikUtils.workshopLoc}/${filename}-${i}.png`, (err) => {
                 if (err) console.error(err);
                 
                 writeRequests--;
 
                 //If we've written all of the undulated images, delete the source image and generate the gif
                 if (writeRequests == 0) {
-                    fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
+                    fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, (err) => { if (err) console.error(err); });
 
                     magikUtils.generateGif(filename, gifFrameCount, 6, () => {
 
                         //Once the gif is generated, post it
                         message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.gif`] })
-                            .then(function(msg) {
-                                fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, function(err) { if (err) throw err; });
+                            .then((msg) => {
+                                fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, (err) => { if (err) console.error(err); });
                                 for (let i = 0; i < gifFrameCount; i++) {
-                                    fs.unlink(`${magikUtils.workshopLoc}/${filename}-${i}.png`, function(err) { if (err) throw err; });
+                                    fs.unlink(`${magikUtils.workshopLoc}/${filename}-${i}.png`, (err) => { if (err) console.error(err); });
                                 }
                             })
                             .catch(console.error);

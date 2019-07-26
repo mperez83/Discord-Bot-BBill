@@ -12,59 +12,65 @@ const dataLoc = "./data/general_data/pride_flag_data.json";
 
 module.exports.run = async (bot, message, args) => {
 
-    genUtils.readJSONFile(dataLoc, function (prideFlagDataJson) {
+    genUtils.readJSONFile(dataLoc, (prideFlagDataJson) => {
 
         let flags = [];
-        fs.readdirSync(photoLoc).forEach(file => {
-            flags.push(file);
-        });
+        fs.readdir(photoLoc, (err, files) => {
 
-        let selectedFlag = flags[Math.floor(Math.random() * flags.length)];
+            if (err) console.error(err);
 
-        let stats = fs.statSync(`${photoLoc + selectedFlag}`);
-        let fileSize = (stats["size"] / 1000000.0).toFixed(2);
+            for (let file in files) {
+                flags.push(file);
+            }
 
-        if (fileSize > 8) {
-            message.channel.send(`Whoa, sister. That flag is **${fileSize}mb** big, I physically cannot upload that (this message should never appear)`);
-            return;
-        }
+            let selectedFlag = flags[Math.floor(Math.random() * flags.length)];
 
-        let fileName = selectedFlag.replace(/\.[^/.]+$/, "");
-        let flagObject = prideFlagDataJson[fileName];
-        
-        if (!flagObject) {
-            message.channel.send(`Tell michael that "${fileName}" isn't in the pride flag database`);
-            return;
-        }
+            let stats = fs.statSync(`${photoLoc + selectedFlag}`);
+            let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
-        if (!flagObject.peopleCount) flagObject.peopleCount = 0;
+            if (fileSize > 8) {
+                message.channel.send(`Whoa, sister. That flag is **${fileSize}mb** big, I physically cannot upload that (this message should never appear)`);
+                return;
+            }
 
-        //Handle peopleCount in various ways
-        switch (fileName) {
-            case "completely normal photo of ross":
-            case "gamer bernie sanders":
-                flagObject.peopleCount = 1;
-                break;
-
-            case "shit eating brain fungus":
-                flagObject.peopleCount = 4;
-                break;
+            let fileName = selectedFlag.replace(/\.[^/.]+$/, "");
+            let flagObject = prideFlagDataJson[fileName];
             
-            default:
-                flagObject.peopleCount++;
-                break;
-        }
+            if (!flagObject) {
+                message.channel.send(`Tell michael that "${fileName}" isn't in the pride flag database`);
+                return;
+            }
 
-        let newEmbed = new Discord.RichEmbed()
-            .setTitle(`${fileName}`)
-            .addField("Description", flagObject.description)
-            .addField("Colors", flagObject.colors)
-            .addField(`Number of ${fileName} people`, flagObject.peopleCount)
-            .attachFile(`${photoLoc + selectedFlag}`);
+            if (!flagObject.peopleCount) flagObject.peopleCount = 0;
 
-        message.channel.send(newEmbed);
+            //Handle peopleCount in various ways
+            switch (fileName) {
+                case "completely normal photo of ross":
+                case "gamer bernie sanders":
+                    flagObject.peopleCount = 1;
+                    break;
 
-        fs.writeFileSync(dataLoc, JSON.stringify(prideFlagDataJson, null, 4));
+                case "shit eating brain fungus":
+                    flagObject.peopleCount = 4;
+                    break;
+                
+                default:
+                    flagObject.peopleCount++;
+                    break;
+            }
+
+            let newEmbed = new Discord.RichEmbed()
+                .setTitle(`${fileName}`)
+                .addField("Description", flagObject.description)
+                .addField("Colors", flagObject.colors)
+                .addField(`Number of ${fileName} people`, flagObject.peopleCount)
+                .attachFile(`${photoLoc + selectedFlag}`);
+
+            message.channel.send(newEmbed);
+
+            fs.writeFile(dataLoc, JSON.stringify(prideFlagDataJson, null, 4), (err) => { if (err) console.error(err); });
+
+        });
 
     });
 

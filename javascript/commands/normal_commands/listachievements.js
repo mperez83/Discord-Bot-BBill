@@ -5,6 +5,7 @@ const ahm = require("../../command_utilities/achievement_handler");
 module.exports.run = async (bot, message, args) => {
 
     ahm.getUserAchievementObj(message.author.id, (userAchObj) => {
+
         let achNames = Object.keys(userAchObj.achievements);
 
         let msg = `here are your achievements:\n- - - - - - - - - -\n`;
@@ -20,6 +21,7 @@ module.exports.run = async (bot, message, args) => {
         msg += `- - - - - - - - - -`;
 
         message.reply(msg);
+        
     });
 
 }

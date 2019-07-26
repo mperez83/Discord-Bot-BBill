@@ -46,7 +46,7 @@ module.exports.run = async (bot, message, args) => {
 
     let foundURL;
 
-    genUtils.getMostRecentImageURL(message).then(requestedURL => {
+    genUtils.getMostRecentImageURL(message).then((requestedURL) => {
 
         foundURL = requestedURL;
 
@@ -60,7 +60,7 @@ module.exports.run = async (bot, message, args) => {
             };
 
             rp(options)
-                .then(function (response) {
+                .then((response) => {
 
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
@@ -75,7 +75,7 @@ module.exports.run = async (bot, message, args) => {
                     });
 
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.error(err);
                 });
         }
@@ -91,8 +91,10 @@ module.exports.help = {
 
 
 function performEnhanceMagik(message, filename) {
+
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
-        .size(function getSize(err, size) {
+        .size((err, size) => {
+            
             if (err) console.error(err);
 
             let maxRadius = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
@@ -157,15 +159,16 @@ function performEnhanceMagik(message, filename) {
                 }
             }
 
-            enhancedImage.write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {
+            enhancedImage.write(`${magikUtils.workshopLoc}/${filename}.png`, (err) => {
                 if (err) console.error(err);
 
                 message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.png`] })
-                    .then(function(msg) {
-                        fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
+                    .then((msg) => {
+                        fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, (err) => { if (err) console.error(err); });
                     })
                     .catch(console.error);
             });
 
         });
+
 }

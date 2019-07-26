@@ -5,7 +5,8 @@ const dataLoc = "./data/general_data/user_data.json";
 
 
 module.exports.run = async (bot, message, args) => {
-    genUtils.readJSONFile(dataLoc, function (userDataJson) {
+
+    genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
         let user = message.author;
         let userObj = userDataJson[user.id];
@@ -40,6 +41,7 @@ module.exports.run = async (bot, message, args) => {
         }
     
     });
+
 }
 
 module.exports.help = {

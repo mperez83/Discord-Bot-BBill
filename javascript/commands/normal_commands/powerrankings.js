@@ -5,7 +5,8 @@ const dataLoc = "./data/general_data/user_data.json";
 
 
 module.exports.run = async (bot, message, args) => {
-    genUtils.readJSONFile(dataLoc, function (userDataJson) {
+
+    genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
         //Sort users in order of power and list them
         let powerRankingsString = `- - - - - - - - - -\n`;
@@ -15,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
                 userArray.push(userDataJson[userID]);
             }
         }
-        userArray.sort(function(a,b){ return a.power - b.power });  //Sort them by their power property, from lowest to highest
+        userArray.sort((a,b) => { return a.power - b.power });  //Sort them by their power property, from lowest to highest
         userArray.reverse();
         for (let i = 0; i < userArray.length; i++) {
             powerRankingsString = powerRankingsString.concat(`**${userArray[i].username}:** ${userArray[i].power}\n`);
@@ -25,6 +26,7 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send(powerRankingsString);
     
     });
+
 }
 
 module.exports.help = {

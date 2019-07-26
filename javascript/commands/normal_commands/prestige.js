@@ -8,7 +8,8 @@ const dataLoc = "./data/general_data/user_data.json";
 
 
 module.exports.run = async (bot, message, args) => {
-    genUtils.readJSONFile(dataLoc, function (userDataJson) {
+
+    genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
         //If the user tried to supply some kind of argument, cut that shit right off
         if (args.length > 0) {
@@ -23,20 +24,24 @@ module.exports.run = async (bot, message, args) => {
             userDataJson[message.author.id].nextValidPowerCheck = undefined;
         }
 
-        if (userDataJson[message.author.id].power == 69) {
-            userDataJson[message.author.id].power = 0;
-            genUtils.incrementUserDataValue(message.author, "prestigeLevel", 1);
-            fs.writeFileSync(dataLoc, JSON.stringify(userDataJson, null, 4));
-            message.reply(`you're now 1 better than everyone else`);
-            ahm.awardAchievement(message, ahm.achievement_list_enum.FIRST_PRESTIGE);
+        if (userDataJson[message.author.id].power != 69) {
+            message.reply(`you are not eligible to prestige, ${genUtils.getRandomNameInsult(message)}`);
             return;
         }
         else {
-            message.reply(`you are not eligible to prestige, ${genUtils.getRandomNameInsult(message)}`);
+            userDataJson[message.author.id].power = 0;
+            fs.writeFile(dataLoc, JSON.stringify(userDataJson, null, 4), (err) => {
+                if (err) console.error(err);
+                genUtils.incrementUserDataValue(message.author, "prestigeLevel", 1, (newValue) => {
+                    message.reply(`you are now ${newValue} better than everyone else`);
+                });
+                ahm.awardAchievement(message, ahm.achievement_list_enum.FIRST_PRESTIGE);
+            });
             return;
         }
 
     });
+
 }
 
 module.exports.help = {

@@ -71,7 +71,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    utilitiesModule.getMostRecentImageURL(message).then(requestedURL => {
+    utilitiesModule.getMostRecentImageURL(message).then((requestedURL) => {
 
         let foundURL = requestedURL;
 
@@ -85,7 +85,7 @@ module.exports.run = async (bot, message, args) => {
             };
 
             rp(options)
-                .then(function (response) {
+                .then((response) => {
 
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
@@ -100,7 +100,7 @@ module.exports.run = async (bot, message, args) => {
                     });
 
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.error(err);
                 });
         }
@@ -116,7 +116,6 @@ module.exports.help = {
 
 
 function performBPMMagik(message, filename, bpm, intensity) {
-    //message.channel.send(`Making a gif that beats to the provided BPM...`);
 
     let gifFrameCount = 30;
 
@@ -140,23 +139,23 @@ function performBPMMagik(message, filename, bpm, intensity) {
 
         gm(`./graphics/${filename}.png`)
             .implode(implodeValues[i])
-            .write(`./graphics/${filename}-${i}.png`, function (err) {
+            .write(`./graphics/${filename}-${i}.png`, (err) => {
                 if (err) console.error(err);
                 
                 writeRequests--;
 
                 //If we've written all of the undulated images, delete the source image and generate the gif
                 if (writeRequests == 0) {
-                    fs.unlink(`./graphics/${filename}.png`, function(err) { if (err) throw err; });
+                    fs.unlink(`./graphics/${filename}.png`, (err) => { if (err) console.error(err); });
 
                     magikUtilities.generateGif(message, filename, gifFrameCount, gifDelay, () => {
 
                         //Once the gif is generated, post it
                         message.channel.send({ files: [`./graphics/${filename}.gif`] })
-                            .then(function(msg) {
-                                fs.unlink(`./graphics/${filename}.gif`, function(err) { if (err) throw err; });
+                            .then((msg) => {
+                                fs.unlink(`./graphics/${filename}.gif`, (err) => { if (err) console.error(err); });
                                 for (let i = 0; i < gifFrameCount; i++) {
-                                    fs.unlink(`./graphics/${filename}-${i}.png`, function(err) { if (err) throw err; });
+                                    fs.unlink(`./graphics/${filename}-${i}.png`, (err) => { if (err) console.error(err); });
                                 }
                             })
                             .catch(console.error);
@@ -167,4 +166,5 @@ function performBPMMagik(message, filename, bpm, intensity) {
             });
 
     }
+
 }

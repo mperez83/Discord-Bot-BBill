@@ -69,7 +69,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    genUtils.getMostRecentImageURL(message).then(requestedURL => {
+    genUtils.getMostRecentImageURL(message).then((requestedURL) => {
 
         let foundURL = requestedURL;
 
@@ -83,7 +83,7 @@ module.exports.run = async (bot, message, args) => {
             };
 
             rp(options)
-                .then(function (response) {
+                .then((response) => {
 
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
@@ -118,7 +118,7 @@ function generateBaseImages(message, filename, gifFrameDelay, midwayFrames) {
         .command(`convert`)
         .in(`${magikUtils.workshopLoc}/${filename}.png`)
         .in(`-colorspace`, `gray`, `-sigmoidal-contrast`, `10,40%`)
-        .write(`${magikUtils.workshopLoc}/${filename}.png`, function (err) {
+        .write(`${magikUtils.workshopLoc}/${filename}.png`, (err) => {
             if (err) console.error(err);
 
             let writeRequests = 0;
@@ -130,13 +130,13 @@ function generateBaseImages(message, filename, gifFrameDelay, midwayFrames) {
                     .command(`convert`)
                     .in(`${magikUtils.workshopLoc}/${filename}.png`)
                     .in(`-fill`, `${iMagikColors[i]}`, `-tint`, `100`)
-                    .write(`${magikUtils.workshopLoc}/${filename}-${iMagikColors[i]}.png`, function (err) {
+                    .write(`${magikUtils.workshopLoc}/${filename}-${iMagikColors[i]}.png`, (err) => {
                         if (err) console.error(err);
                         
                         writeRequests--;
 
                         if (writeRequests == 0) {
-                            fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; });
+                            fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, (err) => { if (err) console.error(err); });
 
                             rainbowDissolveMagik(message, filename, gifFrameDelay, midwayFrames);
                         }
@@ -177,19 +177,19 @@ function rainbowDissolveMagik(message, filename, gifFrameDelay, midwayFrames) {
                         magikUtils.generateGif(filename, counter, gifFrameDelay, () => {
 
                             message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.gif`] })
-                                .then(function(msg) {
+                                .then((msg) => {
 
                                     //Delete the gif
-                                    fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, function(err) { if (err) throw err; });
+                                    fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, (err) => { if (err) console.error(err); });
 
                                     //Delete the base colored images
                                     for (let k = 0; k < iMagikColors.length; k++) {
-                                        fs.unlink(`${magikUtils.workshopLoc}/${filename}-${iMagikColors[k]}.png`, function(err) { if (err) throw err; });
+                                        fs.unlink(`${magikUtils.workshopLoc}/${filename}-${iMagikColors[k]}.png`, (err) => { if (err) console.error(err); });
                                     }
 
                                     //Delete ALL of the dissolve images
                                     for (let k = 0; k < counter; k++) {
-                                        fs.unlink(`${magikUtils.workshopLoc}/${filename}-${k}.png`, function(err) { if (err) throw err; });
+                                        fs.unlink(`${magikUtils.workshopLoc}/${filename}-${k}.png`, (err) => { if (err) console.error(err); });
                                     }
 
                                 })

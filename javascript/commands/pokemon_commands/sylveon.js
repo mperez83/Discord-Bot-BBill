@@ -1,12 +1,13 @@
+const Discord = require("discord.js");
+
+
+
 module.exports.run = async (bot, message, args) => {
-    //message.channel.send({ files: ["./graphics/pokemon_stuff/sylveon.gif"] });
-    message.channel.send({
-        embed: {
-            image: {
-                url: "https://cdn.discordapp.com/attachments/527341248214990850/584243997049094145/sylveon.gif"
-            }
-        }
-    });
+
+    let newEmbed = new Discord.RichEmbed();
+    newEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584243997049094145/sylveon.gif`);
+    message.channel.send(newEmbed);
+    
 }
 
 module.exports.help = {

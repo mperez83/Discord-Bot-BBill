@@ -8,12 +8,13 @@ const userDataLoc = "./data/general_data/user_data.json";
 
 //Returns random line from list_of_names_to_insult_people_with as a string
 function getRandomNameInsult(message) {
-    incrementUserDataValue(message.author, "socialDeviancy", 1);
-    let socialDeviancyStat = getUserDataValue(message.author, "socialDeviancy");
-    if (socialDeviancyStat != undefined && socialDeviancyStat >= 100) {
-        ahm.awardAchievement(message, ahm.achievement_list_enum.SOCIAL_DEVIANT);
-    }
+    incrementUserDataValue(message.author, "socialDeviancy", 1, (newValue) => {
+        if (newValue >= 100) {
+            ahm.awardAchievement(message, ahm.achievement_list_enum.SOCIAL_DEVIANT);
+        }
+    });
 
+    //This is the only time I'll use readFileSync, just to make everything a hell of a lot easier
     let nameInsults = fs.readFileSync("./data/general_data/list_of_names_to_insult_people_with.txt").toString().split("\n");
     for (let i = 0; i < nameInsults.length; i++) {
         nameInsults[i] = nameInsults[i].substring(1);               //Removes hyphen
@@ -27,28 +28,37 @@ module.exports.getRandomNameInsult = getRandomNameInsult;
 
 //Return array consisting of every read line from a text file
 //also removes the hyphens from the beginning of the lines
-module.exports.readHyphenTextFile = function(fileLocation) {
-    let readLines = fs.readFileSync(fileLocation).toString().split("\n");
-    for (let i = 0; i < readLines.length; i++) readLines[i] = readLines[i].substring(1);
-    return readLines;
+module.exports.readHyphenTextFile = function(fileLocation, callback) {
+    fs.readFile(fileLocation, (err, data) => {
+        if (err) console.error(err);
+
+        let readLines = data.toString().split("\n");
+        for (let i = 0; i < readLines.length; i++) readLines[i] = readLines[i].substring(1);
+        callback(readLines);
+    });
 }
 
 
 
 //Attempts to read JSON file, and creates a new one if the provided fileDir doesn't exist
 function readJSONFile(fileDir, callback) {
-    fs.readFile(fileDir, function readFileCallback(err, data) {
+    fs.readFile(fileDir, (err, data) => {
+
+        //If the location we read doesn't have a file, invent one
         if (err) {
             //console.error(err);
             let tempData = {};
-            fs.writeFile(fileDir, JSON.stringify(tempData, null, 4), function (err) {
+            fs.writeFile(fileDir, JSON.stringify(tempData, null, 4), (err) => {
                 if (err) throw err;
                 callback(tempData);
             });
         }
+
+        //Otherwise just send the json file through the callback
         else {
             callback(JSON.parse(data, "utf8"));
         }
+
     });
 }
 module.exports.readJSONFile = readJSONFile;
@@ -56,10 +66,11 @@ module.exports.readJSONFile = readJSONFile;
 
 
 //Get a value inside userData.json of a given user
-function getUserDataValue(user, valueName) {
-    readJSONFile(userDataLoc, function (userDataJson) {
+function getUserDataValue(user, valueName, callback) {
+    readJSONFile(userDataLoc, (userDataJson) => {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
-        return userDataJson[user.id][valueName];
+        if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
+        callback(userDataJson[user.id][valueName]);
     });
 }
 module.exports.getUserDataValue = getUserDataValue;
@@ -67,12 +78,17 @@ module.exports.getUserDataValue = getUserDataValue;
 
 
 //Increases a value inside userData.json of a given user by a given amount
-function incrementUserDataValue(user, valueName, amount) {
-    readJSONFile(userDataLoc, function (userDataJson) {
+//Contains an optional callback for when we immediately want to check the new value
+function incrementUserDataValue(user, valueName, amount, callback) {
+    readJSONFile(userDataLoc, (userDataJson) => {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
         if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
         userDataJson[user.id][valueName] += amount;
-        fs.writeFileSync(userDataLoc, JSON.stringify(userDataJson, null, 4));
+
+        fs.writeFile(userDataLoc, JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err); });
+
+        //If the callback is a function, invoke it
+        typeof callback === 'function' && callback(userDataJson[user.id][valueName]);
     });
 }
 module.exports.incrementUserDataValue = incrementUserDataValue;
@@ -84,7 +100,7 @@ function updateUserDataValue(user, valueName, newValue) {
     readJSONFile(userDataLoc, function (userDataJson) {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
         userDataJson[user.id][valueName] = newValue;
-        fs.writeFileSync(userDataLoc, JSON.stringify(userDataJson, null, 4));
+        fs.writeFile(userDataLoc, JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err); });
     });
 }
 module.exports.updateUserDataValue = updateUserDataValue;
@@ -109,10 +125,10 @@ module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
 
 
 //Return url of an image posted in the current channel, or null if there were no images in the last 10 messages
-module.exports.getMostRecentImageURL = function(message) {
+module.exports.getMostRecentImageURL = (message) => {
 
     return message.channel.fetchMessages({ limit: 10 })
-    .then(messagesToCheck => {
+    .then((messagesToCheck) => {
         let validURL;
 
         for (let i = 0; i < messagesToCheck.size; i++) {
@@ -194,7 +210,7 @@ module.exports.sendGlobalMessage = function(bot, msg) {
 //Because javascript is almost entirely pass by reference, we don't need to return anything (everything we
 //do to arrayToRemoveStuffFrom affects the passed in array no matter where it is)
 module.exports.removeElementsFromArray = function(arrayToRemoveStuffFrom, stuffToRemove) {
-
+    
     for (let i = 0; i < arrayToRemoveStuffFrom.length; i++) {
         for (let j = 0; j < stuffToRemove.length; j++) {
             if (arrayToRemoveStuffFrom[i] == stuffToRemove[j]) {

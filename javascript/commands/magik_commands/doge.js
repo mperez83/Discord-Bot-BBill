@@ -42,11 +42,11 @@ module.exports.run = async (bot, message, args) => {
         .in(`./graphics/doge/dogebutt.png`)
         .background("transparent")
         .mosaic()
-        .write(`./graphics/doge/${filename}.png`, function(err){
-            if(err) { console.error(err); }
+        .write(`./graphics/doge/${filename}.png`, (err) => {
+            if (err) { console.error(err); }
             message.channel.send({ files: [`./graphics/doge/${filename}.png`] })
-                .then(function(msg) {
-                    fs.unlink(`./graphics/doge/${filename}.png`, function(err) { if (err) throw err; });
+                .then((msg) => {
+                    fs.unlink(`./graphics/doge/${filename}.png`, (err) => { if (err) console.error(err); });
                 })
                 .catch(console.error);
         });

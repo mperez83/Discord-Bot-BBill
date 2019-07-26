@@ -6,11 +6,12 @@ const ahm = require("../../command_utilities/achievement_handler");
 
 module.exports.run = async (bot, message, args) => {
     imageUnboxModule.unboxImage(message);
-    genUtils.incrementUserDataValue(message.author, "shibeCalls", 1);
-    
-    if (genUtils.getUserDataValue(message.author, "shibeCalls") >= 1000) {
-        ahm.awardAchievement(message, ahm.achievement_list_enum.SHIBA_LOVER);
-    }
+
+    genUtils.incrementUserDataValue(message.author, "shibeCalls", 1, (newValue) => {
+        if (newValue >= 1000) {
+            ahm.awardAchievement(message, ahm.achievement_list_enum.SHIBA_LOVER);
+        }
+    });
 }
 
 module.exports.help = {

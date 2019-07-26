@@ -2,7 +2,6 @@ const fs = require("fs");
 
 const genUtils = require('../command_utilities/general_utilities');
 const ahm = require("../command_utilities/achievement_handler");
-const config = require("../../data/general_data/config.json");
 
 const emojiSampling = [
     '😊', '😬', '😁', '😂', '😃', '😄', '😅', '😆', '😇', '😉',
@@ -22,11 +21,11 @@ const emojiSampling = [
 module.exports = {
 
     //Check for all random events on every single message
-    handleEvents: function(message) {
+    handleEvents: (message) => {
 
         //Record how many characters someone just typed to their data file
         let user = message.author;
-        genUtils.readJSONFile("./data/general_data/user_data.json", function(userDataJson) {
+        genUtils.readJSONFile("./data/general_data/user_data.json", (userDataJson) => {
             if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username, asciiTyped: 0};
             userDataJson[user.id].asciiTyped += message.content.length;
 
@@ -38,7 +37,7 @@ module.exports = {
                 userDataJson[user.id].wisdomShared++;
             }
 
-            fs.writeFileSync("./data/general_data/user_data.json", JSON.stringify(userDataJson, null, 4));
+            fs.writeFile("./data/general_data/user_data.json", JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err) });
         });
 
         //1 in 10,000 chance of big bill reacting with 20 random emoji

@@ -280,10 +280,11 @@ module.exports.run = async (bot, message, args) => {
 
     message.channel.send(recipeMsg);
     
-    genUtils.incrementUserDataValue(message.author, "itemsCrafted", 1);
-    if (genUtils.getUserDataValue(message.author, "itemsCrafted")) {
-        ahm.awardAchievement(message, ahm.achievement_list_enum.LOYAL_LABOURER);
-    }
+    genUtils.incrementUserDataValue(message.author, "itemsCrafted", 1, (newValue) => {
+        if (newValue >= 500) {
+            ahm.awardAchievement(message, ahm.achievement_list_enum.LOYAL_LABOURER);
+        }
+    });
 
 }
 

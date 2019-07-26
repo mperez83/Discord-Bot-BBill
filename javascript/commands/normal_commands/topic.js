@@ -13,7 +13,7 @@ module.exports.run = async (bot, message, args) => {
         return;
     }
 
-    genUtils.readJSONFile(dataLoc, function (serverDataJson) {
+    genUtils.readJSONFile(dataLoc, (serverDataJson) => {
 
         currentServer = message.guild.id;
         serverObj = serverDataJson[currentServer];
@@ -49,7 +49,6 @@ module.exports.run = async (bot, message, args) => {
             if (!serverObj) serverObj = {topic: {topicText:undefined, topicDate:undefined, topicCreator:undefined}};
 
             serverObj.topic.topicText = newTopicText;
-            message.channel.send(`Topic set to "${serverObj.topic.topicText}"`);
 
             let topicDate = new Date();
             serverObj.topic.topicDate = JSON.stringify(topicDate);
@@ -57,7 +56,10 @@ module.exports.run = async (bot, message, args) => {
             serverObj.topic.topicCreator = message.author.username;
 
             serverDataJson[currentServer] = serverObj;
-            fs.writeFile(dataLoc, JSON.stringify(serverDataJson, null, 4), function(err) {if (err) return err;});
+            fs.writeFile(dataLoc, JSON.stringify(serverDataJson, null, 4), (err) => {
+                if (err) console.error(err);
+                message.channel.send(`Topic set to "${serverObj.topic.topicText}"`);
+            });
         }
 
     });

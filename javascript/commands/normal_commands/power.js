@@ -8,7 +8,8 @@ const dataLoc = "./data/general_data/user_data.json";
 
 
 module.exports.run = async (bot, message, args) => {
-    genUtils.readJSONFile(dataLoc, function (userDataJson) {
+
+    genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
         let doPowerCheck = false;
         let currentDate = new Date();
@@ -36,7 +37,9 @@ module.exports.run = async (bot, message, args) => {
             }
         }
 
-        if (doPowerCheck == true) {
+        //If the user is able to do a power call, do it
+        if (doPowerCheck) {
+
             let power = Math.ceil(Math.random() * 100);
             /*if (userObj.username == "SM980") {
                 power *= 0.1;
@@ -67,12 +70,16 @@ module.exports.run = async (bot, message, args) => {
             nextValidPowerCheck.setDate(currentDate.getDate() + 1);
             userObj.nextValidPowerCheck = JSON.stringify(nextValidPowerCheck);
 
+            //userDataJson[user.id] = userObj;
+            fs.writeFile(dataLoc, JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err); });
+
             genUtils.incrementUserDataValue(user, "powerCalls", 1);
 
-            //userDataJson[user.id] = userObj;
-            fs.writeFileSync(dataLoc, JSON.stringify(userDataJson, null, 4), function(err) {if (err) return err;});
         }
+
+        //If the user isn't able to do a power call, tell them how long it'll take until they can do one
         else {
+
             let checkDateStr = JSON.parse(userObj.nextValidPowerCheck);
             let checkDate = new Date(checkDateStr);
 
@@ -92,9 +99,11 @@ module.exports.run = async (bot, message, args) => {
             }
 
             message.reply(`you may reassess your power in ** ${hoursLeft} hour${(hoursLeft != 1) ? 's' : ''}, ${minutesLeft} minute${(minutesLeft != 1) ? 's' : ''}, and ${secondsLeft} second${(secondsLeft != 1) ? 's' : ''}**`);
+
         }
 
     });
+
 }
 
 module.exports.help = {

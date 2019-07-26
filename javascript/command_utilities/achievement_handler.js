@@ -16,7 +16,9 @@ const achievement_list_enum =
     LOVELY_KOMUGI: "Lovely Komugi",
     SOCIAL_DEVIANT: "Social Deviant",
     SHIBA_LOVER: "Shiba Lover",
-    LOYAL_LABOURER: "Loyal Labourer"
+    LOYAL_LABOURER: "Loyal Labourer",
+    SAILOR_MOUTH: "Sailor Mouth",
+    FAULTY_SLEUTH: "Faulty Sleuth"
 }
 
 const achievement_list = 
@@ -97,6 +99,20 @@ const achievement_list =
         description: "Crafted over 500 items",
         gamer_score: 10,
         secret: false
+    },
+
+    "Sailor Mouth":
+    {
+        description: "Uttered swears over 10000 times",
+        gamer_score: 25,
+        secret: false
+    },
+
+    "Faulty Sleuth":
+    {
+        description: "Attempt to attain the unattainable",
+        gamer_score: 5,
+        secret: true
     }
 
 }
@@ -110,13 +126,11 @@ module.exports.achievement_list_enum = achievement_list_enum;
 
 //Return an array of the specified user's achievements
 function getUserAchievementObj(userID, callback) {
-
     updateUserAchievementData(userID, () => {
         genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
             callback(uadJson[userID]);
         });
     });
-
 }
 module.exports.getUserAchievementObj = getUserAchievementObj;
 
@@ -142,9 +156,10 @@ function updateUserAchievementData(userID, callback) {
             uadJson[userID].achievements[achNames[i]] = tempObj[achNames[i]];
         }
 
-        fs.writeFileSync(achievementDataLoc, JSON.stringify(uadJson, null, 4));
-
-        callback();
+        fs.writeFile(achievementDataLoc, JSON.stringify(uadJson, null, 4), (err) => {
+            if (err) console.error(err)
+            callback();
+        });
     });
 }
 module.exports.updateUserAchievementData = updateUserAchievementData;
@@ -163,9 +178,10 @@ function resetUserAchievementData(userID, callback) {
             uadJson[userID].achievements[achNames[i]] = false;
         }
 
-        fs.writeFileSync(achievementDataLoc, JSON.stringify(uadJson, null, 4));
-
-        callback();
+        fs.writeFile(achievementDataLoc, JSON.stringify(uadJson, null, 4), (err) => {
+            if (err) console.error(err);
+            callback();
+        });
     });
 }
 module.exports.resetUserAchievementData = resetUserAchievementData;
@@ -188,8 +204,10 @@ function awardAchievement(message, achName) {
             genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
                 uadJson[message.author.id].achievements = userAchObj.achievements;
                 uadJson[message.author.id].gamer_score += achievement_list[achName].gamer_score;
-                fs.writeFileSync(achievementDataLoc, JSON.stringify(uadJson, null, 4));
-                message.react(`❗`);
+                fs.writeFile(achievementDataLoc, JSON.stringify(uadJson, null, 4), (err) => {
+                    if (err) console.error(err);
+                    message.react(`❗`);
+                });
             });
         }
     });

@@ -156,7 +156,7 @@ module.exports.workshopLoc = workshopLoc;
 function reduceImageFileSize(message, filename, chopNum, targetFileSize, callback) {
     gm(`${workshopLoc}/${filename}.png`)
         .minify()
-        .write(`${workshopLoc}/${filename}.png`, function (err) {
+        .write(`${workshopLoc}/${filename}.png`, (err) => {
             if (err) console.error(err);
 
             let stats = fs.statSync(`${workshopLoc}/${filename}.png`);
@@ -215,7 +215,7 @@ module.exports.writeAndShrinkImage = writeAndShrinkImage;
 function imReduceImageFileSize(message, filename, chopNum, targetFileSize, callback) {
     imageMagick(`${workshopLoc}/${filename}.png`)
         .in(`-scale`, `50%`)
-        .write(`${workshopLoc}/${filename}.png`, function (err) {
+        .write(`${workshopLoc}/${filename}.png`, (err) => {
             if (err) console.error(err);
 
             let stats = fs.statSync(`${workshopLoc}/${filename}.png`);
@@ -284,8 +284,8 @@ function generateGif(filename, gifFrameCount, gifFrameDelay, callback) {
     }
 
     gifImg
-        .write(`${workshopLoc}/${filename}.gif`, function(err){
-            if (err) throw err;
+        .write(`${workshopLoc}/${filename}.gif`, (err) => {
+            if (err) console.error(err);
             callback();
         });
 }

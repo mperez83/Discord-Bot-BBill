@@ -1,13 +1,23 @@
+const Discord = require("discord.js");
+
 const genUtils = require('../command_utilities/general_utilities');
 const ahm = require("../command_utilities/achievement_handler");
 const config = require("../../data/general_data/config.json");
+
+const secretPhrases = [
+    `rusty bullet holes`,
+    `there is no such thing as ethical consumption under capitalism`,
+    `hamster`
+];
+
+const swears = [ "ass", "bastard", "bitch", "cuck", "cunt", "damn", "fuck", "hell", "ligma", "shit" ];
 
 
 
 module.exports = {
 
     //Parse message for bad emotes
-    parseTextForBadEmotes: function(message) {
+    parseTextForBadEmotes: (message) => {
 
         let badEmotes = [
             "<:GWfroggyFeelsUpMan:400751139563241473>",
@@ -29,11 +39,15 @@ module.exports = {
 
 
     //Parse message for @everyone
-    parseTextForAtEveryone: function(message) {
+    parseTextForAtEveryone: (message) => {
 
         if (message.mentions.everyone) {
             message.channel.send(">:0");
-            genUtils.incrementUserDataValue(message.author, "socialDeviancy", Math.ceil(Math.random() * 5));
+            genUtils.incrementUserDataValue(message.author, "socialDeviancy", Math.ceil(Math.random() * 5), (newValue) => {
+                if (newValue >= 100) {
+                    ahm.awardAchievement(message, ahm.achievement_list_enum.SOCIAL_DEVIANT);
+                }
+            });
             return true;
         }
 
@@ -44,7 +58,7 @@ module.exports = {
 
 
     //Parse message for string of text, which must match punctuation and capitalization exactly
-    parseTextForSpecificString: function(message) {
+    parseTextForSpecificString: (message) => {
         
         let userMsg = message.content;
 
@@ -52,27 +66,16 @@ module.exports = {
 
         //Quieres?
         if (userMsg == "quieres?") {
+            let quieresEmbed = new Discord.RichEmbed();
+            quieresEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/597251600515334144/ConcernFrog.png`);
+
             let dudCheck = Math.floor(Math.random() * 20);
-            if (dudCheck == 0) {
-                //message.channel.send({ files: ["./graphics/misc/quieres.png"] });
-                message.channel.send({
-                    embed: {
-                        image: {
-                            url: "https://cdn.discordapp.com/attachments/527341248214990850/584247880013971466/anti-quieres.png"
-                        }
-                    }
-                });
-            }
-            else {
-                //message.channel.send({ files: ["./graphics/misc/anti-quieres.png"] });
-                message.channel.send({
-                    embed: {
-                        image: {
-                            url: "https://cdn.discordapp.com/attachments/527341248214990850/584241610242523136/quieres.png"
-                        }
-                    }
-                });
-            }
+            if (dudCheck == 0)
+                quieresEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584247880013971466/anti-quieres.png`);
+            else
+                quieresEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584241610242523136/quieres.png`);
+                
+            message.channel.send(quieresEmbed);
 
             return true;
         }
@@ -95,32 +98,32 @@ module.exports = {
                 if (userMsg.charAt(i) == 'A') ACount++;
             }
 
-            if (foundNonAChar) {
-                //Do nothing
-            }
-            else {
+            if (!foundNonAChar) {
+
                 if (ACount >= Math.ceil(userMsg.length / 2)) {
-                    //message.channel.send({ files: ["./graphics/misc/AaAAAaaaAAaAaaaaAaAAAAAaAaAa.jpg"] });
-                    message.channel.send({
-                        embed: {
-                            image: {
-                                url: "https://cdn.discordapp.com/attachments/527341248214990850/584252304992108577/AaAAAaaaAAaAaaaaAaAAAAAaAaAa.jpg"
-                            }
-                        }
-                    });
+                    let aaaaaaaaaaEmbed = new Discord.RichEmbed();
+                    aaaaaaaaaaEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584252304992108577/AaAAAaaaAAaAaaaaAaAAAAAaAaAa.jpg`);
+                    message.channel.send(aaaaaaaaaaEmbed);
                     return true;
                 }
+
             }
         }
 
 
 
         //Check for yelling
-        if (message.mentions.users.size == 0 && userMsg.match(/[a-zA-Z]+/) && userMsg == userMsg.toUpperCase() && userMsg.length >= 20) {
-            message.channel.send("stop yelling");
+        if (message.mentions.users.size == 0 && userMsg.match(/^([^a-z]*[A-Z]\s*){20,}[^a-z]*$/)) {
+            let yellingEmbed = new Discord.RichEmbed();
+            yellingEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584252304992108577/AaAAAaaaAAaAaaaaAaAAAAAaAaAa.jpg`);
+            message.channel.send(yellingEmbed);
+            genUtils.incrementUserDataValue(message.author, "volume", 1);
             return true;
         }
 
+
+
+        //If none of the above triggered, return false, which allows main.js to continue
         return false;
 
     },
@@ -128,7 +131,7 @@ module.exports = {
 
 
     //Parse message for string of text, disregarding punctuation and capitalization
-    parseTextForLooseString: function(message, bot) {
+    parseTextForLooseString: (message) => {
 
         let userMsg = message.content;
 
@@ -138,44 +141,45 @@ module.exports = {
         userMsg = userMsg.replace("!", "");
         userMsg = userMsg.replace("?", "");
 
-        //msgArray = userMsg.split(" ");
-        //if (msgArray[0] == "") msgArray.splice(0, 1);
+
 
         //Bring out the dancing lobsters
         if (userMsg == "bring out the dancing lobsters") {
-            //message.channel.send({ files: ["./graphics/misc/dancing lobsters.gif"] });
-            message.channel.send({
-                embed: {
-                    image: {
-                        url: "https://cdn.discordapp.com/attachments/527341248214990850/584238997598109706/dancing_lobsters.gif"
-                    }
-                }
-            });
+            let lobstersEmbed = new Discord.RichEmbed();
+            lobstersEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584238997598109706/dancing_lobsters.gif`);
+            message.channel.send(lobstersEmbed);
             return true;
         }
 
+
+
         //React to messages containing a reference to bbill
         if (userMsg.includes("big bill") || userMsg.includes("bbill") || userMsg.includes("bill")) {
-            if (Math.ceil(Math.random() * 100) <= 25) message.react("👁");
+            if (Math.ceil(Math.random() * 100) <= 10) message.react("👁");
         }
+
+
 
         //React to messages containing the word "fuck" if the message before that was from bbill
         if (userMsg.includes("fuck")) {
             message.channel.fetchMessages({ limit: 2 })
                 .then(messages => {
-                    //Check if the message before the one the user sent is from billiams himself
+                    //Check if the message before the one the user sent was from billiams himself
                     if (messages.last().author.bot && messages.last().author.id == config.id) {
-                        //console.log("thats our boy");
                         messages.first().react("😡");
                     }
                 })
                 .catch(console.error);
         }
 
+
+
         //If the user says the secret phrase, give them the achievement
-        if (userMsg == "rusty bullet holes") {
+        if (secretPhrases.includes(userMsg)) {
             ahm.awardAchievement(message, ahm.achievement_list_enum.SECRET_PHRASE);
         }
+
+
 
         //If the user says 420, check the time to see if they get the achievement
         if (userMsg == "420") {
@@ -185,6 +189,24 @@ module.exports = {
             if (curHour == 4 && curMinute == 20) {
                 ahm.awardAchievement(message, ahm.achievement_list_enum.FOUR_TWENTY);
             }
+        }
+
+
+
+        //React to messages containing swear words
+        let totalSwearCount = 0;
+
+        for (let i = 0; i < swears.length; i++) {
+            let regExObj = new RegExp(swears[i], "g");
+            totalSwearCount += (userMsg.match(regExObj) || []).length;
+        }
+
+        if (totalSwearCount > 0) {
+            genUtils.incrementUserDataValue(message.author, "swearsSpoken", totalSwearCount, (newValue) => {
+                if (newValue >= 10000) {
+                    ahm.awardAchievement(message, ahm.achievement_list_enum.SAILOR_MOUTH);
+                }
+            });
         }
 
         return false;

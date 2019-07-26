@@ -94,7 +94,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    genUtils.getMostRecentImageURL(message).then(requestedURL => {
+    genUtils.getMostRecentImageURL(message).then((requestedURL) => {
 
         let foundURL = requestedURL;
 
@@ -108,7 +108,7 @@ module.exports.run = async (bot, message, args) => {
             };
 
             rp(options)
-                .then(function (response) {
+                .then((response) => {
 
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
@@ -130,7 +130,7 @@ module.exports.run = async (bot, message, args) => {
                     });
 
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.error(err);
                 });
         }
@@ -146,9 +146,11 @@ module.exports.help = {
 
 
 function performIntensifyMagik(message, filename, gifFrameCount, gifFrameDelay, intensity) {
+
     //Get the size early on, so we don't have to repeatedly later on
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
-        .size(function getSize(err, size) {
+        .size((err, size) => {
+
             if (err) console.error(err);
 
             let cropWidth = size.width - (size.width * (0.01 * intensity));
@@ -166,23 +168,23 @@ function performIntensifyMagik(message, filename, gifFrameCount, gifFrameDelay, 
                 gm(`${magikUtils.workshopLoc}/${filename}.png`)
                     .crop(cropWidth, cropHeight, cropXOffset, cropYOffset, false)
                     .repage(cropWidth, cropHeight, 0, 0)
-                    .write(`${magikUtils.workshopLoc}/${filename}-${i}.png`, function (err) {
+                    .write(`${magikUtils.workshopLoc}/${filename}-${i}.png`, (err) => {
                         if (err) console.error(err);
                         
                         writeRequests--;
         
                         //If we've written all of the intensed images, generate the gif and post it
                         if (writeRequests == 0) {
-                            fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, function(err) { if (err) throw err; }); //Delete this because we don't need it anymore
+                            fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, (err) => { if (err) console.error(err); }); //Delete this because we don't need it anymore
         
                             magikUtils.generateGif(filename, gifFrameCount, gifFrameDelay, () => {
         
                                 //Once the gif is generated, post it
                                 message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.gif`] })
-                                    .then(function(msg) {
-                                        fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, function(err) {if (err) throw err; });
+                                    .then((msg) => {
+                                        fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, (err) => {if (err) console.error(err); });
                                         for (let i = 0; i < gifFrameCount; i++) {
-                                            fs.unlink(`${magikUtils.workshopLoc}/${filename}-${i}.png`, function(err) { if (err) throw err; });
+                                            fs.unlink(`${magikUtils.workshopLoc}/${filename}-${i}.png`, (err) => { if (err) console.error(err); });
                                         }
                                     })
                                     .catch(console.error);
@@ -194,4 +196,5 @@ function performIntensifyMagik(message, filename, gifFrameCount, gifFrameDelay, 
             }
 
         });
+
 }

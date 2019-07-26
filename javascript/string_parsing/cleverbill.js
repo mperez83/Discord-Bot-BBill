@@ -1,3 +1,5 @@
+const Discord = require("discord.js");
+
 const genUtils = require('../command_utilities/general_utilities');
 
 const responseDir = "./javascript/string_parsing/cleverbill_utilities";
@@ -47,7 +49,8 @@ const unanswerableIndicators = [
 module.exports = {
 
     //Make big bill answer questions
-    parseTextForQuestions: function(bot, message) {
+    parseTextForQuestions: (message, bot) => {
+
         if (message.mentions.users.size == 1 && message.mentions.users.first().id == bot.user.id) {
 
             let userMsg = message.content;
@@ -76,7 +79,7 @@ module.exports = {
             }
 
             //If the user yells at big bill, make him feel bad
-            if (userMsg.match(/[a-zA-Z]+/) && userMsg == userMsg.toUpperCase()) {
+            if (userMsg.match(/^([^a-z]*[A-Z]\s*)+[^a-z]*$/)) {
                 message.channel.send(`don't yell at me :(`);
                 return true;
             }
@@ -115,8 +118,9 @@ module.exports = {
 
                 //Non-question responses
                 case undefined:
-                    let nonQuestionResponses = genUtils.readHyphenTextFile(`${responseDir}/non_question_responses.txt`);
-                    message.channel.send(nonQuestionResponses[Math.floor(Math.random() * nonQuestionResponses.length)]);
+                    genUtils.readHyphenTextFile(`${responseDir}/non_question_responses.txt`, (nonQuestionResponses) => {
+                        message.channel.send(nonQuestionResponses[Math.floor(Math.random() * nonQuestionResponses.length)]);
+                    });
                     break;
                 
                 
@@ -125,8 +129,9 @@ module.exports = {
                 case MessageTypes.EIGHT_BALL:
                     //If there are no "or"s, it's a simple question
                     if (!msgArray.includes("or")) {
-                        let eightBallResponses = genUtils.readHyphenTextFile(`${responseDir}/eight_ball_responses.txt`);
-                        message.channel.send(eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)]);
+                        genUtils.readHyphenTextFile(`${responseDir}/eight_ball_responses.txt`, (eightBallResponses) => {
+                            message.channel.send(eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)]);
+                        });
                     }
 
                     //If this is potentially an "or" question, get complicated
@@ -163,8 +168,9 @@ module.exports = {
                         message.channel.send(message.channel.members.random().displayName);
                     }
                     else {
-                        let whoResponses = genUtils.readHyphenTextFile(`${responseDir}/who_responses.txt`);
-                        message.channel.send(whoResponses[Math.floor(Math.random() * whoResponses.length)]);
+                        genUtils.readHyphenTextFile(`${responseDir}/who_responses.txt`, (whoResponses) => {
+                            message.channel.send(whoResponses[Math.floor(Math.random() * whoResponses.length)]);
+                        });
                     }
                     break;
                 
@@ -172,17 +178,18 @@ module.exports = {
                 
                 //WHERE responses
                 case MessageTypes.WHERE:
-                    let whereResponses = genUtils.readHyphenTextFile(`${responseDir}/where_responses.txt`);
-                    whereResponses.push(`Somewhere in ${message.channel.members.random().displayName}'s house`);
-                    whereResponses.push(`Right behind ${message.channel.members.random().displayName}`);
-                    whereResponses.push(`Over in ${message.channel.members.random().displayName}'s city. but watch out`);
-                    whereResponses.push(`Only ${message.channel.members.random().displayName} knows, ask them`);
-                    whereResponses.push(`${Math.floor(Math.random() * 1000)} miles north`);
-                    whereResponses.push(`${Math.floor(Math.random() * 1000)} miles south`);
-                    whereResponses.push(`Somewhere in ${bot.guilds.random().name}`);
-                    whereResponses.push(`Over in ${bot.guilds.random().name}. But you have to be a member there so don't bother`);
+                    genUtils.readHyphenTextFile(`${responseDir}/where_responses.txt`, (whereResponses) => {
+                        whereResponses.push(`Somewhere in ${message.channel.members.random().displayName}'s house`);
+                        whereResponses.push(`Right behind ${message.channel.members.random().displayName}`);
+                        whereResponses.push(`Over in ${message.channel.members.random().displayName}'s city. but watch out`);
+                        whereResponses.push(`Only ${message.channel.members.random().displayName} knows, ask them`);
+                        whereResponses.push(`${Math.floor(Math.random() * 1000)} miles north`);
+                        whereResponses.push(`${Math.floor(Math.random() * 1000)} miles south`);
+                        whereResponses.push(`Somewhere in ${bot.guilds.random().name}`);
+                        whereResponses.push(`Over in ${bot.guilds.random().name}. But you have to be a member there so don't bother`);
 
-                    message.channel.send(whereResponses[Math.floor(Math.random() * whereResponses.length)]);
+                        message.channel.send(whereResponses[Math.floor(Math.random() * whereResponses.length)]);
+                    });
                     break;
                 
                 
@@ -200,24 +207,28 @@ module.exports = {
                     }
                     
                     if (pastTense) {
-                        whenResponses = genUtils.readHyphenTextFile(`${responseDir}/when_past_responses.txt`);
-                        whenResponses.push(`About ${Math.ceil(Math.random() * 23)} hours and ${Math.ceil(Math.random() * 59)} minutes ago`);
-                        whenResponses.push(`When ${message.channel.members.random().displayName} was born`);
-                        whenResponses.push(`During ${message.channel.members.random().displayName}'s last birthday`);
-                        whenResponses.push(`When ${bot.guilds.random().name} was first created`);
-                        whenResponses.push(`Back when ${bot.guilds.random().name} was but a humble idea`);
+                        genUtils.readHyphenTextFile(`${responseDir}/when_past_responses.txt`, (whenResponses) => {
+                            whenResponses.push(`About ${Math.ceil(Math.random() * 23)} hours and ${Math.ceil(Math.random() * 59)} minutes ago`);
+                            whenResponses.push(`When ${message.channel.members.random().displayName} was born`);
+                            whenResponses.push(`During ${message.channel.members.random().displayName}'s last birthday`);
+                            whenResponses.push(`When ${bot.guilds.random().name} was first created`);
+                            whenResponses.push(`Back when ${bot.guilds.random().name} was but a humble idea`);
+
+                            message.channel.send(whenResponses[Math.floor(Math.random() * whenResponses.length)]);
+                        });
                     }
                     else {
-                        whenResponses = genUtils.readHyphenTextFile(`${responseDir}/when_future_responses.txt`);
-                        whenResponses.push(`In about ${Math.ceil(Math.random() * 23)} hours and ${Math.ceil(Math.random() * 59)} minutes`);
-                        whenResponses.push(`On ${message.channel.members.random().displayName}'s last birthday`);
-                        whenResponses.push(`On ${message.channel.members.random().displayName}'s next birthday`);
-                        whenResponses.push(`When ${bot.guilds.random().name} finally dies`);
-                        whenResponses.push(`When ${message.channel.members.random().displayName} dies. but watch out`);
-                        whenResponses.push(`After ${message.channel.members.random().displayName} becomes the first person to visit mars`);
-                    }
+                        genUtils.readHyphenTextFile(`${responseDir}/when_future_responses.txt`, (whenResponses) => {
+                            whenResponses.push(`In about ${Math.ceil(Math.random() * 23)} hours and ${Math.ceil(Math.random() * 59)} minutes`);
+                            whenResponses.push(`On ${message.channel.members.random().displayName}'s last birthday`);
+                            whenResponses.push(`On ${message.channel.members.random().displayName}'s next birthday`);
+                            whenResponses.push(`When ${bot.guilds.random().name} finally dies`);
+                            whenResponses.push(`When ${message.channel.members.random().displayName} dies. but watch out`);
+                            whenResponses.push(`After ${message.channel.members.random().displayName} becomes the first person to visit mars`);
 
-                    message.channel.send(whenResponses[Math.floor(Math.random() * whenResponses.length)]);
+                            message.channel.send(whenResponses[Math.floor(Math.random() * whenResponses.length)]);
+                        });
+                    }
                     break;
                 
                 
@@ -234,22 +245,25 @@ module.exports = {
 
                     switch (quantityType) {
                         case 0:
-                            //message.channel.send("I can't answer that :(");
-                            message.channel.send({ embed: { image: { url: "https://cdn.discordapp.com/attachments/527341248214990850/597251600515334144/ConcernFrog.png" } } });
+                            let newEmbed = new Discord.RichEmbed();
+                            newEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/597251600515334144/ConcernFrog.png`);
+                            message.channel.send(newEmbed);
                             break;
 
                         case 1:
-                            howResponses = genUtils.readHyphenTextFile(`${responseDir}/how_much_responses.txt`);
-                            message.channel.send(howResponses[Math.floor(Math.random() * howResponses.length)]);
+                            genUtils.readHyphenTextFile(`${responseDir}/how_much_responses.txt`, (howResponses) => {
+                                message.channel.send(howResponses[Math.floor(Math.random() * howResponses.length)]);
+                            });
                             break;
 
                         case 2:
-                            howResponses = genUtils.readHyphenTextFile(`${responseDir}/how_many_responses.txt`);
-                            howResponses.push(Math.floor(Math.random() * 100));
-                            howResponses.push(Math.floor(Math.random() * 10000));
-                            howResponses.push(Math.floor(Math.random() * 100) - 100);
+                            genUtils.readHyphenTextFile(`${responseDir}/how_many_responses.txt`, (howResponses) => {
+                                howResponses.push(Math.floor(Math.random() * 100));
+                                howResponses.push(Math.floor(Math.random() * 10000));
+                                howResponses.push(Math.floor(Math.random() * 100) - 100);
 
-                            message.channel.send(howResponses[Math.floor(Math.random() * howResponses.length)]);
+                                message.channel.send(howResponses[Math.floor(Math.random() * howResponses.length)]);
+                            });
                             break;
                     }
                     break;
@@ -258,18 +272,20 @@ module.exports = {
                 
                 //UNANSWERABLE responses
                 case MessageTypes.UNANSWERABLE:
-                    //message.channel.send("I can't answer that :(");
-                    message.channel.send({ embed: { image: { url: "https://cdn.discordapp.com/attachments/527341248214990850/597251600515334144/ConcernFrog.png" } } });
+                    let newEmbed = new Discord.RichEmbed();
+                    newEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/597251600515334144/ConcernFrog.png`);
+                    message.channel.send(newEmbed);
                     break;
 
             }
 
-            //Return after answering a question, because there definitely isn't going to be a command
+            //Return true after answering a question, because there definitely isn't going to be a command
             return true;
         }
         else {
             return false;
         }
+
     }
     
 };

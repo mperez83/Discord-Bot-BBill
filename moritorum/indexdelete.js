@@ -1,29 +1,38 @@
 const fs = require("fs");
-const utilitiesModule = require('../utilities');
+
+const genUtils = require('../javascript/command_utilities/general_utilities');
+
+
 
 module.exports.run = async (bot, message, args) => {
-    utilitiesModule.readJSONFile("./data/indexImageData.json", function (indexListJson) {
+
+    genUtils.readJSONFile("./data/indexImageData.json", (indexListJson) => {
         
         if (args.length == 0) {
-            message.channel.send("I can't delete nothing, " + utilitiesModule.getRandomNameInsult());
+            message.channel.send("I can't delete nothing, " + genUtils.getRandomNameInsult());
             return;
         }
 
+        
+
         let inputIndexName = args.join(" ");
-        //inputIndexName = inputIndexName.toLowerCase();
 
         if (!indexListJson[inputIndexName])
-            message.channel.send("There is no image indexed with the name '" + inputIndexName + "' to delete, " + utilitiesModule.getRandomNameInsult());
+            message.channel.send("There is no image indexed with the name '" + inputIndexName + "' to delete, " + genUtils.getRandomNameInsult());
 
         else {
             delete indexListJson[inputIndexName];
 
-            utilitiesModule.checkAndUpdateIndexList(bot, indexListJson);
-            fs.writeFileSync("./data/indexImageData.json", JSON.stringify(indexListJson));
-            message.channel.send("Successfully deleted '" + inputIndexName + "'!");
+            fs.writeFile("./data/indexImageData.json", JSON.stringify(indexListJson), (err) => {
+                if (err) console.error(err);
+                else {
+                    message.channel.send("Successfully deleted '" + inputIndexName + "'!");
+                }
+            });
         }
 
     });
+
 }
 
 module.exports.help = {

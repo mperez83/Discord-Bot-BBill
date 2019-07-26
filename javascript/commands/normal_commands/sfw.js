@@ -1,31 +1,15 @@
+const Discord = require("discord.js");
+
+
+
 module.exports.run = async (bot, message, args) => {
-    //message.channel.send({ files: ["./graphics/misc/sfw_sasuke.jpg"] });
-    //message.channel.send({ files: ["./graphics/misc/sfw_sasuke.jpg"] });
-    //message.channel.send({ files: ["./graphics/misc/sfw_sasuke.jpg"] });
 
-    message.channel.send({
-        embed: {
-            image: {
-                url: "https://cdn.discordapp.com/attachments/527341248214990850/584244981397454884/sfw_sasuke.jpg"
-            }
-        }
-    });
+    for (let i = 0; i < 3; i++) {
+        let newEmbed = new Discord.RichEmbed();
+        newEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584244981397454884/sfw_sasuke.jpg`);
+        message.channel.send(newEmbed);
+    }
 
-    message.channel.send({
-        embed: {
-            image: {
-                url: "https://cdn.discordapp.com/attachments/527341248214990850/584244981397454884/sfw_sasuke.jpg"
-            }
-        }
-    });
-
-    message.channel.send({
-        embed: {
-            image: {
-                url: "https://cdn.discordapp.com/attachments/527341248214990850/584244981397454884/sfw_sasuke.jpg"
-            }
-        }
-    });
 }
 
 module.exports.help = {

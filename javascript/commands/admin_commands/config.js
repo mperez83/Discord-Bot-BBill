@@ -53,7 +53,7 @@ module.exports.run = async (bot, message, args) => {
                 if (args[1] == "true" || args[1] == "false") {
                     config[args[0]] = args[1];
                     message.channel.send(`Set config key "${args[0]}" to ${args[1]}`);
-                    fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
+                    fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) { if (err) console.error(err); });
                     
                     //Specific stuff for if the key was construction_mode
                     if (args[0] == "construction_mode") {
@@ -75,7 +75,7 @@ module.exports.run = async (bot, message, args) => {
                 else {
                     config[args[0]] = args[1];
                     message.channel.send(`Set config key "${args[0]}" to ${args[1]}`);
-                    fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
+                    fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) { if (err) console.error(err); });
                 }
             }
 
@@ -83,7 +83,7 @@ module.exports.run = async (bot, message, args) => {
             else {
                 config[args[0]] = args[1];
                 message.channel.send(`Set config key "${args[0]}" to ${args[1]}`);
-                fs.writeFileSync("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
+                fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) { if (err) console.error(err); });
             }
 
         }

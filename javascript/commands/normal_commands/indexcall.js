@@ -8,7 +8,8 @@ const dataLoc = "./data/general_data/index_image_data.json";
 
 
 module.exports.run = async (bot, message, args) => {
-    genUtils.readJSONFile(dataLoc, function (indexDataJson) {
+
+    genUtils.readJSONFile(dataLoc, (indexDataJson) => {
 
         let inputIndexCall;
         let randomCall = false;
@@ -17,7 +18,7 @@ module.exports.run = async (bot, message, args) => {
         if (args.length == 0) {
             let nameList = [];
 
-            for (indexEntry in indexDataJson) {
+            for (let indexEntry in indexDataJson) {
                 if (indexDataJson.hasOwnProperty(indexEntry)) {
                     nameList.push(indexEntry);
                 }
@@ -47,15 +48,15 @@ module.exports.run = async (bot, message, args) => {
         if (!indexDataJson[inputIndexCall].url) {
             message.channel.send(`"${inputIndexCall}" doesn't even have a url property!!!!!!! im deleting it`);
             delete indexDataJson[inputIndexCall];
-            fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson, null, 4));
+            fs.writeFile(dataLoc, JSON.stringify(indexDataJson, null, 4), (err) => { if (err) console.error(err); });
             return;
         }
 
         //Remove indices that don't have valid urls (don't contain .jpeg, .jpg, .gif, .png)
-        if (indexDataJson[inputIndexCall].url.match(/\.(jpeg|jpg|gif|png)$/) == null) {
+        if (indexDataJson[inputIndexCall].url.match(/\.(jpeg|jpg|gif|png)(\?v=1)*$/) == null) {
             message.channel.send(`"${inputIndexCall}" isn't even valid!!!!!!! im deleting it`);
             delete indexDataJson[inputIndexCall];
-            fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson, null, 4));
+            fs.writeFile(dataLoc, JSON.stringify(indexDataJson, null, 4), (err) => { if (err) console.error(err); });
             return;
         }
 
@@ -73,12 +74,13 @@ module.exports.run = async (bot, message, args) => {
         message.channel.send(newEmbed);
 
         //This is to update the directCalls property
-        fs.writeFileSync(dataLoc, JSON.stringify(indexDataJson, null, 4));
+        fs.writeFile(dataLoc, JSON.stringify(indexDataJson, null, 4), (err) => { if (err) console.error(err); });
 
         genUtils.incrementUserDataValue(message.author, "indexCalls", 1);
         return;
 
     });
+
 }
 
 module.exports.help = {
