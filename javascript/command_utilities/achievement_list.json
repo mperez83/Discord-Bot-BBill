@@ -1,0 +1,100 @@
+{
+
+    "First Prestige!":
+    {
+        "description": "Prestige for the first time",
+        "gamer_score": 10,
+        "secret": false
+    },
+
+    "420":
+    {
+        "description": "Say the magic number at the witching hour",
+        "gamer_score": 10,
+        "secret": false
+    },
+
+    "Power Hungry":
+    {
+        "description": "Attempt to do a power call immediately after having done one",
+        "gamer_score": 5,
+        "secret": false
+    },
+
+    "Time Dilation":
+    {
+        "description": "Attempt to do a power call with 0h 0m 0s left",
+        "gamer_score": 15,
+        "secret": false
+    },
+
+    "Just Really Lucky":
+    {
+        "description": "There's a 1 in 100,000 chance every message to get this achievement",
+        "gamer_score": 0,
+        "secret": true
+    },
+
+    "Secret Phrase":
+    {
+        "description": "Say the secret phrase",
+        "gamer_score": 10,
+        "secret": true
+    },
+
+    "Secret Porygon":
+    {
+        "description": "Find the secret porygon",
+        "gamer_score": 5,
+        "secret": true
+    },
+
+    "Lovely Komugi":
+    {
+        "description": "Unboxed a legendary komugi",
+        "gamer_score": 20,
+        "secret": false
+    },
+
+    "Social Deviant":
+    {
+        "description": "Be a special snowflake",
+        "gamer_score": 5,
+        "secret": false
+    },
+
+    "Shiba Lover":
+    {
+        "description": "Unboxed over 1000 shibes",
+        "gamer_score": 20,
+        "secret": false
+    },
+
+    "Loyal Labourer":
+    {
+        "description": "Crafted over 500 items",
+        "gamer_score": 10,
+        "secret": false
+    },
+
+    "Sailor Mouth":
+    {
+        "description": "Uttered swears over 10000 times",
+        "gamer_score": 25,
+        "secret": false
+    },
+
+    "Faulty Sleuth":
+    {
+        "description": "Attempt to attain the unattainable",
+        "gamer_score": 5,
+        "secret": true
+    },
+
+    "Chitter-Chatter": {
+        "description": "Speak over 100,000 characters",
+        "gamer_score": 15,
+        "secret": false
+    }
+
+}

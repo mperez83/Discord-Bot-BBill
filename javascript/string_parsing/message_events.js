@@ -33,10 +33,17 @@ module.exports = {
 
             //If the user has typed a LOT, make big bill react and increase the user's wisdomShared stat by 1
             if (userDataJson[user.id].asciiTyped >= 10000) {
+
                 message.react("💬");
                 userDataJson[user.id].asciiTyped = 0;
+
                 if (!userDataJson[user.id].wisdomShared) userDataJson[user.id].wisdomShared = 0;
                 userDataJson[user.id].wisdomShared++;
+
+                if (userDataJson[user.id].wisdomShared >= 10) {
+                    ahm.awardAchievement(message, ahm.achievement_list_enum.CHITTER_CHATTER);
+                }
+
             }
 
             fs.writeFile("./data/general_data/user_data.json", JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err) });

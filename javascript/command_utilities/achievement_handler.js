@@ -2,6 +2,9 @@ const fs = require("fs");
 
 const genUtils = require("./general_utilities");
 
+const achList = require("./achievement_list.json");
+module.exports.achList = achList;
+
 const achievementDataLoc = "./data/general_data/user_achievement_data.json";
 
 const achievement_list_enum =
@@ -18,108 +21,9 @@ const achievement_list_enum =
     SHIBA_LOVER: "Shiba Lover",
     LOYAL_LABOURER: "Loyal Labourer",
     SAILOR_MOUTH: "Sailor Mouth",
-    FAULTY_SLEUTH: "Faulty Sleuth"
+    FAULTY_SLEUTH: "Faulty Sleuth",
+    CHITTER_CHATTER: "Chitter-Chatter"
 }
-
-const achievement_list = 
-{
-
-    "First Prestige!":
-    {
-        description: "Prestige for the first time",
-        gamer_score: 10,
-        secret: false
-    },
-
-    "420":
-    {
-        description: "Say the magic number at the witching hour",
-        gamer_score: 10,
-        secret: false
-    },
-
-    "Power Hungry":
-    {
-        description: "Attempt to do a power call immediately after having done one",
-        gamer_score: 5,
-        secret: false
-    },
-
-    "Time Dilation":
-    {
-        description: "Attempt to do a power call with 0h 0m 0s left",
-        gamer_score: 15,
-        secret: false
-    },
-
-    "Just Really Lucky":
-    {
-        description: "There's a 1 in 100,000 chance every message to get this achievement",
-        gamer_score: 0,
-        secret: true
-    },
-
-    "Secret Phrase":
-    {
-        description: "Say the secret phrase",
-        gamer_score: 10,
-        secret: true
-    },
-
-    "Secret Porygon":
-    {
-        description: "Find the secret porygon",
-        gamer_score: 5,
-        secret: true
-    },
-
-    "Lovely Komugi":
-    {
-        description: "Unboxed a legendary komugi",
-        gamer_score: 20,
-        secret: false
-    },
-
-    "Social Deviant":
-    {
-        description: "Be a special snowflake",
-        gamer_score: 5,
-        secret: false
-    },
-
-    "Shiba Lover":
-    {
-        description: "Unboxed over 1000 shibes",
-        gamer_score: 20,
-        secret: false
-    },
-
-    "Loyal Labourer":
-    {
-        description: "Crafted over 500 items",
-        gamer_score: 10,
-        secret: false
-    },
-
-    "Sailor Mouth":
-    {
-        description: "Uttered swears over 10000 times",
-        gamer_score: 25,
-        secret: false
-    },
-
-    "Faulty Sleuth":
-    {
-        description: "Attempt to attain the unattainable",
-        gamer_score: 5,
-        secret: true
-    }
-
-}
-
-
-
-module.exports.achievement_list = achievement_list;
 module.exports.achievement_list_enum = achievement_list_enum;
 
 
@@ -127,7 +31,7 @@ module.exports.achievement_list_enum = achievement_list_enum;
 //Return an array of the specified user's achievements
 function getUserAchievementObj(userID, callback) {
     updateUserAchievementData(userID, () => {
-        genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
+        genUtils.readJSONFile(achievementDataLoc, (uadJson) => {
             callback(uadJson[userID]);
         });
     });
@@ -136,12 +40,12 @@ module.exports.getUserAchievementObj = getUserAchievementObj;
 
 
 
-//Makes sure the user has an entry for every achievement in achievement_list
+//Makes sure the user has an entry for every achievement in achList
 function updateUserAchievementData(userID, callback) {
-    let achNames = Object.keys(achievement_list);
+    let achNames = Object.keys(achList);
     achNames.sort();
 
-    genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
+    genUtils.readJSONFile(achievementDataLoc, (uadJson) => {
         if (!uadJson[userID]) uadJson[userID] = {achievements: {}, gamer_score: 0};
 
         for (let i = 0; i < achNames.length; i++) {
@@ -168,10 +72,10 @@ module.exports.updateUserAchievementData = updateUserAchievementData;
 
 //Resets all of the user's achievement data back to default
 function resetUserAchievementData(userID, callback) {
-    let achNames = Object.keys(achievement_list);
+    let achNames = Object.keys(achList);
     achNames.sort();
 
-    genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
+    genUtils.readJSONFile(achievementDataLoc, (uadJson) => {
         uadJson[userID] = {achievements: {}, gamer_score: 0};
 
         for (let i = 0; i < achNames.length; i++) {
@@ -201,9 +105,9 @@ function awardAchievement(message, achName) {
         }
         else {
             userAchObj.achievements[achName] = true;
-            genUtils.readJSONFile(achievementDataLoc, function (uadJson) {
+            genUtils.readJSONFile(achievementDataLoc, (uadJson) => {
                 uadJson[message.author.id].achievements = userAchObj.achievements;
-                uadJson[message.author.id].gamer_score += achievement_list[achName].gamer_score;
+                uadJson[message.author.id].gamer_score += achList[achName].gamer_score;
                 fs.writeFile(achievementDataLoc, JSON.stringify(uadJson, null, 4), (err) => {
                     if (err) console.error(err);
                     message.react(`❗`);
