@@ -136,10 +136,10 @@ bot.on("message", (message) => {
     let cmd = bot.commands.get(command);
     if (cmd) {
         //Increment command call count
-        genUtils.readJSONFile("./data/general_data/command_data.json", function (commandDataJson) {
+        genUtils.readJSONFile("./data/general_data/command_data.json", (commandDataJson) => {
             if (!commandDataJson[command]) commandDataJson[command] = { calls: 0 };
             commandDataJson[command].calls++;
-            fs.writeFile("./data/general_data/command_data.json", JSON.stringify(commandDataJson, null, 4), function(err) {if (err) return err;});
+            fs.writeFile("./data/general_data/command_data.json", JSON.stringify(commandDataJson, null, 4), (err) => {if (err) console.error(err);});
         });
         cmd.run(bot, message, args);
     }

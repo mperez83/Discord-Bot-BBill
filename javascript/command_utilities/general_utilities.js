@@ -2,6 +2,8 @@ const fs = require("fs");
 
 const ahm = require("./achievement_handler");
 
+const insultData = require("../../data/general_data/insult_data.json");
+
 const userDataLoc = "./data/general_data/user_data.json";
 
 
@@ -15,13 +17,7 @@ function getRandomNameInsult(message) {
         }
     });
 
-    //This is the only time I'll use readFileSync, just to make everything a hell of a lot easier
-    let nameInsults = fs.readFileSync("./data/general_data/list_of_names_to_insult_people_with.txt").toString().split("\n");
-    for (let i = 0; i < nameInsults.length; i++) {
-        nameInsults[i] = nameInsults[i].substring(1);               //Removes hyphen
-        nameInsults[i] = nameInsults[i].replace(/\r?\n|\r/g, '');   //Removes newline character
-    }
-    return nameInsults[Math.floor(Math.random() * nameInsults.length)];
+    return insultData.insults[Math.floor(Math.random() * insultData.insults.length)];
 
 }
 module.exports.getRandomNameInsult = getRandomNameInsult;
