@@ -89,9 +89,15 @@ bot.on("message", (message) => {
     //Check if bbill is in construction mode
     if (config.construction_mode == "true") {
         if (message.author.id != "205106238697111552") {
-            if (message.content.startsWith(config.prefix))
+            
+            if (message.content.startsWith(config.prefix)) {
                 message.channel.send(`I'm currently in construction_mode, ${genUtils.getRandomNameInsult(message)}`);
+                genUtils.incrementUserDataValue(message.author, "perception", -1);
+            }
+
+            //Do a return here outside of the for loop so big bill doesn't process any string events while in construction mode
             return;
+
         }
     }
 

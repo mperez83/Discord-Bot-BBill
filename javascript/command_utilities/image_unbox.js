@@ -7,7 +7,7 @@ const config = require("../../data/general_data/config.json");
 
 
 
-module.exports.unboxImage = function(message) {
+module.exports.unboxImage = (message) => {
 
     let command = message.content.split(/\s+/g)[0];
     command = command.slice(config.prefix.length);

@@ -17,6 +17,8 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
+        
+
         if (!userDataJson[message.author.id]) userDataJson[message.author.id] = {username: message.author.username};
 
         if (!userDataJson[message.author.id].power) {

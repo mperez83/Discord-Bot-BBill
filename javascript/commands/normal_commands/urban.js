@@ -11,8 +11,12 @@ module.exports.run = async (bot, message, args) => {
     //Random urban call
     if (args.length == 0) {
         urban.random((err, entry) => {
-            if (err) console.error(err);
-            postEntry(entry);
+            if (err) {
+                console.error(err);
+                message.channel.send(`How did you fuck up a random call, ${genUtils.getRandomNameInsult(message)}`);
+                return;
+            }
+            postEntry(message, entry);
         });
     }
 
@@ -20,11 +24,11 @@ module.exports.run = async (bot, message, args) => {
     else {
         urban.term(args, (err, entries, tags, sounds) => {
             if (err) {
-                console.error(err);
+                //console.error(err);
                 message.channel.send(`No match found for '${args}', ${genUtils.getRandomNameInsult(message)}`);
                 return;
             }
-            postEntry(entries[0]);
+            postEntry(message, entries[0]);
         });
     }
 
@@ -36,7 +40,7 @@ module.exports.help = {
 
 
 
-function postEntry(entry) {
+function postEntry(message, entry) {
     text = `**Word**: ${entry.word} (<${entry.permalink}>)
     \n**Definition**: *${entry.definition}*
     \n**Example**: ${entry.example}`;

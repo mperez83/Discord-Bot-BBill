@@ -8,6 +8,7 @@ const userDataLoc = "./data/general_data/user_data.json";
 
 //Returns random line from list_of_names_to_insult_people_with as a string
 function getRandomNameInsult(message) {
+
     incrementUserDataValue(message.author, "socialDeviancy", 1, (newValue) => {
         if (newValue >= 100) {
             ahm.awardAchievement(message, ahm.achievement_list_enum.SOCIAL_DEVIANT);
@@ -21,6 +22,7 @@ function getRandomNameInsult(message) {
         nameInsults[i] = nameInsults[i].replace(/\r?\n|\r/g, '');   //Removes newline character
     }
     return nameInsults[Math.floor(Math.random() * nameInsults.length)];
+
 }
 module.exports.getRandomNameInsult = getRandomNameInsult;
 
@@ -28,7 +30,8 @@ module.exports.getRandomNameInsult = getRandomNameInsult;
 
 //Return array consisting of every read line from a text file
 //also removes the hyphens from the beginning of the lines
-module.exports.readHyphenTextFile = function(fileLocation, callback) {
+function readHyphenTextFile(fileLocation, callback) {
+
     fs.readFile(fileLocation, (err, data) => {
         if (err) console.error(err);
 
@@ -36,12 +39,15 @@ module.exports.readHyphenTextFile = function(fileLocation, callback) {
         for (let i = 0; i < readLines.length; i++) readLines[i] = readLines[i].substring(1);
         callback(readLines);
     });
+
 }
+module.exports.readHyphenTextFile = readHyphenTextFile;
 
 
 
 //Attempts to read JSON file, and creates a new one if the provided fileDir doesn't exist
 function readJSONFile(fileDir, callback) {
+
     fs.readFile(fileDir, (err, data) => {
 
         //If the location we read doesn't have a file, invent one
@@ -60,6 +66,7 @@ function readJSONFile(fileDir, callback) {
         }
 
     });
+
 }
 module.exports.readJSONFile = readJSONFile;
 
@@ -67,11 +74,13 @@ module.exports.readJSONFile = readJSONFile;
 
 //Get a value inside userData.json of a given user
 function getUserDataValue(user, valueName, callback) {
+
     readJSONFile(userDataLoc, (userDataJson) => {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
         if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
         callback(userDataJson[user.id][valueName]);
     });
+
 }
 module.exports.getUserDataValue = getUserDataValue;
 
@@ -80,6 +89,7 @@ module.exports.getUserDataValue = getUserDataValue;
 //Increases a value inside userData.json of a given user by a given amount
 //Contains an optional callback for when we immediately want to check the new value
 function incrementUserDataValue(user, valueName, amount, callback) {
+
     readJSONFile(userDataLoc, (userDataJson) => {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
         if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
@@ -90,6 +100,7 @@ function incrementUserDataValue(user, valueName, amount, callback) {
         //If the callback is a function, invoke it
         typeof callback === 'function' && callback(userDataJson[user.id][valueName]);
     });
+    
 }
 module.exports.incrementUserDataValue = incrementUserDataValue;
 
@@ -97,17 +108,21 @@ module.exports.incrementUserDataValue = incrementUserDataValue;
 
 //Updates a value inside userData.json of a given user to some value
 function updateUserDataValue(user, valueName, newValue) {
-    readJSONFile(userDataLoc, function (userDataJson) {
+
+    readJSONFile(userDataLoc, (userDataJson) => {
         if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
         userDataJson[user.id][valueName] = newValue;
         fs.writeFile(userDataLoc, JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err); });
     });
+
 }
 module.exports.updateUserDataValue = updateUserDataValue;
 
 
+
 //(DEPRECATED) Attempt to give a user a new "Powerful" role
-module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
+function bequeathPowerfulStatus(guild, guildMember) {
+
     let powerfulRole = guild.roles.find("name", "Powerful");
     if (!powerfulRole) {
         guild.createRole({
@@ -120,12 +135,14 @@ module.exports.bequeathPowerfulStatus = function(guild, guildMember) {
     else {
         guildMember.addRole(powerfulRole);
     }
+
 }
+module.exports.bequeathPowerfulStatus = bequeathPowerfulStatus;
 
 
 
 //Return url of an image posted in the current channel, or null if there were no images in the last 10 messages
-module.exports.getMostRecentImageURL = (message) => {
+function getMostRecentImageURL(message) {
 
     return message.channel.fetchMessages({ limit: 10 })
     .then((messagesToCheck) => {
@@ -181,12 +198,13 @@ module.exports.getMostRecentImageURL = (message) => {
     .catch(console.error);
 
 }
+module.exports.getMostRecentImageURL = getMostRecentImageURL;
 
 
 
 //Send a message to the bill-bayou of every server bbill is in
 //if bill-bayou doesn't exist in the server, create it
-module.exports.sendGlobalMessage = function(bot, msg) {
+function sendGlobalMessage(bot, msg) {
     let guilds = bot.guilds;
     for (let i = 0; i < guilds.size; i++) {
         billBayou = guilds.array()[i].channels.find("name", "bill-bayou");
@@ -203,13 +221,14 @@ module.exports.sendGlobalMessage = function(bot, msg) {
         }
     }
 }
+module.exports.sendGlobalMessage = sendGlobalMessage;
 
 
 
 //Remove X stuff from Y array
 //Because javascript is almost entirely pass by reference, we don't need to return anything (everything we
 //do to arrayToRemoveStuffFrom affects the passed in array no matter where it is)
-module.exports.removeElementsFromArray = function(arrayToRemoveStuffFrom, stuffToRemove) {
+function removeElementsFromArray(arrayToRemoveStuffFrom, stuffToRemove) {
     
     for (let i = 0; i < arrayToRemoveStuffFrom.length; i++) {
         for (let j = 0; j < stuffToRemove.length; j++) {
@@ -220,11 +239,12 @@ module.exports.removeElementsFromArray = function(arrayToRemoveStuffFrom, stuffT
     }
 
 }
+module.exports.removeElementsFromArray = removeElementsFromArray;
 
 
 
 //Verify if the provided args are in the correct format
-module.exports.getArgLetterAndValue = function(args, message) {
+function getArgLetterAndValue(args, message) {
 
     //Check that there's an even number of arguments
     if ((args.length % 2) != 0) {
@@ -250,11 +270,12 @@ module.exports.getArgLetterAndValue = function(args, message) {
     return returnObject;
 
 }
+module.exports.getArgLetterAndValue = getArgLetterAndValue;
 
 
 
 //Verify if the input numerical value is valid
-module.exports.verifyNumVal = function(value, minValue, maxValue, valueName, message) {
+function verifyNumVal(value, minValue, maxValue, valueName, message) {
 
     //If the value isn't a number
     if (isNaN(value)) {
@@ -277,3 +298,4 @@ module.exports.verifyNumVal = function(value, minValue, maxValue, valueName, mes
     return value;
 
 }
+module.exports.verifyNumVal = verifyNumVal;

@@ -23,6 +23,8 @@ module.exports = {
     //Check for all random events on every single message
     handleEvents: (message) => {
 
+
+
         //Record how many characters someone just typed to their data file
         let user = message.author;
         genUtils.readJSONFile("./data/general_data/user_data.json", (userDataJson) => {
@@ -40,6 +42,8 @@ module.exports = {
             fs.writeFile("./data/general_data/user_data.json", JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err) });
         });
 
+
+
         //1 in 10,000 chance of big bill reacting with 20 random emoji
         if (Math.ceil(Math.random() * 10000) == 69) {
             let clonedArrayOfEmoji = [...emojiSampling];
@@ -50,6 +54,8 @@ module.exports = {
                 clonedArrayOfEmoji.splice(randomIndex, 1);
             }
         }
+
+        
 
         //1 in 100,000 chance of big bill giving the Just Really Lucky achievement
         if (Math.ceil(Math.random() * 100000) == 69) {

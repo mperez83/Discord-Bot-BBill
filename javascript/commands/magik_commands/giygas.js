@@ -78,7 +78,7 @@ function performGiygasMagik(message, filename) {
 
             if (err) console.error(err);
 
-            let swirlAmount = 360 + (Math.random() * 360);
+            let swirlAmount = 180 + (Math.random() * 360);
             if (Math.random() > 0.5) swirlAmount *= -1;
 
             let maxRadius = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;

@@ -19,9 +19,9 @@ module.exports.run = async (bot, message, args) => {
 
             if (err) console.error(err);
 
-            for (let file in files) {
+            files.forEach((file) => {
                 flags.push(file);
-            }
+            });
 
             let selectedFlag = flags[Math.floor(Math.random() * flags.length)];
 
