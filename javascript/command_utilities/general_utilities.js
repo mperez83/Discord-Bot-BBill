@@ -295,3 +295,59 @@ function verifyNumVal(value, minValue, maxValue, valueName, message) {
 
 }
 module.exports.verifyNumVal = verifyNumVal;
+
+
+
+//Same as verifyNumVal, but with an additional check to see if it's an integer
+function verifyIntVal(value, minValue, maxValue, valueName, message) {
+
+    //If the value isn't a number
+    if (isNaN(value)) {
+        message.channel.send(`${valueName} must be an integer, ${getRandomNameInsult(message)}`);
+        return undefined;
+    }
+
+    //If the value isn't an integer
+    if (value % 1 != 0) {
+        message.channel.send(`${valueName} must be an integer, ${getRandomNameInsult(message)}`);
+        return undefined;
+    }
+
+    //If the value is less than the minimum value
+    if (value < minValue) {
+        message.channel.send(`${valueName} must be equal to or greater than ${minValue}, ${getRandomNameInsult(message)}`);
+        return undefined;
+    }
+
+    //If the value is greater than the max value
+    if (value > maxValue) {
+        message.channel.send(`${valueName} must be equal to or less than ${maxValue}, ${getRandomNameInsult(message)}`);
+        return undefined;
+    }
+
+    return value;
+
+}
+module.exports.verifyIntVal = verifyIntVal;
+
+
+
+function verifyBoolVal(value, valueName, message) {
+
+    if (value != "true" && value != "false") {
+        message.channel.send(`${valueName} must be either **true** or **false**, ${getRandomNameInsult(message)}`);
+        return undefined;
+    }
+
+    return value;
+
+}
+module.exports.verifyBoolVal = verifyBoolVal;
+
+
+
+//Lerp between two values
+function lerp(min, max, alpha) {
+    return min * (1 - alpha) + max * alpha;
+}
+module.exports.lerp = lerp;

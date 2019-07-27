@@ -154,6 +154,7 @@ module.exports.workshopLoc = workshopLoc;
 
 //For GraphicsMagick stuff
 function reduceImageFileSize(message, filename, chopNum, targetFileSize, callback) {
+
     gm(`${workshopLoc}/${filename}.png`)
         .minify()
         .write(`${workshopLoc}/${filename}.png`, (err) => {
@@ -170,23 +171,27 @@ function reduceImageFileSize(message, filename, chopNum, targetFileSize, callbac
                 callback();
             }
         });
+
 }
 module.exports.reduceImageFileSize = reduceImageFileSize;
 
 
 
 function writeImageToDisk(foundURL, filename, callback) {
+
     gm(request(foundURL))
         .write(`${workshopLoc}/${filename}.png`, (err) => {
             if (err) console.error(err);
             callback();
         });
+
 }
 module.exports.writeImageToDisk = writeImageToDisk;
 
 
 
 function writeAndShrinkImage(message, foundURL, filename, maxFileSize, callback) {
+
     writeImageToDisk(foundURL, filename, () => {
 
         let stats = fs.statSync(`${workshopLoc}/${filename}.png`);
@@ -202,6 +207,7 @@ function writeAndShrinkImage(message, foundURL, filename, maxFileSize, callback)
         }
         
     });
+
 }
 module.exports.writeAndShrinkImage = writeAndShrinkImage;
 
@@ -213,6 +219,7 @@ module.exports.writeAndShrinkImage = writeAndShrinkImage;
 
 //For ImageMagick stuff
 function imReduceImageFileSize(message, filename, chopNum, targetFileSize, callback) {
+
     imageMagick(`${workshopLoc}/${filename}.png`)
         .in(`-scale`, `50%`)
         .write(`${workshopLoc}/${filename}.png`, (err) => {
@@ -229,23 +236,27 @@ function imReduceImageFileSize(message, filename, chopNum, targetFileSize, callb
                 callback();
             }
         });
+
 }
 module.exports.imReduceImageFileSize = imReduceImageFileSize;
 
 
 
 function imWriteImageToDisk(foundURL, filename, callback) {
+
     gm(request(foundURL))
         .write(`${workshopLoc}/${filename}.png`, (err) => {
             if (err) console.error(err);
             callback();
         });
+
 }
 module.exports.imWriteImageToDisk = imWriteImageToDisk;
 
 
 
 function imWriteAndShrinkImage(message, foundURL, filename, maxFileSize, callback) {
+
     imWriteImageToDisk(foundURL, filename, () => {
 
         let stats = fs.statSync(`${workshopLoc}/${filename}.png`);
@@ -261,6 +272,7 @@ function imWriteAndShrinkImage(message, foundURL, filename, maxFileSize, callbac
         }
         
     });
+
 }
 module.exports.imWriteAndShrinkImage = imWriteAndShrinkImage;
 
@@ -271,11 +283,11 @@ module.exports.imWriteAndShrinkImage = imWriteAndShrinkImage;
 
 
 function generateGif(filename, gifFrameCount, gifFrameDelay, callback) {
+
     let gifImg = gm();
 
     gifImg
         .delay(gifFrameDelay)
-        //.dispose(2);
         .in(`-dispose`, `2`);
 
     for (let i = 0; i < gifFrameCount; i++) {
@@ -288,5 +300,6 @@ function generateGif(filename, gifFrameCount, gifFrameDelay, callback) {
             if (err) console.error(err);
             callback();
         });
+
 }
 module.exports.generateGif = generateGif;

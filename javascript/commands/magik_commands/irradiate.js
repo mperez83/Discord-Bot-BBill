@@ -49,13 +49,13 @@ module.exports.run = async (bot, message, args) => {
             
             //Frame Count
             case 'f':
-                gifFrameCount = genUtils.verifyNumVal(letterValue.value, minGifFrameCount, maxGifFrameCount, "Frame Count", message);
+                gifFrameCount = genUtils.verifyIntVal(letterValue.value, minGifFrameCount, maxGifFrameCount, "Frame Count", message);
                 if (!gifFrameCount) return;
                 break;
             
             //Frame Delay
             case 'd':
-                gifFrameDelay = genUtils.verifyNumVal(letterValue.value, minGifFrameDelay, maxGifFrameDelay, "Frame Delay", message);
+                gifFrameDelay = genUtils.verifyIntVal(letterValue.value, minGifFrameDelay, maxGifFrameDelay, "Frame Delay", message);
                 if (!gifFrameDelay) return;
                 break;
 
