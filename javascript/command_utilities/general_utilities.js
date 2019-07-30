@@ -1,24 +1,12 @@
 const fs = require("fs");
 
-const ahm = require("./achievement_handler");
-
-const insultData = require("../../data/general_data/insult_data.json");
-
-const userDataLoc = "./data/general_data/user_data.json";
+const insultData = require("../../data/static_command_data/insult_data.json");
 
 
 
 //Returns random line from list_of_names_to_insult_people_with as a string
 function getRandomNameInsult(message) {
-
-    incrementUserDataValue(message.author, "socialDeviancy", 1, (newValue) => {
-        if (newValue >= 100) {
-            ahm.awardAchievement(message, ahm.achievement_list_enum.SOCIAL_DEVIANT);
-        }
-    });
-
     return insultData.insults[Math.floor(Math.random() * insultData.insults.length)];
-
 }
 module.exports.getRandomNameInsult = getRandomNameInsult;
 
@@ -38,102 +26,6 @@ function readHyphenTextFile(fileLocation, callback) {
 
 }
 module.exports.readHyphenTextFile = readHyphenTextFile;
-
-
-
-//Attempts to read JSON file, and creates a new one if the provided fileDir doesn't exist
-function readJSONFile(fileDir, callback) {
-
-    fs.readFile(fileDir, (err, data) => {
-
-        //If the location we read doesn't have a file, invent one
-        if (err) {
-            //console.error(err);
-            let tempData = {};
-            fs.writeFile(fileDir, JSON.stringify(tempData, null, 4), (err) => {
-                if (err) throw err;
-                callback(tempData);
-            });
-        }
-
-        //Otherwise just send the json file through the callback
-        else {
-            callback(JSON.parse(data, "utf8"));
-        }
-
-    });
-
-}
-module.exports.readJSONFile = readJSONFile;
-
-
-
-//Get a value inside userData.json of a given user
-function getUserDataValue(user, valueName, callback) {
-
-    readJSONFile(userDataLoc, (userDataJson) => {
-        if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
-        if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
-        callback(userDataJson[user.id][valueName]);
-    });
-
-}
-module.exports.getUserDataValue = getUserDataValue;
-
-
-
-//Increases a value inside userData.json of a given user by a given amount
-//Contains an optional callback for when we immediately want to check the new value
-function incrementUserDataValue(user, valueName, amount, callback) {
-
-    readJSONFile(userDataLoc, (userDataJson) => {
-        if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
-        if (!userDataJson[user.id][valueName]) userDataJson[user.id][valueName] = 0;
-        userDataJson[user.id][valueName] += amount;
-
-        fs.writeFile(userDataLoc, JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err); });
-
-        //If the callback is a function, invoke it
-        typeof callback === 'function' && callback(userDataJson[user.id][valueName]);
-    });
-    
-}
-module.exports.incrementUserDataValue = incrementUserDataValue;
-
-
-
-//Updates a value inside userData.json of a given user to some value
-function updateUserDataValue(user, valueName, newValue) {
-
-    readJSONFile(userDataLoc, (userDataJson) => {
-        if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username};
-        userDataJson[user.id][valueName] = newValue;
-        fs.writeFile(userDataLoc, JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err); });
-    });
-
-}
-module.exports.updateUserDataValue = updateUserDataValue;
-
-
-
-//(DEPRECATED) Attempt to give a user a new "Powerful" role
-function bequeathPowerfulStatus(guild, guildMember) {
-
-    let powerfulRole = guild.roles.find("name", "Powerful");
-    if (!powerfulRole) {
-        guild.createRole({
-            name: "Powerful",
-            color: "RED",
-            hoist: true,
-            position: 1
-        }).then(role => guildMember.addRole(role));
-    }
-    else {
-        guildMember.addRole(powerfulRole);
-    }
-
-}
-module.exports.bequeathPowerfulStatus = bequeathPowerfulStatus;
 
 
 
@@ -201,22 +93,46 @@ module.exports.getMostRecentImageURL = getMostRecentImageURL;
 //Send a message to the bill-bayou of every server bbill is in
 //if bill-bayou doesn't exist in the server, create it
 function sendGlobalMessage(bot, msg) {
-    let guilds = bot.guilds;
-    for (let i = 0; i < guilds.size; i++) {
-        billBayou = guilds.array()[i].channels.find("name", "bill-bayou");
-        if (!billBayou) {
-            guilds.array()[i].createChannel('bill-bayou', { type: 'text' })
-                .then(() => {
-                    billBayou = guilds.array()[i].channels.find("name", "bill-bayou");
-                    billBayou.send(msg);
-                })
-                .catch(console.error);
-        }
-        else {
+
+    bot.guilds.forEach((guild) => {
+
+        let billBayou = guild.channels.find(channel => (channel.name === "bill-bayou" && channel.type === "text"));
+
+        //If we found the bill-bayou channel, post to that
+        if (billBayou) {
             billBayou.send(msg);
         }
-    }
+
+        //Otherwise, we'll check to see if bill is allowed to create the bill-bayou
+        else {
+
+            let billGuildMember = guild.members.get(bot.user.id);
+
+            if (!billGuildMember) {
+                console.log(`Bill was unable to find himself in ${tempGuild.name}`);
+            }
+            else {
+
+                //If bill is allowed to make the bill-bayou, do so and then post the message to it
+                if (billGuildMember.hasPermission(["MANAGE_CHANNELS"])) {
+                    guild.createChannel(`bill-bayou`, { type: `text` })
+                        .then((createdChannel) => {
+                            createdChannel.send(msg);
+                        })
+                        .catch(console.error);
+                }
+                else {
+                    //Don't post anything if bill isn't allowed to make a bill-bayou :(
+                }
+
+            }
+
+        }
+
+    });
+
 }
+
 module.exports.sendGlobalMessage = sendGlobalMessage;
 
 

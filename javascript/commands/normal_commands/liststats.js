@@ -1,8 +1,4 @@
 const genUtils = require('../../command_utilities/general_utilities');
-const ahm = require("../../command_utilities/achievement_handler");
-
-const dataLoc = "./data/general_data/user_data.json";
-const unnecessaryStats = ["nextValidPowerCheck", "username", "asciiTyped"];
 
 
 
@@ -32,7 +28,6 @@ module.exports.run = async (bot, message, args) => {
             //If the user tries to put big bill in as an argument
             if (userToIdentify.id == bot.user.id) {
                 message.channel.send(`don't do that what the fuck`);
-                ahm.awardAchievement(message, ahm.achievement_list_enum.FAULTY_SLEUTH);
                 return;
             }
         }
@@ -52,7 +47,9 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    genUtils.readJSONFile(dataLoc, (userDataJson) => {
+    message.channel.send(`This command needs to be updated to the new information read/write system :(`);
+
+    /*genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
         if (!userDataJson[userToIdentify.id]) userDataJson[userToIdentify.id] = {username: userToIdentify.username};
 
@@ -74,7 +71,7 @@ module.exports.run = async (bot, message, args) => {
 
         message.reply(statsString);
 
-    });
+    });*/
     
 }
 

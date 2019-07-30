@@ -1,8 +1,3 @@
-const fs = require("fs");
-
-const genUtils = require('../command_utilities/general_utilities');
-const ahm = require("../command_utilities/achievement_handler");
-
 const emojiSampling = [
     '😊', '😬', '😁', '😂', '😃', '😄', '😅', '😆', '😇', '😉',
     '😊', '🙂', '🙃', '☺', '😋', '😌', '😍', '😘', '😗', '😙',
@@ -23,11 +18,12 @@ module.exports = {
     //Check for all random events on every single message
     handleEvents: (message) => {
 
+        let user = message.author;
+
 
 
         //Record how many characters someone just typed to their data file
-        let user = message.author;
-        genUtils.readJSONFile("./data/general_data/user_data.json", (userDataJson) => {
+        /*genUtils.readJSONFile("./data/general_data/user_data.json", (userDataJson) => {
             if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username, asciiTyped: 0};
             userDataJson[user.id].asciiTyped += message.content.length;
 
@@ -47,7 +43,7 @@ module.exports = {
             }
 
             fs.writeFile("./data/general_data/user_data.json", JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err) });
-        });
+        });*/
 
 
 
@@ -64,9 +60,9 @@ module.exports = {
 
         
 
-        //1 in 100,000 chance of big bill giving the Just Really Lucky achievement
+        //1 in 100,000 chance of big bill saying that there was a 1 in 100,000 chance of responding
         if (Math.ceil(Math.random() * 100000) == 69) {
-            ahm.awardAchievement(message, ahm.achievement_list_enum.JUST_REALLY_LUCKY);
+            message.channel.send(`There was a 1 in 100,000 chance of this message appearing, what the hell`);
         }
 
     }

@@ -97,7 +97,7 @@ module.exports.run = async (bot, message, args) => {
                     });
 
                 })
-                .catch(function (err) {
+                .catch((err) => {
                     console.error(err);
                 });
         }
@@ -167,7 +167,7 @@ function rainbowDissolveMagik(message, filename, gifFrameDelay, midwayFrames) {
                 .in(`-dissolve`, `${dissolveAmount}%`)
                 .in(`${magikUtils.workshopLoc}/${filename}-${colorOne}.png`)
                 .in(`${magikUtils.workshopLoc}/${filename}-${colorTwo}.png`)
-                .write(`${magikUtils.workshopLoc}/${filename}-${counter-1}.png`, function (err) {
+                .write(`${magikUtils.workshopLoc}/${filename}-${counter-1}.png`, (err) => {
                     if (err) console.error(err);
 
                     writeRequests--;

@@ -1,7 +1,5 @@
 const Discord = require("discord.js");
 
-const genUtils = require('../command_utilities/general_utilities');
-const ahm = require("../command_utilities/achievement_handler");
 const config = require("../../data/general_data/config.json");
 
 const secretPhrases = [
@@ -28,7 +26,8 @@ module.exports = {
 
         for (let i = 0; i < badEmotes.length; i++) {
             if (message.content.includes(badEmotes[i])) {
-                genUtils.incrementUserDataValue(message.author, "sin", 1);
+                message.react(`😒`);
+                break;
             }
         }
 
@@ -42,12 +41,7 @@ module.exports = {
     parseTextForAtEveryone: (message) => {
 
         if (message.mentions.everyone) {
-            message.channel.send(">:0");
-            genUtils.incrementUserDataValue(message.author, "socialDeviancy", Math.ceil(Math.random() * 5), (newValue) => {
-                if (newValue >= 100) {
-                    ahm.awardAchievement(message, ahm.achievement_list_enum.SOCIAL_DEVIANT);
-                }
-            });
+            message.react(`😡`);
             return true;
         }
 
@@ -117,7 +111,6 @@ module.exports = {
             let yellingEmbed = new Discord.RichEmbed();
             yellingEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584252304992108577/AaAAAaaaAAaAaaaaAaAAAAAaAaAa.jpg`);
             message.channel.send(yellingEmbed);
-            genUtils.incrementUserDataValue(message.author, "volume", 1);
             return true;
         }
 
@@ -166,7 +159,7 @@ module.exports = {
                 .then(messages => {
                     //Check if the message before the one the user sent was from billiams himself
                     if (messages.last().author.bot && messages.last().author.id == config.id) {
-                        messages.first().react("😡");
+                        messages.first().react(`😠`);
                     }
                 })
                 .catch(console.error);
@@ -176,7 +169,7 @@ module.exports = {
 
         //If the user says the secret phrase, give them the achievement
         if (secretPhrases.includes(userMsg)) {
-            ahm.awardAchievement(message, ahm.achievement_list_enum.SECRET_PHRASE);
+            message.react(`😮`);
         }
 
 
@@ -187,7 +180,7 @@ module.exports = {
             let curHour = (today.getUTCHours() > 12) ? today.getUTCHours() - 12 : today.getUTCHours();
             let curMinute = today.getUTCMinutes();
             if (curHour == 4 && curMinute == 20) {
-                ahm.awardAchievement(message, ahm.achievement_list_enum.FOUR_TWENTY);
+                message.react(`🍆`);
             }
         }
 
@@ -202,11 +195,11 @@ module.exports = {
         }
 
         if (totalSwearCount > 0) {
-            genUtils.incrementUserDataValue(message.author, "swearsSpoken", totalSwearCount, (newValue) => {
+            /*genUtils.incrementUserDataValue(message.author, "swearsSpoken", totalSwearCount, (newValue) => {
                 if (newValue >= 10000) {
                     ahm.awardAchievement(message, ahm.achievement_list_enum.SAILOR_MOUTH);
                 }
-            });
+            });*/
         }
 
         return false;

@@ -1,15 +1,8 @@
-const fs = require("fs");
-
-const genUtils = require('../../command_utilities/general_utilities');
-const ahm = require("../../command_utilities/achievement_handler");
-
-const dataLoc = "./data/general_data/user_data.json";
-
-
-
 module.exports.run = async (bot, message, args) => {
 
-    genUtils.readJSONFile(dataLoc, (userDataJson) => {
+    message.channel.send(`F`);
+
+    /*genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
         let doPowerCheck = false;
         let currentDate = new Date();
@@ -41,9 +34,7 @@ module.exports.run = async (bot, message, args) => {
         if (doPowerCheck) {
 
             let power = Math.ceil(Math.random() * 100);
-            /*if (userObj.username == "SM980") {
-                power *= 0.1;
-            }*/
+
             if (power == 69) {
                 message.reply(`your power level is **69.**`);
                 genUtils.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 69!!!`);
@@ -102,7 +93,7 @@ module.exports.run = async (bot, message, args) => {
 
         }
 
-    });
+    });*/
 
 }
 

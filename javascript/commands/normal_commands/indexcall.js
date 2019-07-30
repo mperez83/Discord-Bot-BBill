@@ -9,7 +9,9 @@ const dataLoc = "./data/general_data/index_image_data.json";
 
 module.exports.run = async (bot, message, args) => {
 
-    genUtils.readJSONFile(dataLoc, (indexDataJson) => {
+    message.channel.send(`This command needs to be updated to the new information read/write system :(`);
+
+    /*genUtils.readJSONFile(dataLoc, (indexDataJson) => {
 
         let inputIndexCall;
         let randomCall = false;
@@ -79,7 +81,7 @@ module.exports.run = async (bot, message, args) => {
         genUtils.incrementUserDataValue(message.author, "indexCalls", 1);
         return;
 
-    });
+    });*/
 
 }
 

@@ -48,6 +48,4 @@ function postEntry(message, entry) {
     if (text.length >= 2000) text = `The urban dictionary article for '${entry.word}' is too long!\n<${entry.permalink}>`;
     
     message.channel.send(text);
-
-    genUtils.incrementUserDataValue(message.author, "urbanCalls", 1);
 }

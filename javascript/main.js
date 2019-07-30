@@ -19,44 +19,35 @@ fs.readdir("./javascript/commands/", (err, cmdDirs) => {
     
     console.log();
 
-    //Do this here so we can get around any async bullshit
-    genUtils.readJSONFile("./data/general_data/command_data.json", function (cmdDataJson) {
+    for (let i = 0; i < cmdDirs.length; i++) {
 
-        for (let i = 0; i < cmdDirs.length; i++) {
-            fs.readdir(`./javascript/commands/${cmdDirs[i]}/`, (err, files) => {
-                if (err) console.error(err);
+        fs.readdir(`./javascript/commands/${cmdDirs[i]}/`, (err, files) => {
 
-                //Gets the name of every .js file from the directory we're in
-                let jsFiles = files.filter(f => f.split(".").pop() === "js");
-                if (jsFiles.length <= 0) {
-                    console.log(`No commands to load in directory ${cmdDirs[i]}!\n`);
-                    return;
-                }
+            if (err) console.error(err);
 
-                console.log(`Loading ${jsFiles.length} commands from directory '${cmdDirs[i]}'!`);
+            //Gets the name of every .js file from the directory we're in
+            let jsFiles = files.filter(f => f.split(".").pop() === "js");
+            if (jsFiles.length <= 0) {
+                console.log(`No commands to load in directory ${cmdDirs[i]}!\n`);
+                return;
+            }
 
-                //Scrub through all of the jsFiles and add them to the bot.commands collection
-                jsFiles.forEach((jsFile, index) => {
-                    let props = require(`./commands/${cmdDirs[i]}/${jsFile}`);
-                    bot.commands.set(props.help.name, props);
-                    let consoleMsg = `${index + 1}: ${jsFile} loaded!`;
+            console.log(`Loading ${jsFiles.length} commands from directory '${cmdDirs[i]}'!`);
 
-                    //Check if the command is in command_data.json
-                    let cmdName = jsFile.slice(0, -3);
-                    if (!cmdDataJson[cmdName]) {
-                        consoleMsg += ` (no entry found in command_data.json, adding now)`;
-                        cmdDataJson[cmdName] = { calls: 0 };
-                        fs.writeFile("./data/general_data/command_data.json", JSON.stringify(cmdDataJson, null, 4), function(err) { if (err) return err; });
-                    }
-
-                    console.log(consoleMsg);
-                });
-
-                console.log();
+            //Scrub through all of the jsFiles and add them to the bot.commands collection
+            jsFiles.forEach((jsFile, index) => {
+                let props = require(`./commands/${cmdDirs[i]}/${jsFile}`);
+                bot.commands.set(props.help.name, props);
+                let consoleMsg = `${index + 1}: ${jsFile} loaded!`;
+                console.log(consoleMsg);
             });
-        }
 
-    });
+            console.log();
+
+        });
+
+    }
+
 });
 
 
@@ -69,12 +60,12 @@ bot.on("ready", () => {
     if (!config.id) {
         console.log("Bot ID doesn't exist in config file, adding it now");
         config.id = bot.user.id;
-        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
+        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), (err) => {if (err) console.error(err);});
     }
     else if (config.id != bot.user.id) {
         console.log("Bot ID doesn't match one listed in config file, updating it now");
         config.id = bot.user.id;
-        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), function(err) {if (err) return err;});
+        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), (err) => {if (err) console.error(err);});
     }
 });
 
@@ -92,7 +83,6 @@ bot.on("message", (message) => {
             
             if (message.content.startsWith(config.prefix)) {
                 message.channel.send(`I'm currently in construction_mode, ${genUtils.getRandomNameInsult(message)}`);
-                genUtils.incrementUserDataValue(message.author, "perception", -1);
             }
 
             //Do a return here outside of the for loop so big bill doesn't process any string events while in construction mode
@@ -135,12 +125,6 @@ bot.on("message", (message) => {
 
     let cmd = bot.commands.get(command);
     if (cmd) {
-        //Increment command call count
-        genUtils.readJSONFile("./data/general_data/command_data.json", (commandDataJson) => {
-            if (!commandDataJson[command]) commandDataJson[command] = { calls: 0 };
-            commandDataJson[command].calls++;
-            fs.writeFile("./data/general_data/command_data.json", JSON.stringify(commandDataJson, null, 4), (err) => {if (err) console.error(err);});
-        });
         cmd.run(bot, message, args);
     }
 
@@ -152,8 +136,8 @@ bot.on("message", (message) => {
 bot.on("messageReactionAdd", (messageReaction, user) => {
     if (messageReaction.me) return;
 
-    if (messageReaction.emoji.name == "❗") {
-        genUtils.incrementUserDataValue(user, "imposterScore", 1);
+    if (messageReaction.emoji.name == `❗` || messageReaction.emoji.name == `✅`) {
+        messageReaction.message.react(`🙃`);
     }
 });
 
@@ -162,10 +146,8 @@ bot.on("messageReactionAdd", (messageReaction, user) => {
 //Create event for when users update their info (such as their username)
 bot.on("userUpdate", (oldUser, newUser) => {
     console.log(`${oldUser.username} updated their info`);
-    if (oldUser.username != newUser.username) {
-        console.log(`${oldUser.username} updated their username to ${newUser.username}, updating their userData now`);
-        genUtils.updateUserDataValue(newUser, "username", newUser.username);
-    }
+    console.log(oldUser);
+    console.log(newUser);
 });
 
 
@@ -174,7 +156,7 @@ bot.on("userUpdate", (oldUser, newUser) => {
 bot.on("guildMemberUpdate", (oldMember, newMember) => {
     if (oldMember.nickname != newMember.nickname) {
         if (newMember.nickname == "Big Bill") {
-            genUtils.incrementUserDataValue(newMember.user, "imposterScore", 1);
+            //???
         }
     }
 });

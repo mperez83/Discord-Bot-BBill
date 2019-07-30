@@ -1,5 +1,4 @@
-const genUtils = require('../../command_utilities/general_utilities');
-const ahm = require("../../command_utilities/achievement_handler");
+const recipesJSON = require(`./craft_recipes.json`);
 
 const normalEmotes = [
     '😀', '😬', '😁', '😂', '😃', '😄', '😅', '😆', '😇', '😉',
@@ -17,198 +16,9 @@ const normalEmotes = [
     '☢', '♋', '❓', '💲', '💬', '🖤', '🅰', '🏳', '🌈'
 ]
 
-const patterns = [
-
-    //Block
-    [
-        [1, 1, 1],
-        [1, 1, 1],
-        [1, 1, 1]
-    ],
-
-    //Slab
-    [
-        [0, 0, 0],
-        [0, 0, 0],
-        [1, 1, 1]
-    ],
-
-    //Concrete
-    [
-        [1, 2, 2],
-        [2, 2, 3],
-        [3, 3, 3]
-    ],
-
-    //Beacon
-    [
-        [1, 1, 1],
-        [1, 2, 1],
-        [3, 3, 3]
-    ],
-
-    //Pickaxe
-    [
-        [1, 1, 1],
-        [0, 2, 0],
-        [0, 2, 0]
-    ],
-
-    //Bow
-    [
-        [0, 1, 2],
-        [1, 0, 2],
-        [0, 1, 2]
-    ],
-
-    //Fishing pole
-    [
-        [0, 0, 1],
-        [0, 1, 2],
-        [1, 0, 2]
-    ],
-
-    //Armor
-    [
-        [1, 1, 1],
-        [1, 0, 1],
-        [0, 0, 0]
-    ],
-
-    [
-        [1, 0, 1],
-        [1, 1, 1],
-        [1, 1, 1]
-    ],
-
-    [
-        [1, 1, 1],
-        [1, 0, 1],
-        [1, 0, 1]
-    ],
-
-    [
-        [0, 0, 0],
-        [1, 0, 1],
-        [1, 0, 1]
-    ],
-
-    [
-        [0, 3, 0],
-        [2, 1, 2],
-        [1, 1, 1]
-    ],
-
-    //Original recipes
-    [
-        [0, 1, 0],
-        [1, 1, 1],
-        [0, 1, 0]
-    ],
-
-    [
-        [1, 2, 1],
-        [2, 0, 2],
-        [1, 2, 1]
-    ],
-
-    [
-        [1, 1, 1],
-        [1, 0, 1],
-        [1, 1, 1]
-    ],
-
-    [
-        [1, 1, 1, 1, 1],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1],
-        [1, 0, 0, 0, 1],
-        [1, 1, 1, 1, 1]
-    ],
-
-    [
-        [1, 1, 1, 1, 1],
-        [1, 2, 2, 2, 1],
-        [1, 2, 0, 2, 1],
-        [1, 2, 2, 2, 1],
-        [1, 1, 1, 1, 1]
-    ],
-
-    [
-        [0, 0, 1, 0, 0],
-        [0, 1, 1, 1, 0],
-        [1, 1, 2, 1, 1],
-        [0, 1, 1, 1, 0],
-        [0, 0, 1, 0, 0]
-    ],
-
-    [
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1],
-    ],
-
-    [
-        [1],
-        [1],
-        [1],
-        [2],
-        [2],
-        [2],
-        [1],
-        [1],
-        [1]
-    ],
-
-    [
-        [2, 2],
-        [1, 1],
-        [1, 1],
-        [1, 1],
-        [1, 1],
-        [2, 2],
-    ],
-
-    [
-        [1, 1, 1, 1, 1, 1, 1],
-        [1, 2, 2, 2, 2, 2, 1],
-        [1, 1, 1, 1, 1, 1, 1]
-    ],
-
-    [
-        [0, 0, 0],
-        [0, 0, 1],
-        [0, 0, 2]
-    ],
-
-    [
-        [1, 1, 1],
-        [1, 2, 1],
-        [1, 1, 1]
-    ],
-
-    [
-        [0, 0, 3],
-        [0, 2, 0],
-        [1, 0, 0]
-    ]
-
-];
-
 
 
 module.exports.run = async (bot, message, args) => {
-
-    if (message.channel.type == "dm") {
-        message.channel.send(`you can't craft without an audience, ${genUtils.getRandomNameInsult(message)}`);
-        return;
-    }
-
-
 
     let ingredientList = [];
     let ingredientListType;
@@ -217,7 +27,7 @@ module.exports.run = async (bot, message, args) => {
     if (diceRoll > 50) ingredientListType = 1;
     else ingredientListType = 2;
 
-    if (message.guild.emojis.size == 0) ingredientListType = 0; //ingredientListType 0 is only for servers that have no custom emojis
+    if (message.channel.type == "dm" || message.guild.emojis.size == 0) ingredientListType = 0;
 
     switch (ingredientListType) {
 
@@ -244,10 +54,11 @@ module.exports.run = async (bot, message, args) => {
             break;
     }
 
-    let pattern = patterns[Math.floor(Math.random() * patterns.length)];
+    let pattern = recipesJSON.patterns[Math.floor(Math.random() * recipesJSON.patterns.length)];
     let middleRow = Math.floor(pattern.length / 2);
 
-    let emptySpace = message.guild.emojis.find(x => x.name === "emptySpace");
+    let emptySpace;
+    if (message.channel.type != "dm") emptySpace = message.guild.emojis.find(x => x.name === "emptySpace");
     if (!emptySpace) emptySpace = `⬛`;
 
     let ingredients = {};
@@ -279,12 +90,6 @@ module.exports.run = async (bot, message, args) => {
     }
 
     message.channel.send(recipeMsg);
-    
-    genUtils.incrementUserDataValue(message.author, "itemsCrafted", 1, (newValue) => {
-        if (newValue >= 500) {
-            ahm.awardAchievement(message, ahm.achievement_list_enum.LOYAL_LABOURER);
-        }
-    });
 
 }
 

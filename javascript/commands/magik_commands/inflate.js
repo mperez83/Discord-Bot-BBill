@@ -4,7 +4,6 @@ const rp = require("request-promise");
 
 const genUtils = require('../../command_utilities/general_utilities');
 const magikUtils = require('../../command_utilities/magik_utilities');
-const ahm = require("../../command_utilities/achievement_handler");
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.1;
@@ -85,7 +84,6 @@ module.exports.run = async (bot, message, args) => {
 
                     if (inflateAmount == 69) {
                         message.channel.send({ files: [`./graphics/misc/gotcha.png`] });
-                        ahm.awardAchievement(message, ahm.achievement_list_enum.SECRET_PORYGON);
                         return;
                     }
 

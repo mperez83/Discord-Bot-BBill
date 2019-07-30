@@ -1,15 +1,8 @@
-const fs = require("fs");
-
-const genUtils = require('../../command_utilities/general_utilities');
-const ahm = require("../../command_utilities/achievement_handler");
-
-const dataLoc = "./data/general_data/user_data.json";
-
-
-
 module.exports.run = async (bot, message, args) => {
 
-    genUtils.readJSONFile(dataLoc, (userDataJson) => {
+    message.channel.send(`F`);
+
+    /*genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
         //If the user tried to supply some kind of argument, cut that shit right off
         if (args.length > 0) {
@@ -42,7 +35,7 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
-    });
+    });*/
 
 }
 

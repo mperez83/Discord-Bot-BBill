@@ -13,7 +13,11 @@ module.exports.run = async (bot, message, args) => {
         return;
     }
 
-    genUtils.readJSONFile(dataLoc, (serverDataJson) => {
+
+
+    message.channel.send(`This command needs to be updated to the new information read/write system :(`);
+
+    /*genUtils.readJSONFile(dataLoc, (serverDataJson) => {
 
         currentServer = message.guild.id;
         serverObj = serverDataJson[currentServer];
@@ -62,7 +66,7 @@ module.exports.run = async (bot, message, args) => {
             });
         }
 
-    });
+    });*/
 
 }
 

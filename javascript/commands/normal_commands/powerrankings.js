@@ -1,12 +1,8 @@
-const genUtils = require('../../command_utilities/general_utilities');
-
-const dataLoc = "./data/general_data/user_data.json";
-
-
-
 module.exports.run = async (bot, message, args) => {
 
-    genUtils.readJSONFile(dataLoc, (userDataJson) => {
+    message.channel.send(`F`);
+
+    /*genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
         //Sort users in order of power and list them
         let powerRankingsString = `- - - - - - - - - -\n`;
@@ -25,7 +21,7 @@ module.exports.run = async (bot, message, args) => {
 
         message.channel.send(powerRankingsString);
     
-    });
+    });*/
 
 }
 

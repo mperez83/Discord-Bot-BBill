@@ -1,5 +1,4 @@
 const fs = require("fs");
-const gm = require("gm");
 const imageMagick = require('gm').subClass({imageMagick: true});
 const rp = require("request-promise");
 
@@ -51,7 +50,7 @@ module.exports.run = async (bot, message, args) => {
                     message.channel.send(msg);
 
                     magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performMagik(message, filename);
+                        performIMagik(message, filename);
                     });
 
                 })
@@ -70,7 +69,7 @@ module.exports.help = {
 
 
 
-function performMagik(message, filename) {
+function performIMagik(message, filename) {
     imageMagick(`${magikUtils.workshopLoc}/${filename}.png`)
         .write(`${magikUtils.workshopLoc}/${filename}.png`, (err) => {
             if (err) console.error(err);

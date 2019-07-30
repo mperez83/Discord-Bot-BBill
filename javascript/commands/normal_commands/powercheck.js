@@ -1,12 +1,8 @@
-const genUtils = require('../../command_utilities/general_utilities');
-
-const dataLoc = "./data/general_data/user_data.json";
-
-
-
 module.exports.run = async (bot, message, args) => {
 
-    genUtils.readJSONFile(dataLoc, (userDataJson) => {
+    message.channel.send(`F`);
+
+    /*genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
         let user = message.author;
         let userObj = userDataJson[user.id];
@@ -40,7 +36,7 @@ module.exports.run = async (bot, message, args) => {
             }
         }
     
-    });
+    });*/
 
 }
 

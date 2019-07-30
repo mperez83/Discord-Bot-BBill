@@ -1,8 +1,4 @@
-const fs = require("fs");
-
 const genUtils = require("../../command_utilities/general_utilities");
-
-const dataLoc = "./data/general_data/index_image_data.json";
 
 
 
@@ -29,7 +25,9 @@ module.exports.run = async (bot, message, args) => {
         }
         else {
 
-            genUtils.readJSONFile(dataLoc, (indexListJson) => {
+            message.channel.send(`This command needs to be updated to the new information read/write system :(`);
+
+            /*genUtils.readJSONFile(dataLoc, (indexListJson) => {
 
                 //Check if the index name we're trying to index already exists
                 if (indexListJson[inputIndexName]) {
@@ -63,7 +61,7 @@ module.exports.run = async (bot, message, args) => {
                     if (message.channel.type == "dm") genUtils.incrementUserDataValue(message.author, "stealthyBastardPoints", 1);
                 });
 
-            });
+            });*/
             
         }
 
