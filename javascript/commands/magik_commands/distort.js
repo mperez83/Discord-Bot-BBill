@@ -9,8 +9,8 @@ const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 1;
 
-const minScalePercentage = 25;
-const maxScalePercentage = 200;
+const minScalePercentage = 1;
+const maxScalePercentage = 99;
 
 
 
@@ -43,7 +43,7 @@ module.exports.run = async (bot, message, args) => {
 
             //Unknown argument
             default:
-                message.channel.send(`Unknown parameter '${args[0][1]}', ${genUtils.getRandomNameInsult(message)} (valid rainbow parameters are 'd' and 'm')`);
+                message.channel.send(`Unknown parameter '${letterValue.letter}', ${genUtils.getRandomNameInsult(message)} (the only valid distort parameter is s)`);
                 return;
         }
 

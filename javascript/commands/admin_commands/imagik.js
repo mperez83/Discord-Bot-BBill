@@ -12,10 +12,12 @@ const maxFileSize = 3;
 
 module.exports.run = async (bot, message, args) => {
 
-    //if this message wasn't sent by ME, return
-    if (message.author.id != "205106238697111552") {
-        message.channel.send(`unauthorized access, ${genUtils.getRandomNameInsult(message)}`);
-        return;
+    //Check if the user is whitelisted as an admin
+    try {
+        if (!genUtils.verifyWhitelistCommandCall(message, "admin")) return;
+    }
+    catch (err) {
+        console.error(err);
     }
 
     if (config.lite_mode == "true") {

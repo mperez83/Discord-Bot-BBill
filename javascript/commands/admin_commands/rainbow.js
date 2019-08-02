@@ -22,9 +22,12 @@ const iMagikColors = [
 
 module.exports.run = async (bot, message, args) => {
 
-    if (message.author.id != "205106238697111552") {
-        message.channel.send(`This command is too powerful for unauthorized users to use, ${genUtils.getRandomNameInsult(message)}`);
-        return;
+    //Check if the user is whitelisted as an admin
+    try {
+        if (!genUtils.verifyWhitelistCommandCall(message, "admin")) return;
+    }
+    catch (err) {
+        console.error(err);
     }
 
     if (config.lite_mode == "true") {

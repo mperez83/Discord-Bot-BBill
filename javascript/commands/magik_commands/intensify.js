@@ -27,8 +27,8 @@ module.exports.run = async (bot, message, args) => {
 
 
     let intensity = 5;
-    let frameCount = 10;
-    let frameDelay = 5;
+    let frameCount = 12;
+    let frameDelay = 6;
 
     //Verify parameters
     while (args.length > 0) {
@@ -60,7 +60,7 @@ module.exports.run = async (bot, message, args) => {
 
             //Unknown argument
             default:
-                message.channel.send(`Unknown parameter '${args[0][1]}', ${genUtils.getRandomNameInsult(message)} (valid rainbow parameters are 'd' and 'm')`);
+                message.channel.send(`Unknown parameter '${letterValue.letter}', ${genUtils.getRandomNameInsult(message)} (valid intensify parameters are i, c, and d)`);
                 return;
         }
 

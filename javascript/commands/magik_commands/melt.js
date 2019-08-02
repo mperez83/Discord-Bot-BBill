@@ -10,7 +10,7 @@ const config = require("../../../data/general_data/config.json");
 const maxFileSize = 0.25;
 
 const minTargetScalePercentage = 1;
-const maxTargetScalePercentage = 90;
+const maxTargetScalePercentage = 99;
 const minFrameCount = 10;
 const maxFrameCount = 40;
 const minFrameDelay = 2;
@@ -50,7 +50,7 @@ module.exports.run = async (bot, message, args) => {
                 break;
             
             //Frame Count
-            case 'f':
+            case 'c':
                 frameCount = genUtils.verifyIntVal(letterValue.value, minFrameCount, maxFrameCount, "Frame Count", message);
                 if (!frameCount) return;
                 break;
@@ -75,7 +75,7 @@ module.exports.run = async (bot, message, args) => {
 
             //Unknown argument
             default:
-                message.channel.send(`Unknown parameter '${args[0][1]}', ${genUtils.getRandomNameInsult(message)} (valid rainbow parameters are 'd' and 'm')`);
+                message.channel.send(`Unknown parameter '${letterValue.letter}', ${genUtils.getRandomNameInsult(message)} (valid melt parameters are s, c, d, p, and w)`);
                 return;
         }
 

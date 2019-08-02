@@ -9,8 +9,8 @@ const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.5;
 
-const minScalePercentage = 25;
-const maxScalePercentage = 200;
+const minScalePercentage = 10;
+const maxScalePercentage = 90;
 const minFrameCount = 2;
 const maxFrameCount = 20;
 const minFrameDelay = 2;
@@ -61,7 +61,7 @@ module.exports.run = async (bot, message, args) => {
 
             //Unknown argument
             default:
-                message.channel.send(`Unknown parameter '${args[0][1]}', ${genUtils.getRandomNameInsult(message)} (valid rainbow parameters are 'd' and 'm')`);
+                message.channel.send(`Unknown parameter '${letterValue.letter}', ${genUtils.getRandomNameInsult(message)} (valid irradiate parameters are s, c, and d)`);
                 return;
         }
 

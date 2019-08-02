@@ -60,12 +60,12 @@ bot.on("ready", () => {
     if (!config.id) {
         console.log("Bot ID doesn't exist in config file, adding it now");
         config.id = bot.user.id;
-        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), (err) => {if (err) console.error(err);});
+        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), (err) => { if (err) console.error(err); });
     }
     else if (config.id != bot.user.id) {
         console.log("Bot ID doesn't match one listed in config file, updating it now");
         config.id = bot.user.id;
-        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), (err) => {if (err) console.error(err);});
+        fs.writeFile("./data/general_data/config.json", JSON.stringify(config, null, 4), (err) => { if (err) console.error(err); });
     }
 });
 
@@ -124,8 +124,14 @@ bot.on("message", (message) => {
     if (!bot.commands.get(command)) command = "garfield";
 
     let cmd = bot.commands.get(command);
+
     if (cmd) {
-        cmd.run(bot, message, args);
+        //Do this so that we're able to create commands that take more parameters in the future if we want
+        switch (cmd.help.name) {
+            default:
+                cmd.run(bot, message, args);
+                break;
+        }
     }
 
 });
@@ -153,7 +159,7 @@ bot.on("userUpdate", (oldUser, newUser) => {
     if (oldUser.discriminator != newUser.discriminator) {
         console.log(`${newUser.username} updated their discriminator from "${oldUser.discriminator}" to "${newUser.discriminator}"`);
     }
-    
+
     if (oldUser.avatar != newUser.avatar) {
         console.log(`${newUser.username} updated their avatar`);
     }
