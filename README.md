@@ -1,4 +1,5 @@
 # Discord-Bot-BBill
+
 # Overview
 A chat bot for discord, utilizing <a href="https://github.com/hydrabolt/discord.js/">discord.js</a>
 
@@ -28,7 +29,6 @@ This bot must have the following permissions in order to function correctly:
 **Note:** ( ) indicates a required parameter, [ ] indicates an optional parameter.
 
 ## Normal Commands
--------------------------
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
 | **!craft** | Composes a random crafting recipe out of the available emotes | !craft |
@@ -54,7 +54,6 @@ This bot must have the following permissions in order to function correctly:
 | **!weight** | Posts how large Big Bill is in gigabytes | !weight |
 
 ## Image Unbox Commands
--------------------------
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
 | **!fumika** | Posts a random fumika from the fumika directory | !fumika |
@@ -72,7 +71,6 @@ Images that are unboxed can be assigned rarities by the caller. Upon the image s
 Doing so will permanently mark that image with the supplied rarity.
 
 ## Magik Commands
--------------------------
 Magik commands perform [GraphicsMagick](https://github.com/aheckmann/gm) operations on the most recently posted image in chat. Big Bill **will not** search farther than ten messages in the past for an image to perform the operation on.
 
 | Command name | Description | Example |
@@ -109,7 +107,6 @@ Magik commands perform [GraphicsMagick](https://github.com/aheckmann/gm) operati
 | | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527341248214990850/606738342280691712/1564728096783.png) | |
 
 ## Advanced Magik Commands
--------------------------
 These particular magik commands use a more intricate parameter system that allow for more specific results. The parameter format is based on inputting a letter/value pair, like so:
 
 >!someCommand -(letter) (value)
@@ -117,6 +114,8 @@ These particular magik commands use a more intricate parameter system that allow
 The letters represent a specific option within the command that can be manipulated; for example, **-s** in a **!distort** call represents the scale option that can be manipulated.  There can be as many letter/value pairs as is necessary for the command call, as long as the letters are valid, and the values for those letters are valid.
 
 
+
+-------------------------
 
 | Command name | Description |
 | :--------------- | :--------------------------- |
@@ -133,6 +132,8 @@ The letters represent a specific option within the command that can be manipulat
 >!distort -s 60
 
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606748256948453376/1564730461361.png)
+
+-------------------------
 
 
 
@@ -154,6 +155,8 @@ The letters represent a specific option within the command that can be manipulat
 
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606750913348239389/1564731094488.gif)
 
+-------------------------
+
 
 
 | Command name | Description |
@@ -173,6 +176,8 @@ The letters represent a specific option within the command that can be manipulat
 >!irradiate -s 60 -c 15 -d 5
 
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606752870104039450/1564731560892.gif)
+
+-------------------------
 
 
 
@@ -196,6 +201,8 @@ The letters represent a specific option within the command that can be manipulat
 
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606754395027406878/1564731923861.gif)
 
+-------------------------
+
 
 
 | Command name | Description |
@@ -215,6 +222,8 @@ The letters represent a specific option within the command that can be manipulat
 >!melt -s 40 -c 40 -d 4 -p true -w false
 
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606756264206270474/1564732369966.gif)
+
+-------------------------
 
 
 
