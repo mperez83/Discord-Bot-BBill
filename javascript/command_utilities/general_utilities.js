@@ -1,6 +1,7 @@
 const fs = require("fs");
 
 const insultData = require("../../data/static_command_data/insult_data.json");
+const whitelist = require("../../data/static_command_data/command_whitelist.json");
 
 
 
@@ -134,6 +135,23 @@ function sendGlobalMessage(bot, msg) {
 }
 
 module.exports.sendGlobalMessage = sendGlobalMessage;
+
+
+
+function verifyWhitelistCommandCall(message, command) {
+    if (!whitelist[command]) throw `Error: command ${command} does not exist in whitelist databse!`;
+    else if (!whitelist[command].users) throw `Error: command ${command} does not contain a users array!`;
+    else if (!whitelist[command].servers) throw `Error: command ${command} does not contain a servers array!`;
+    
+    if (!whitelist[command].servers.includes(message.guild.id)) {
+        if (!whitelist[command].users.includes(message.author.id)) {
+            message.channel.send(`This server isn't whitelisted to use the ${command} command, ${getRandomNameInsult(message)}`);
+            return false;
+        }
+    }
+    return true;
+}
+module.exports.verifyWhitelistCommandCall = verifyWhitelistCommandCall;
 
 
 
