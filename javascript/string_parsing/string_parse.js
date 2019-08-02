@@ -116,6 +116,14 @@ module.exports = {
 
 
 
+        //F in chat
+        if (userMsg == "F") {
+            message.react("🇫");
+            return true;
+        }
+
+
+
         //If none of the above triggered, return false, which allows main.js to continue
         return false;
 

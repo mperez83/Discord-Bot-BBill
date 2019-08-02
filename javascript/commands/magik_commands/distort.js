@@ -49,6 +49,10 @@ module.exports.run = async (bot, message, args) => {
 
     }
 
+    let argObj = {
+        "scalePercentage": scalePercentage
+    };
+
 
 
     genUtils.getMostRecentImageURL(message).then((requestedURL) => {
@@ -76,7 +80,7 @@ module.exports.run = async (bot, message, args) => {
                     message.channel.send(msg);
 
                     magikUtils.imWriteAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performDistortionMagik(message, filename, scalePercentage);
+                        performDistortionMagik(message, filename, argObj);
                     });
 
                 })
@@ -95,7 +99,9 @@ module.exports.help = {
 
 
 
-function performDistortionMagik(message, filename, scalePercentage) {
+function performDistortionMagik(message, filename, argObj) {
+
+    let scalePercentage = argObj.scalePercentage;
 
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size((err, size) => {

@@ -20,7 +20,7 @@ function readHyphenTextFile(fileLocation, callback) {
         if (err) console.error(err);
 
         let readLines = data.toString().split("\n");
-        for (let i = 0; i < readLines.length; i++) readLines[i] = readLines[i].substring(1);
+        for (let i = 0; i < readLines.length; i++) readLines[i] = readLines[i].substr(1);
         callback(readLines);
     });
 
@@ -152,6 +152,34 @@ function removeElementsFromArray(arrayToRemoveStuffFrom, stuffToRemove) {
 
 }
 module.exports.removeElementsFromArray = removeElementsFromArray;
+
+
+
+//Shrinks a string down to the specified length, optionally adding elipses if it surpasses the length
+function shrinkString(str, length, addElipses = false) {
+
+    //If it's already less than the requested length, or if the requested length is three or less, return
+    if (str.length <= length || length <= 3) {
+        return str;
+    }
+
+    //Otherwise, do the operations
+    else {
+
+        if (!addElipses) {
+            str = str.substr(0, length);
+            return str;
+        }
+        else {
+            str = str.substr(0, length - 3);
+            str += `...`;
+            return str;
+        }
+
+    }
+
+}
+module.exports.shrinkString = shrinkString;
 
 
 

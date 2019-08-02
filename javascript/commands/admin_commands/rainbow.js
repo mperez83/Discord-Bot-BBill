@@ -49,13 +49,13 @@ module.exports.run = async (bot, message, args) => {
         switch(letterValue.letter) {
             //Delay
             case 'd':
-                gifFrameDelay = genUtils.verifyNumVal(letterValue.value, minGifFrameDelay, maxGifFrameDelay, "Frame Delay", message);
+                gifFrameDelay = genUtils.verifyIntVal(letterValue.value, minGifFrameDelay, maxGifFrameDelay, "Frame Delay", message);
                 if (!gifFrameDelay) return;
                 break;
             
             //Midway Frames
             case 'm':
-                midwayFrames = genUtils.verifyNumVal(letterValue.value, minMidwayFrames, maxMidwayFrames, "Midway Frames", message);
+                midwayFrames = genUtils.verifyIntVal(letterValue.value, minMidwayFrames, maxMidwayFrames, "Midway Frames", message);
                 if (!midwayFrames) return;
                 break;
 

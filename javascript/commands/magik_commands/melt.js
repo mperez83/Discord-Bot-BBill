@@ -11,10 +11,10 @@ const maxFileSize = 0.25;
 
 const minTargetScalePercentage = 1;
 const maxTargetScalePercentage = 90;
-const minGifFrameCount = 10;
-const maxGifFrameCount = 40;
-const minGifFrameDelay = 2;
-const maxGifFrameDelay = 10;
+const minFrameCount = 10;
+const maxFrameCount = 40;
+const minFrameDelay = 2;
+const maxFrameDelay = 10;
 
 
 
@@ -28,8 +28,8 @@ module.exports.run = async (bot, message, args) => {
 
 
     let targetScalePercentage = 25;
-    let gifFrameCount = 24;
-    let gifFrameDelay = 6;
+    let frameCount = 24;
+    let frameDelay = 6;
     let pingPong = false;
     let sinWave = false;
 
@@ -51,21 +51,23 @@ module.exports.run = async (bot, message, args) => {
             
             //Frame Count
             case 'f':
-                gifFrameCount = genUtils.verifyIntVal(letterValue.value, minGifFrameCount, maxGifFrameCount, "Frame Count", message);
-                if (!gifFrameCount) return;
+                frameCount = genUtils.verifyIntVal(letterValue.value, minFrameCount, maxFrameCount, "Frame Count", message);
+                if (!frameCount) return;
                 break;
             
             //Frame Delay
             case 'd':
-                gifFrameDelay = genUtils.verifyIntVal(letterValue.value, minGifFrameDelay, maxGifFrameDelay, "Frame Delay", message);
-                if (!gifFrameDelay) return;
+                frameDelay = genUtils.verifyIntVal(letterValue.value, minFrameDelay, maxFrameDelay, "Frame Delay", message);
+                if (!frameDelay) return;
                 break;
             
+            //Ping Pong
             case 'p':
                 pingPong = genUtils.verifyBoolVal(letterValue.value, "Ping Pong", message);
                 if (!pingPong) return;
                 break;
             
+            //Sin Wave
             case 'w':
                 sinWave = genUtils.verifyBoolVal(letterValue.value, "Sin Wave", message);
                 if (!sinWave) return;
@@ -79,7 +81,15 @@ module.exports.run = async (bot, message, args) => {
 
     }
 
-    if (pingPong && gifFrameCount > 20) gifFrameCount = 20;
+    if (pingPong && frameCount > 20) frameCount = 20;
+
+    let argObj = {
+        "targetScalePercentage": targetScalePercentage,
+        "frameCount": frameCount,
+        "frameDelay": frameDelay,
+        "pingPong": pingPong,
+        "sinWave": sinWave
+    }
 
 
 
@@ -108,7 +118,7 @@ module.exports.run = async (bot, message, args) => {
                     message.channel.send(msg);
 
                     magikUtils.imWriteAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performMeltMagik(message, filename, targetScalePercentage, gifFrameCount, gifFrameDelay, pingPong, sinWave);
+                        performMeltMagik(message, filename, argObj);
                     });
 
                 })
@@ -127,7 +137,13 @@ module.exports.help = {
 
 
 
-function performMeltMagik(message, filename, targetScalePercentage, gifFrameCount, gifFrameDelay, pingPong, sinWave) {
+function performMeltMagik(message, filename, argObj) {
+
+    let targetScalePercentage = argObj.targetScalePercentage;
+    let frameCount = argObj.frameCount;
+    let frameDelay = argObj.frameDelay;
+    let pingPong = argObj.pingPong;
+    let sinWave = argObj.sinWave;
 
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size((err, size) => {
@@ -139,18 +155,18 @@ function performMeltMagik(message, filename, targetScalePercentage, gifFrameCoun
 
             let writeRequests = 0;
 
-            for (let i = 0; i < gifFrameCount; i++) {
+            for (let i = 0; i < frameCount; i++) {
 
                 writeRequests++;
 
                 let alpha;
                 if (sinWave) {
-                    let curDeg = 90 + (180 * (i / gifFrameCount));
+                    let curDeg = 90 + (180 * (i / frameCount));
                     alpha = (Math.sin(curDeg * Math.PI / 180.0) * 0.5) + 0.5;  //This produces a value between 1 and 0
                     if (alpha < 0.01 && alpha > -0.01) alpha = 0.01;
                 }
                 else {
-                    alpha = 1 - (i / gifFrameCount);
+                    alpha = 1 - (i / frameCount);
                 }
                 
                 let scaleModifier = genUtils.lerp(targetScalePercentage / 100, 1, alpha);
@@ -169,19 +185,19 @@ function performMeltMagik(message, filename, targetScalePercentage, gifFrameCoun
                         if (writeRequests == 0) {
 
                             if (pingPong) {
-                                meltPingPong(message, filename, targetScalePercentage, gifFrameCount, gifFrameDelay, sinWave);
+                                meltPingPong(message, filename, argObj);
                             }
                             else {
 
                                 fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, (err) => { if (err) console.error(err); });
 
-                                magikUtils.generateGif(filename, gifFrameCount, gifFrameDelay, () => {
+                                magikUtils.generateGif(filename, frameCount, frameDelay, () => {
 
                                     message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.gif`] })
                                         .then((msg) => {
                                             fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, (err) => { if (err) console.error(err); });
-                                            for (let i = 0; i < gifFrameCount; i++) {
-                                                fs.unlink(`${magikUtils.workshopLoc}/${filename}-${i}.png`, (err) => { if (err) console.error(err); });
+                                            for (let j = 0; j < frameCount; j++) {
+                                                fs.unlink(`${magikUtils.workshopLoc}/${filename}-${j}.png`, (err) => { if (err) console.error(err); });
                                             }
                                         })
                                         .catch(console.error);
@@ -199,7 +215,12 @@ function performMeltMagik(message, filename, targetScalePercentage, gifFrameCoun
 
 }
 
-function meltPingPong(message, filename, targetScalePercentage, gifFrameCount, gifFrameDelay, sinWave) {
+function meltPingPong(message, filename, argObj) {
+
+    let targetScalePercentage = argObj.targetScalePercentage;
+    let frameCount = argObj.frameCount;
+    let frameDelay = argObj.frameDelay;
+    let sinWave = argObj.sinWave;
 
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size((err, size) => {
@@ -210,18 +231,18 @@ function meltPingPong(message, filename, targetScalePercentage, gifFrameCount, g
             let ogHeight = size.height;
             let writeRequests = 0;
 
-            for (let i = gifFrameCount; i < (gifFrameCount * 2); i++) {
+            for (let i = frameCount; i < (frameCount * 2); i++) {
 
                 writeRequests++;
 
                 let alpha;
                 if (sinWave) {
-                    let curDeg = 270 + (180 * ((i - gifFrameCount) / gifFrameCount));
+                    let curDeg = 270 + (180 * ((i - frameCount) / frameCount));
                     alpha = (Math.sin(curDeg * Math.PI / 180.0) * 0.5) + 0.5;  //This produces a value between 0 and 1
                     if (alpha < 0.01 && alpha > -0.01) alpha = 0.01;
                 }
                 else {
-                    alpha = ((i - gifFrameCount) / gifFrameCount);
+                    alpha = ((i - frameCount) / frameCount);
                 }
                 
                 let scaleModifier = genUtils.lerp(targetScalePercentage / 100, 1, alpha);
@@ -241,12 +262,12 @@ function meltPingPong(message, filename, targetScalePercentage, gifFrameCount, g
 
                             fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, (err) => { if (err) console.error(err); });
 
-                            magikUtils.generateGif(filename, (gifFrameCount * 2), gifFrameDelay, () => {
+                            magikUtils.generateGif(filename, (frameCount * 2), frameDelay, () => {
 
                                 message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.gif`] })
                                     .then((msg) => {
                                         fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, (err) => { if (err) console.error(err); });
-                                        for (let i = 0; i < (gifFrameCount * 2); i++) {
+                                        for (let i = 0; i < (frameCount * 2); i++) {
                                             fs.unlink(`${magikUtils.workshopLoc}/${filename}-${i}.png`, (err) => { if (err) console.error(err); });
                                         }
                                     })

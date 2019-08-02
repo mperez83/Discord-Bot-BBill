@@ -7,8 +7,13 @@ const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
 const maxFileSize = 0.25;
+
+const minIntensity = 0.1;
 const maxIntensity = 10;
-const maxGifFrameCount = 30;
+const minFrameCount = 5;
+const maxFrameCount = 30;
+const minFrameDelay = 2;
+const maxFrameDelay = 10;
 
 
 
@@ -21,53 +26,51 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    let gifFrameCount = 20;
     let intensity = 1;
+    let frameCount = 20;
+    let frameDelay = 5;
 
-    if (args.length == 0) {
-        //keep gifFrameCount and intensity at their default values
-    }
+    //Verify parameters
+    while (args.length > 0) {
 
-    else if (args.length == 1 || args.length == 2) {
-        if (isNaN(args[0])) {
-            message.channel.send(`The provided intensity isn't a number, ${genUtils.getRandomNameInsult(message)}`);
+        let letterValue = genUtils.getArgLetterAndValue(args, message);
+
+        if (!letterValue) {
             return;
         }
-        else {
-            if (args[0] <= 0) {
-                message.channel.send(`Can't have an intensity of 0 or less, ${genUtils.getRandomNameInsult(message)}`);
+
+        switch(letterValue.letter) {
+            //Intensity
+            case 'i':
+                intensity = genUtils.verifyNumVal(letterValue.value, minIntensity, maxIntensity, "Intensity", message);
+                if (!intensity) return;
+                break;
+            
+            //Frame Count
+            case 'c':
+                frameCount = genUtils.verifyIntVal(letterValue.value, minFrameCount, maxFrameCount, "Frame Count", message);
+                if (!frameCount) return;
+                break;
+            
+            //Frame Delay
+            case 'd':
+                frameDelay = genUtils.verifyIntVal(letterValue.value, minFrameDelay, maxFrameDelay, "Frame Delay", message);
+                if (!frameDelay) return;
+                break;
+
+            //Unknown argument
+            default:
+                message.channel.send(`Unknown parameter '${args[0][1]}', ${genUtils.getRandomNameInsult(message)} (valid rainbow parameters are 'd' and 'm')`);
                 return;
-            }
-            else if (args[0] > maxIntensity) {
-                message.channel.send(`Max intensity is ${maxIntensity}, ${genUtils.getRandomNameInsult(message)}`);
-                return;
-            }
-            intensity = args[0];
         }
 
-        if (args.length == 2) {
-            if (isNaN(args[1])) {
-                message.channel.send(`The provided frame amount isn't a number, ${genUtils.getRandomNameInsult(message)}`);
-                return;
-            }
-            else {
-                if (args[1] < 2) {
-                    message.channel.send(`Gifs are composed of more than one frame, ${genUtils.getRandomNameInsult(message)}`);
-                    return;
-                }
-                else if (args[1] > maxGifFrameCount) {
-                    message.channel.send(`I really don't want to go higher than ${maxGifFrameCount} frames, ${genUtils.getRandomNameInsult(message)}`);
-                    return;
-                }
-                gifFrameCount = args[1];
-            }
-        }
     }
 
-    else {
-        message.channel.send(`Too many parameters, ${genUtils.getRandomNameInsult(message)}`);
-        return;
-    }
+    let argObj = {
+        "intensity": intensity,
+        "frameCount": frameCount,
+        "frameDelay": frameDelay
+    };
 
 
 
@@ -96,7 +99,7 @@ module.exports.run = async (bot, message, args) => {
                     message.channel.send(msg);
 
                     magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performUndulationMagik(message, filename, gifFrameCount, intensity);
+                        performUndulationMagik(message, filename, argObj);
                     });
 
                 })
@@ -115,10 +118,15 @@ module.exports.help = {
 
 
 
-function performUndulationMagik(message, filename, gifFrameCount, intensity) {
+function performUndulationMagik(message, filename, argObj) {
+
+    let intensity = argObj.intensity;
+    let frameCount = argObj.frameCount;
+    let frameDelay = argObj.frameDelay;
+
     let implodeValues = [];
-    for (let i = 0; i < gifFrameCount; i++) {
-        let curDeg = 360 * (i / gifFrameCount);
+    for (let i = 0; i < frameCount; i++) {
+        let curDeg = 360 * (i / frameCount);
         let newImplodeValue = Math.sin(curDeg * Math.PI / 180.0);
         newImplodeValue -= 0.75;
         newImplodeValue *= 0.5;
@@ -128,7 +136,7 @@ function performUndulationMagik(message, filename, gifFrameCount, intensity) {
     }
 
     let writeRequests = 0;
-    for (let i = 0; i < gifFrameCount; i++) {
+    for (let i = 0; i < frameCount; i++) {
 
         writeRequests++;
 
@@ -143,13 +151,13 @@ function performUndulationMagik(message, filename, gifFrameCount, intensity) {
                 if (writeRequests == 0) {
                     fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, (err) => { if (err) console.error(err); });
 
-                    magikUtils.generateGif(filename, gifFrameCount, 6, () => {
+                    magikUtils.generateGif(filename, frameCount, frameDelay, () => {
 
                         //Once the gif is generated, post it
                         message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.gif`] })
                             .then((msg) => {
                                 fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, (err) => { if (err) console.error(err); });
-                                for (let i = 0; i < gifFrameCount; i++) {
+                                for (let i = 0; i < frameCount; i++) {
                                     fs.unlink(`${magikUtils.workshopLoc}/${filename}-${i}.png`, (err) => { if (err) console.error(err); });
                                 }
                             })
@@ -161,4 +169,5 @@ function performUndulationMagik(message, filename, gifFrameCount, intensity) {
             });
 
     }
+
 }

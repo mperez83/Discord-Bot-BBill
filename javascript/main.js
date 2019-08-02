@@ -145,9 +145,19 @@ bot.on("messageReactionAdd", (messageReaction, user) => {
 
 //Create event for when users update their info (such as their username)
 bot.on("userUpdate", (oldUser, newUser) => {
-    console.log(`${oldUser.username} updated their info`);
-    console.log(oldUser);
-    console.log(newUser);
+
+    if (oldUser.username != newUser.username) {
+        console.log(`${oldUser.username} updated their username to "${newUser.username}"`);
+    }
+
+    if (oldUser.discriminator != newUser.discriminator) {
+        console.log(`${newUser.username} updated their discriminator from "${oldUser.discriminator}" to "${newUser.discriminator}"`);
+    }
+    
+    if (oldUser.avatar != newUser.avatar) {
+        console.log(`${newUser.username} updated their avatar`);
+    }
+
 });
 
 

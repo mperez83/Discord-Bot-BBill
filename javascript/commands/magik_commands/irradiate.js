@@ -11,10 +11,10 @@ const maxFileSize = 0.5;
 
 const minScalePercentage = 25;
 const maxScalePercentage = 200;
-const minGifFrameCount = 2;
-const maxGifFrameCount = 20;
-const minGifFrameDelay = 2;
-const maxGifFrameDelay = 10;
+const minFrameCount = 2;
+const maxFrameCount = 20;
+const minFrameDelay = 2;
+const maxFrameDelay = 10;
 
 
 
@@ -28,8 +28,8 @@ module.exports.run = async (bot, message, args) => {
 
 
     let scalePercentage = 50;
-    let gifFrameCount = 12;
-    let gifFrameDelay = 6;
+    let frameCount = 12;
+    let frameDelay = 6;
 
     //Verify parameters
     while (args.length > 0) {
@@ -48,15 +48,15 @@ module.exports.run = async (bot, message, args) => {
                 break;
             
             //Frame Count
-            case 'f':
-                gifFrameCount = genUtils.verifyIntVal(letterValue.value, minGifFrameCount, maxGifFrameCount, "Frame Count", message);
-                if (!gifFrameCount) return;
+            case 'c':
+                frameCount = genUtils.verifyIntVal(letterValue.value, minFrameCount, maxFrameCount, "Frame Count", message);
+                if (!frameCount) return;
                 break;
             
             //Frame Delay
             case 'd':
-                gifFrameDelay = genUtils.verifyIntVal(letterValue.value, minGifFrameDelay, maxGifFrameDelay, "Frame Delay", message);
-                if (!gifFrameDelay) return;
+                frameDelay = genUtils.verifyIntVal(letterValue.value, minFrameDelay, maxFrameDelay, "Frame Delay", message);
+                if (!frameDelay) return;
                 break;
 
             //Unknown argument
@@ -66,6 +66,12 @@ module.exports.run = async (bot, message, args) => {
         }
 
     }
+
+    let argObj = {
+        "scalePercentage": scalePercentage,
+        "frameCount": frameCount,
+        "frameDelay": frameDelay
+    };
 
 
 
@@ -94,7 +100,7 @@ module.exports.run = async (bot, message, args) => {
                     message.channel.send(msg);
 
                     magikUtils.imWriteAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performIrradiationMagik(message, filename, scalePercentage, gifFrameCount, gifFrameDelay);
+                        performIrradiationMagik(message, filename, argObj);
                     });
 
                 })
@@ -113,7 +119,11 @@ module.exports.help = {
 
 
 
-function performIrradiationMagik(message, filename, scalePercentage, gifFrameCount, gifFrameDelay) {
+function performIrradiationMagik(message, filename, argObj) {
+
+    let scalePercentage = argObj.scalePercentage;
+    let frameCount = argObj.frameCount;
+    let frameDelay = argObj.frameDelay;
 
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size((err, size) => {
@@ -125,7 +135,7 @@ function performIrradiationMagik(message, filename, scalePercentage, gifFrameCou
             let writeRequests = 0;
             let sentError = false;
 
-            for (let i = 0; i < gifFrameCount; i++) {
+            for (let i = 0; i < frameCount; i++) {
 
                 writeRequests++;
                 let scaleModifier = (scalePercentage - 5 + (Math.random() * 10)) / 100;
@@ -151,12 +161,12 @@ function performIrradiationMagik(message, filename, scalePercentage, gifFrameCou
                         if (writeRequests == 0) {
                             fs.unlink(`${magikUtils.workshopLoc}/${filename}.png`, (err) => { if (err) console.error(err); });
 
-                            magikUtils.generateGif(filename, gifFrameCount, gifFrameDelay, () => {
+                            magikUtils.generateGif(filename, frameCount, frameDelay, () => {
 
                                 message.channel.send({ files: [`${magikUtils.workshopLoc}/${filename}.gif`] })
                                     .then((msg) => {
                                         fs.unlink(`${magikUtils.workshopLoc}/${filename}.gif`, (err) => { if (err) console.error(err); });
-                                        for (let i = 0; i < gifFrameCount; i++) {
+                                        for (let i = 0; i < frameCount; i++) {
                                             fs.unlink(`${magikUtils.workshopLoc}/${filename}-${i}.png`, (err) => { if (err) console.error(err); });
                                         }
                                     })

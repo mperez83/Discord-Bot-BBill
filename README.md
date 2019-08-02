@@ -85,3 +85,4 @@ The trello board containing all upcoming features can be found here: https://tre
 - request-promise
 - garfield
 - get-folder-size
+- htmlparser2
