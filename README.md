@@ -1,5 +1,5 @@
 # Discord-Bot-BBill
-## Overview
+# Overview
 A chat bot for discord, utilizing <a href="https://github.com/hydrabolt/discord.js/">discord.js</a>
 
 Its functionalities are mostly for entertainment purposes. Commands range from querying Google Images for a specified image, posting random image files from a specific directory, utilizing GraphicsMagick and ImageMagick to modify images posted in chat, and so on.
@@ -24,10 +24,10 @@ This bot must have the following permissions in order to function correctly:
 
 
 
-## Commands
+# Commands
 **Note:** ( ) indicates a required parameter, [ ] indicates an optional parameter.
 
-### Normal Commands
+## Normal Commands
 -------------------------
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
@@ -53,7 +53,7 @@ This bot must have the following permissions in order to function correctly:
 | **!urban [input]** | Searches urban dictionary for the specified input and posts the article about it, or posts a random urban dictionary article if no input is provided | !urban (800)-588-2300 |
 | **!weight** | Posts how large Big Bill is in gigabytes | !weight |
 
-### Image Unbox Commands
+## Image Unbox Commands
 -------------------------
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
@@ -71,7 +71,7 @@ Images that are unboxed can be assigned rarities by the caller. Upon the image s
 
 Doing so will permanently mark that image with the supplied rarity.
 
-### Magik Commands
+## Magik Commands
 -------------------------
 Magik commands perform [GraphicsMagick](https://github.com/aheckmann/gm) operations on the most recently posted image in chat. Big Bill **will not** search farther than ten messages in the past for an image to perform the operation on.
 
@@ -108,7 +108,7 @@ Magik commands perform [GraphicsMagick](https://github.com/aheckmann/gm) operati
 | **!spider** | Creates an eldritch spider from the image | !spider |
 | | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527341248214990850/606738342280691712/1564728096783.png) | |
 
-### Advanced Magik Commands
+## Advanced Magik Commands
 -------------------------
 These particular magik commands use a more intricate parameter system that allow for more specific results. The parameter format is based on inputting a letter/value pair, like so:
 
@@ -122,14 +122,16 @@ The letters represent a specific option within the command that can be manipulat
 | :--------------- | :--------------------------- |
 | **!distort** | Distorts the image with liquid rescaling |
 
-#### Parameters
+### Parameters
 | Letter  | Description | Value Type | Min Value | Max Value | Default Value |
 | :------ | :------------- | :----------- | :----------- | :----------- | :-------------- |
 | **-s** | Scale modifier that determines what percentage scale the image will change to with liquid rescaling before scaling back to 100% | Float | 1 | 99 | 50 |
 
-#### Example
+### Example
 ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)
-`!distort -s 60`
+
+>!distort -s 60
+
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606748256948453376/1564730461361.png)
 
 
@@ -138,16 +140,18 @@ The letters represent a specific option within the command that can be manipulat
 | :---------------- | :---------------- |
 | **!intensify** | Intensifies the image |
 
-#### Parameters
+### Parameters
 | Letter  | Description | Value Type | Min Value | Max Value | Default Value |
 | :------ | :------------- | :----------- | :----------- | :----------- | :-------------- |
 | **-i** | Intensity of which the gif will jolt around | Float | 1 | 90 | 5 |
 | **-c** | Frame Count determines how many frames there will be in the resulting gif | Integer | 2 | 20 | 12 |
 | **-d** | Frame Delay determines how little delay there is between each frame of the gif | Integer | 2 | 10 | 6 |
 
-#### Example
+### Example
 ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)
-`!intensify -i 10 -c 16 -d 3`
+
+>!intensify -i 10 -c 16 -d 3
+
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606750913348239389/1564731094488.gif)
 
 
@@ -156,16 +160,18 @@ The letters represent a specific option within the command that can be manipulat
 | :---------------- | :----------------- |
 | **!irradiate** | Irradiates the image |
 
-#### Parameters
+### Parameters
 | Letter  | Description | Value Type | Min Value | Max Value | Default Value |
 | :------ | :------------- | :----------- | :----------- | :----------- | :-------------- |
 | **-s** | Scale modifier that determines what percentage scale the image will change to with liquid rescaling before scaling back to 100% | Float | 10 | 90 | 50 |
 | **-c** | Frame Count determines how many frames there will be in the resulting gif | Integer | 2 | 20 | 12 |
 | **-d** | Frame Delay determines how little delay there is between each frame of the gif | Integer | 2 | 10 | 6 |
 
-#### Example
+### Example
 ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)
-`!irradiate -s 60 -c 15 -d 5`
+
+>!irradiate -s 60 -c 15 -d 5
+
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606752870104039450/1564731560892.gif)
 
 
@@ -174,7 +180,7 @@ The letters represent a specific option within the command that can be manipulat
 | :-------------- | :--------------- |
 | **!melt** | Melts the image |
 
-#### Parameters
+### Parameters
 | Letter  | Description | Value Type | Min Value | Max Value | Default Value |
 | :------ | :----------- | :------------- | :---------- | :------------ | :--------------- |
 | **-s** | Scale modifier that determines what percentage scale the image will change to with liquid rescaling before scaling back to 100% | Float | 1 | 99 | 25 |
@@ -183,9 +189,11 @@ The letters represent a specific option within the command that can be manipulat
 | **-p** | Ping Pong determines if the gif will reverse back to 100% after reaching the target scale value | Boolean | N/A | N/A | False |
 | **-w** | Sin Wave determines if the gif should attempt to ease its scaling motions in accordance to a sin wave | Boolean | N/A | N/A | False |
 
-#### Example
+### Example
 ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)
-`!melt -s 40 -c 40 -d 4 -p true -w false`
+
+>!melt -s 40 -c 40 -d 4 -p true -w false
+
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606754395027406878/1564731923861.gif)
 
 
@@ -194,24 +202,26 @@ The letters represent a specific option within the command that can be manipulat
 | :----------------- | :---------------- |
 | **!undulate** | Undulates the image |
 
-##### Parameters
+### Parameters
 | Letter  | Description | Value Type | Min Value | Max Value | Default Value |
 | :------ | :------------- | :----------- | :----------- | :----------- | :-------------- |
 | **-i** | Intensity determines how strong the imploding values will be | Float | 0.1 | 10 | 1 |
 | **-c** | Frame Count determines how many frames there will be in the resulting gif | Integer | 5 | 30 | 20 |
 | **-d** | Frame Delay determines how little delay there is between each frame of the gif | Integer | 2 | 10 | 6 |
 
-##### Example
+### Example
 ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)
-`!melt -s 40 -c 40 -d 4 -p true -w false`
+
+>!melt -s 40 -c 40 -d 4 -p true -w false
+
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606756264206270474/1564732369966.gif)
 
 
 
-## Todo
+# Todo
 The trello board containing all upcoming features can be found here: https://trello.com/b/fYoxfMoT/big-bills-board
 
-## External modules utilized
+# External modules utilized
 * [request](https://www.npmjs.com/package/request)
 	* Utilized in anything related to making web calls
 * [urban-dictionary](https://www.npmjs.com/package/urban-dictionary)
