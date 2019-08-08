@@ -59,7 +59,14 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "heatmap"
+    name: "heatmap",
+    description: "Generates a heatmap of the image",
+    usage: "!heatmap",
+    example: "!heatmap",
+    funFacts: [
+        "I do not know how this works. I was looking up how to tint an image a specific color, and ImageMagick's website provided examples for creating weird \
+        rainbow images like this one does, and I made it into a command."
+    ]
 }
 
 

@@ -82,7 +82,15 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "singe"
+    name: "singe",
+    description: "Singes the image by the specified intensity (defaults to 1)",
+    usage: "!help singe[intensity]",
+    example: "!singe 50",
+    funFacts: [
+        "The GraphicsMagik operation this command uses is called \"charcoal\". It supposedly makes the image look like a charcoal drawing.",
+        "This is probably the most boring one-off GraphicsMagick operation command. More interesting results are achieved with inkblot or spider.",
+        "Inkblot and spider are composed out of many of this command's operation."
+    ]
 }
 
 

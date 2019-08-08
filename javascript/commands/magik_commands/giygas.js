@@ -66,7 +66,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "giygas"
+    name: "giygas",
+    description: "???",
+    usage: "!giygas",
+    example: "!giygas",
+    funFacts: [
+        "undefined"
+    ]
 }
 
 

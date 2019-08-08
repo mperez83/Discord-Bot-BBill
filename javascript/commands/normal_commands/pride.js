@@ -50,5 +50,14 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "pride"
+    name: "pride",
+    description: "Posts a random pride flag, as well as some information about it",
+    usage: "!pride",
+    example: "!pride",
+    funFacts: [
+        "This command was initially made to help me commit all the various gender, romantic, and sexual identities to memory. Generating the list helped \
+        tremendously with that, as well as the subsequent usage of the command.",
+        "The amount of times each flag was brought up used to be logged as \"Amount of <blank> people\", but that has since been removed.",
+        "Making !pride was one of the few times where I spent a disproportionately large amount of time doing research for the command rather than coding."
+    ]
 }

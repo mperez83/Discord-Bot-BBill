@@ -14,5 +14,11 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "weight"
+    name: "weight",
+    description: "Posts how large Big Bill is in gigabytes",
+    usage: "!weight",
+    example: "!weight",
+    funFacts: [
+        "The fumika graphics folder accounts for approximately 70% of Big Bill's cumulative file size."
+    ]
 }

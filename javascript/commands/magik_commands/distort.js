@@ -94,7 +94,14 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "distort"
+    name: "distort",
+    description: "Distorts the image with liquid rescaling",
+    usage: "!distort [-s scale]",
+    example: "!distort -s 40",
+    funFacts: [
+        "This is the most popular command. It's very fast, and easy to whip out on a whim.",
+        "A popular pastime with Big Bill is to do a random !indexcall, and immediately follow it up with a !distort."
+    ]
 }
 
 

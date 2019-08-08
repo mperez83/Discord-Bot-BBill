@@ -41,5 +41,11 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "powercheck"
+    name: "powercheck",
+    description: "Checks the caller's power level, and displays when next they can use the !power command",
+    usage: "!powercheck",
+    example: "!powercheck",
+    funFacts: [
+        "!power also tells you when your next power call is, but this command lets users check without potentially prematurely doing a power call."
+    ]
 }

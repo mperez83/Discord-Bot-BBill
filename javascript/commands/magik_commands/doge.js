@@ -54,5 +54,12 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "doge"
+    name: "doge",
+    description: "Creates a doge that's as long as there are o's in the command call",
+    usage: "!doge",
+    example: "!doooooge",
+    funFacts: [
+        "This is one of my favorite commands. The graphic isn't seamless, but the infrastructure is there to create other similar commands.",
+        "This command is woefully undersued."
+    ]
 }

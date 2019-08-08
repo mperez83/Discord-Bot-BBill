@@ -98,5 +98,15 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "power"
+    name: "power",
+    description: "Assesses the caller's power level",
+    usage: "!power",
+    example: "!power",
+    funFacts: [
+        "Power was initially called \"t-count\", but when I started adding Big Bill to more servers, I was worried that the concept of counting a user's \
+        testosterone would be seen as offensive by some.",
+        "This command was inspired by RockLeeSmiles's twitch bot command \"t-count\", which would display a random number between 1 and 100 to the chat user.",
+        "Big Bill globally announces to all servers whenever a user gets a noteworthy power level.",
+        "Making the command call all uppercase does not increase your power."
+    ]
 }

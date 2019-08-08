@@ -66,7 +66,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "carbonite"
+    name: "carbonite",
+    description: "Freezes the image in carbonite",
+    usage: "!carbonite",
+    example: "!carbonite",
+    funFacts: [
+        "I've never seen Star Wars."
+    ]
 }
 
 

@@ -46,7 +46,7 @@ This bot must have the following permissions in order to function correctly:
 | **!pride** | Posts a random pride flag, as well as some information about it | !pride |
 | **!rgif (input)** | Searches google for the specified input and posts a random gif from the first 50 results | !rgif sad cat dance |
 | **!rimage (input)** | Searches google for the specified input and posts a random image from the first 50 results | !rimage sad cat |
-| **!scp [number]** | Attempts to post the specified SCP article number, or a random one if no number is provided | !scp 173 |
+| **!scp [number]** | Attempts to post the specified SCP entry number, or a random one if no number is provided | !scp 173 |
 | **!sfw** | Purges the chat of its sins | !sfw |
 | **!speak [name]** | Plays the specified audio file in all of the servers Big Bill is in, or a random audio file if no name is provided | !speak mind flood 2 |
 | **!topic [input]** | Changes the topic to the specified input, or displays the current topic if no input is provided | !topic Hello, World! |

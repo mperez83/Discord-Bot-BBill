@@ -1,20 +1,5 @@
+const genUtils = require(`../../command_utilities/general_utilities`);
 const recipesJSON = require(`./craft_recipes.json`);
-
-const normalEmotes = [
-    '😀', '😬', '😁', '😂', '😃', '😄', '😅', '😆', '😇', '😉',
-    '😊', '🙂', '🙃', '☺', '😋', '😌', '😍', '😘', '😗', '😙',
-    '😚', '😜', '😝', '😛', '🤑', '🤓', '😎', '🤗', '😏', '😶',
-    '😐', '😑', '😒', '🙄', '🤔', '😳', '😞', '😟', '😠', '😡',
-    '😔', '😕', '🙁', '☹', '😣', '😖', '😫', '😩', '😤', '😮',
-    '😱', '😨', '😰', '😯', '😦', '😧', '😢', '😥', '😪', '😓',
-    '😭', '😵', '😲', '🤐', '😷', '🤒', '🤕', '😴',
-    '💩', '😺', '😸', '😹', '😻', '😼', '😽', '🙀', '😿', '😾',
-    '👏', '🖕', '👁', '👀', '🤠', '🤡', '🤢', '🤣', '🤤', '🤥',
-    '🤧', '👮', '🚶', '🏃', '🐶', '🐱', '🐭', '🐹', '🐻', '🐵',
-    '🐺', '⭐', '🦍', '🦊', '🍑', '🍆', '🥑', '🥚', '💎', '🔫',
-    '💣', '⚔', '🛡', '☠', '💯', '❤', '💛', '💚', '💙', '💜',
-    '☢', '♋', '❓', '💲', '💬', '🖤', '🅰', '🏳', '🌈'
-]
 
 
 
@@ -33,7 +18,7 @@ module.exports.run = async (bot, message, args) => {
 
         //Only default emotes
         case 0:
-            ingredientList = normalEmotes.slice(0);
+            ingredientList = genUtils.normalEmotes.slice(0);
             break;
 
         //Only custom emotes
@@ -46,7 +31,7 @@ module.exports.run = async (bot, message, args) => {
 
         //Both
         case 2:
-            ingredientList = normalEmotes.slice(0);
+            ingredientList = genUtils.normalEmotes.slice(0);
             let guildEmotes2 = message.guild.emojis.array();    //For some reason, javascript won't let me have guildEmotes in this case as well as
             for (let i = 0; i < guildEmotes2.length; i++) {     //the above case, so I have to make it guildEmotes2
                 ingredientList.push(guildEmotes2[i]);
@@ -95,6 +80,11 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "craft",
-    description: "Randomly generates a crafting recipe out of the available emotes",
-    type: "normal"
+    description: "Composes a random crafting recipe out of the available emotes",
+    usage: "!craft",
+    example: "!craft",
+    funFacts: [
+        "Craft has a 1/3 chance of using only default face emojis, a 1/3 chance of using only custom server emojis, and a 1/3 chance of using both. \
+        If the server has no emotes, or if the call is through a DM to Big Bill, he'll always only use default face emojis."
+    ]
 }

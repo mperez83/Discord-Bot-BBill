@@ -78,5 +78,12 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "index"
+    name: "index",
+    description: "Indexes the most recently posted image (wihtin ten messages) under the given name",
+    usage: "!index (name)",
+    example: "!index when you get the victory royale",
+    funFacts: [
+        "There used to be a way to delete existing indices, but that has since been removed. The index pool is an ever growing cacophony with (virtually) \
+        no way to determine who indexed what."
+    ]
 }

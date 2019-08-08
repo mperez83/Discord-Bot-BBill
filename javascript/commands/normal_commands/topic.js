@@ -71,5 +71,14 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "topic"
+    name: "topic",
+    description: "Changes the topic to the specified input, or displays the current topic if no input is provided",
+    usage: "!topic [input]",
+    example: "!topic Hello, World!",
+    funFacts: [
+        "This command was inspired by Northernlion's Moobot command \"topic\" which, simply put, stores a string that can be brought up at any time. \
+        It also records who set the topic, and how long ago it was set. This was before I realized Discord channels have built in topics that can be set, \
+        making this command obsolete, but I wanted to keep it in anyway.",
+        "This is the least used command."
+    ]
 }

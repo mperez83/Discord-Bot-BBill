@@ -63,7 +63,14 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "emotify"
+    name: "emotify",
+    description: "Makes the image less than 256kb, if it isn't already",
+    usage: "!emotify",
+    example: "!emotify",
+    funFacts: [
+        "This is my least favorite command. I implemented it because I thought there'd frequently be a desire to impulsively make an image posted to chat \
+        suitable to be turned into an emote, but that ended up not being the case."
+    ]
 }
 
 

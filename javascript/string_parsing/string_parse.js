@@ -27,6 +27,7 @@ module.exports = {
         for (let i = 0; i < badEmotes.length; i++) {
             if (message.content.includes(badEmotes[i])) {
                 message.react(`😒`);
+                //genUtils.incrementUserDataValue(message, "sin", 1);
                 break;
             }
         }

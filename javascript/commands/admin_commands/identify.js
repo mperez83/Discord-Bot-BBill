@@ -39,5 +39,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "identify"
+    name: "identify",
+    description: "Identifies who indexed a particular index",
+    usage: "!identify (name)",
+    example: "!identify when you get the victory royale",
+    funFacts: [
+        "This is an admin command! You probably are not able to use it.",
+        "It was requested that whoever indexes something should remain nameless, such that nobody knows who's polluting the pool. I found the idea funny, \
+        but just incase it'd make for a funny moment to directly call someone out for indexing something particularly lucrative, I made this command."
+    ]
 }

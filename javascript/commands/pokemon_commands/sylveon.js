@@ -11,5 +11,11 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "sylveon"
+    name: "sylveon",
+    description: "Makes a sylveon happen",
+    usage: "!sylveon",
+    example: "!sylveon",
+    funFacts: [
+        "This was one of the easiest commands to implement, because all it does is post a link to a picture of sylveon"
+    ]
 }

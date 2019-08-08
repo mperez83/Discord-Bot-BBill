@@ -65,7 +65,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "average"
+    name: "average",
+    description: "Creates 100 copies of the image, applying random implode operations to each one, and then produces one image which is the average of them all",
+    usage: "!average",
+    example: "!average",
+    funFacts: [
+        "This is one of those \"I only thought about if I could, not about if I should\" commands."
+    ]
 }
 
 

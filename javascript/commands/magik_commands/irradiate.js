@@ -114,7 +114,14 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "irradiate"
+    name: "irradiate",
+    description: "Irradiates the image",
+    usage: "!irradiate [-s scale] [-c frameCount] [-d frameDelay]",
+    example: "!irradiate -s 60 -c 15 -d 5",
+    funFacts: [
+        "Seeing what irradiate does inspired me to subsequently implement the melt command.",
+        "Irradiate takes whatever the set scale is, and randomly adds/subtracts 5 from that value to produce the variation seen in the final product."
+    ]
 }
 
 

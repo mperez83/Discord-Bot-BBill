@@ -26,5 +26,14 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "powerrankings"
+    name: "powerrankings",
+    description: "Displays the power levels of all known users",
+    usage: "!powerrankings",
+    example: "!powerrankings",
+    funFacts: [
+        "Power rankings used to be actively updated in a channel called \"big-bills-bot-chamber\". This, however, required Big Bill to have permissions \
+        that he might not have, such as creating the channel if it didn't exist, and setting the permissions within the channel. Furthermore, the list could \
+        theoretically break the 2000 character limit of messages. Because of these reasons, the command was changed to post the list of users in a more \
+        compact format."
+    ]
 }

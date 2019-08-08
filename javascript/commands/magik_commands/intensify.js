@@ -120,7 +120,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "intensify"
+    name: "intensify",
+    description: "Intensifies the image",
+    usage: "!intensify [-i intensity] [-c frameCount] [-d frameDelay]",
+    example: "!intensify -i 10 -c 16 -d 3",
+    funFacts: [
+        "Intensify was the first \"Advanced Magik\" command implemented."
+    ]
 }
 
 

@@ -66,7 +66,14 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "deepfry"
+    name: "deepfry",
+    description: "Deepfries the image",
+    usage: "!deepfry",
+    example: "!deepfry",
+    funFacts: [
+        "This command is surprisingly expensive. It involves three separate sharpen operations, which strangely take a large amount of time to do.",
+        "The operation order is as follows: Spread, Sharpen, Noise, Sharpen, Blur, Sharpen."
+    ]
 }
 
 

@@ -85,7 +85,16 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "enhance"
+    name: "enhance",
+    description: "Applies four random GraphicsMagick operations to the image",
+    usage: "!enhance",
+    example: "!enhance",
+    funFacts: [
+        "Enhance has 14 potential operations to choose from, with some being much more expensive than others.",
+        "Four of the potential operations enhance can perform are variations of the noise operation.",
+        "Many of the operations that can be randomly selected are commands in and of themselves, such as inflate and singe. One operation that doesn't \
+        have its own command, however, is the \"paint\" operation. Enhance has a small chance to make the image look like an oil painting."
+    ]
 }
 
 

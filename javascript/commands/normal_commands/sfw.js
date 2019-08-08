@@ -13,5 +13,12 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "sfw"
+    name: "sfw",
+    description: "Purges the chat of its sins",
+    usage: "!sfw",
+    example: "!sfw",
+    funFacts: [
+        "If I recall correctly, this was the first command ever created. The concept of posting an image three times in a row was an easy enough task to act \
+        as my intro to Discord.js."
+    ]
 }

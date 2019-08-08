@@ -66,7 +66,15 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "spider"
+    name: "spider",
+    description: "Creates an eldritch spider from the image",
+    usage: "!spider",
+    example: "!spider",
+    funFacts: [
+        "Spider is incredibly similar to inkblot. The difference is that spider implodes the image by a random amount right off the bat, and then does \
+        everything inkblot does. Spider does throw in some cheeky blurs, though.",
+        "This is one of my favorite commands. You can get some REALLY good eldritch spiders sometimes."
+    ]
 }
 
 

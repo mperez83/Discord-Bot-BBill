@@ -52,5 +52,12 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "speak"
+    name: "speak",
+    description: "Plays the specified audio file in all of the servers Big Bill is in, or a random audio file if no name is provided",
+    usage: "!speak [name]",
+    example: "!speak mind flood 2",
+    funFacts: [
+        "This is one of the most dysfunctional commands Big Bill has. It frequently just doesn't work, and when it does, it has an issue that causes him to \
+        make every subsequent speak call take half a second longer to process, with no upper bound."
+    ]
 }

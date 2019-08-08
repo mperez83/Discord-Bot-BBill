@@ -100,7 +100,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "deflate"
+    name: "deflate",
+    description: "Deflates the image by the specified intensity (defaults to 1)",
+    usage: "!deflate [intensity]",
+    example: "!deflate 1",
+    funFacts: [
+        "This was one of the first implemented Magik commands. Similar to inflate, the operation is simple; it calls Implode with some intensity."
+    ]
 }
 
 

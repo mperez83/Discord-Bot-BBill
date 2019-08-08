@@ -14,7 +14,8 @@ module.exports.run = async (bot, message, args) => {
         scpNum = Math.ceil(Math.random() * 4000);
     }
     else if (args.length == 1) {
-        scpNum = genUtils.verifyIntVal(args[0], 1, 4000, "SCP Number", message);
+        if (args[0] == 4006) scpNum = 4006;
+        else scpNum = genUtils.verifyIntVal(args[0], 1, 4000, "SCP Number", message);
         if (!scpNum) return;
     }
     else {
@@ -26,7 +27,6 @@ module.exports.run = async (bot, message, args) => {
     //SCP URLs are either 3 figures or 4 figures long, depending on if they're less than 1000 or not
     if (scpNum < 1000) scpNum = (`000${scpNum}`).slice(-3);
     else scpNum = (`0000${scpNum}`).slice(-4);
-    console.log(scpNum);
 
     request(`http://www.scp-wiki.net/scp-${scpNum}`, (err, res, body) => {
 
@@ -101,22 +101,22 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-        if (!objectClass) objectClass = `???`;
+        if (!objectClass || !objectClass.trim()) objectClass = `???`;
         else {
             objectClass = objectClass.trim();
-            objectClass = genUtils.shrinkString(objectClass, 1024, true);
+            objectClass = genUtils.shrinkString(objectClass, 650, true);
         }
 
-        if (!specialContainmentProcedures) specialContainmentProcedures = `???`;
+        if (!specialContainmentProcedures || !specialContainmentProcedures.trim()) specialContainmentProcedures = `???`;
         else {
             specialContainmentProcedures = specialContainmentProcedures.trim();
-            specialContainmentProcedures = genUtils.shrinkString(specialContainmentProcedures, 1024, true);
+            specialContainmentProcedures = genUtils.shrinkString(specialContainmentProcedures, 650, true);
         }
 
-        if (!description) description = `???`;
+        if (!description || !description.trim()) description = `???`;
         else {
             description = description.trim();
-            description = genUtils.shrinkString(description, 1024, true);
+            description = genUtils.shrinkString(description, 650, true);
         }
 
         let color;
@@ -147,7 +147,7 @@ module.exports.run = async (bot, message, args) => {
         let scpEmbed = new Discord.RichEmbed()
             .setTitle(`SCP-${scpNum}`)
             .setURL(`http://www.scp-wiki.net/scp-${scpNum}`)
-            .addField(`SCP Class`, `${objectClass}`)
+            .addField(`Object Class`, `${objectClass}`)
             .addField(`Special Containment Procedure`, `${specialContainmentProcedures}`)
             .addField(`Description`, `${description}`)
             .setColor(color);
@@ -163,5 +163,15 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "scp"
+    name: "scp",
+    description: "Attempts to post the specified SCP entry number, or a random one if no number is provided",
+    usage: "!scp [number]",
+    example: "!scp 173",
+    funFacts: [
+        "Because of the nature of how some of the entries are formatted, it sometimes isn't possible to grab the object class, special containment procedure, \
+        or description, despite looking simple to grab just from visually looking at the page.",
+        "This is one of the most poorly constructed commands Big Bill has, as it was made in less than a day, but it's functional enough for me to call it finished.",
+        "This command only grabs entries between 1 and 4000, because many entries between 4000 and 5000 are unfinished. The only entry above 4000 that can be \
+        called manually is SCP 4006."
+    ]
 }

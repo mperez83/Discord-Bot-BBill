@@ -58,7 +58,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "amama"
+    name: "amama",
+    description: "Cuts the image in half, and reflects the right half of the image onto the left half",
+    usage: "!amama",
+    example: "!amama",
+    funFacts: [
+        "Amama is a reference to a meme I saw a long time ago, where a picture of obama was cut in half, and the right half was reflected onto the left."
+    ]
 }
 
 

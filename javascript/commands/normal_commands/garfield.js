@@ -9,5 +9,11 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "garfield"
+    name: "garfield",
+    description: "Posts a random garfield comic",
+    usage: "!gafrield",
+    example: "!garfeild",
+    funFacts: [
+        "There are well over 26^1999 ways to invoke garfield, which is far above theoretical infinity"
+    ]
 }

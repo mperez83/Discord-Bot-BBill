@@ -17,7 +17,7 @@ module.exports.run = async (bot, message, args) => {
 
     let page = 1;
     request(`https://www.googleapis.com/customsearch/v1?key=${config.youtube_api_key}&cx=${config.google_custom_search}&q=${(args.replace(/\s/g, '+'))}&searchType=image&alt=json&num=10&start=${page}&fileType=gif`, (err, res, body) => {
-        let data, error;
+        let data;
         try {
             data = JSON.parse(body);
         } catch (error) {
@@ -39,5 +39,12 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "gif"
+    name: "gif",
+    description: "Searches Google for the specified input and posts the first gif found",
+    usage: "!gif (input)",
+    example: "!gif sad cat dance",
+    funFacts: [
+        "This was one of the first commands Big Bill ever had! It's almost exactly the same as !rgif, !image, and !rimage.",
+        "There's a finite number of times Big Bill can make Google API calls per day; once that limit is reached, he won't be able to make anymore calls until the next day."
+    ]
 }

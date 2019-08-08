@@ -76,5 +76,13 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "liststats"
+    name: "liststats",
+    description: "Lists all of a @'d user's stats, or the caller's stats if no user is provided",
+    usage: "!liststats [user]",
+    example: "!liststats @Star",
+    funFacts: [
+        "The whole idea of stats was created because I found the idea of users seeing other user's stats and not knowing how they got them to be endlessly amusing. \
+        To this day, nobody has found out how to attain sin.",
+        "There are an egregious amount of stats that can be acquired. None of them are intuitive."
+    ]
 }
