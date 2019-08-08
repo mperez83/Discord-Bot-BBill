@@ -8,7 +8,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "shibe",
-    description: "Posts a shibe ham from the shibe directory",
+    description: "Posts a random shibe from the shibe directory",
     usage: "!shibe",
     example: "!shibe",
     funFacts: [

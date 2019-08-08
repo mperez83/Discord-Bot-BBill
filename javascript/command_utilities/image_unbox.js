@@ -13,9 +13,9 @@ module.exports.unboxImage = (message) => {
     let photoLoc = ``;
 
     if (Math.floor(Math.random() * 100) < 5)
-        photoLoc = `./graphics/komugi/`;
+        photoLoc = `./graphics/image_unbox_graphics/komugi/`;
     else
-        photoLoc = `./graphics/${command}s/`;
+        photoLoc = `./graphics/image_unbox_graphics/${command}/`;
 
 
 
