@@ -54,13 +54,14 @@ This bot must have the following permissions in order to function correctly:
 | **!weight** | Posts how large Big Bill is in gigabytes | !weight |
 
 ## Comic Commands
+Comic commands attempt to parse a comic's html page and post its relevant content.
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
 | **!explosm [number]** | Attempts to post the specified explosm comic, or a random one if no number is provided | !explosm 2500 |
-| **!homestuck [page]** | Attempts to post the specified homestuck page, or a random one if no number is provided | !homestuck 100 |
 | **!nedroid** | Attempts to post a random nedroid comic | !nedroid |
 
 ## Image Unbox Commands
+Image unbox commands produce a random image from a specified directory.
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
 | **!fumika** | Posts a random fumika from the fumika directory | !fumika |
