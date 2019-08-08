@@ -32,7 +32,6 @@ This bot must have the following permissions in order to function correctly:
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
 | **!craft** | Composes a random crafting recipe out of the available emotes | !craft |
-| **!garfield** | Posts a random garfield comic | !gafrield |
 | **!gif (input)** | Searches google for the specified input and posts the first gif found | !gif sad cat dance |
 | **!help [command]** | Posts information about the specified command, or links to this page if no command is provided | !help power |
 | **!image (input)** | Searches google for the specified input and posts the first image found | !image sad cat |
@@ -58,6 +57,7 @@ Comic commands attempt to parse a comic's html page and post its relevant conten
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
 | **!explosm [number]** | Attempts to post the specified explosm comic, or a random one if no number is provided | !explosm 2500 |
+| **!garfield** | Posts a random garfield comic | !gafrield |
 | **!nedroid** | Attempts to post a random nedroid comic | !nedroid |
 
 ## Image Unbox Commands
