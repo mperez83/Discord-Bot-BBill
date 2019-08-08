@@ -53,6 +53,13 @@ This bot must have the following permissions in order to function correctly:
 | **!urban [input]** | Searches urban dictionary for the specified input and posts the article about it, or posts a random urban dictionary article if no input is provided | !urban (800)-588-2300 |
 | **!weight** | Posts how large Big Bill is in gigabytes | !weight |
 
+## Comic Commands
+| Command name | Description | Example |
+| :------------------ | :------------ | :--------- |
+| **!explosm [number]** | Attempts to post the specified explosm comic, or a random one if no number is provided | !explosm 2500 |
+| **!homestuck [page]** | Attempts to post the specified homestuck page, or a random one if no number is provided | !homestuck 100 |
+| **!nedroid** | Attempts to post a random nedroid comic | !nedroid |
+
 ## Image Unbox Commands
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
@@ -249,3 +256,5 @@ The trello board containing all upcoming features can be found here: https://tre
 	* Utilized in the !weight command to more easily determine the size of Big Bill
 * [htmlparser2](https://www.npmjs.com/package/htmlparser2)
 	* Utilized in the !scp command to more easily parse through the html page
+* [html-entities](https://www.npmjs.com/package/html-entities)
+	* Utilized in various request calls to make the html presentable

@@ -198,7 +198,7 @@ module.exports.removeElementsFromArray = removeElementsFromArray;
 function shrinkString(str, length, addElipses = false) {
 
     //If it's already less than the requested length, or if the requested length is three or less, return
-    if (str.length <= length || length <= 3) {
+    if (str.length <= length || length <= 5) {
         return str;
     }
 
@@ -210,8 +210,8 @@ function shrinkString(str, length, addElipses = false) {
             return str;
         }
         else {
-            str = str.substr(0, length - 3);
-            str += `...`;
+            str = str.substr(0, length - 5);
+            str += `(...)`;
             return str;
         }
 

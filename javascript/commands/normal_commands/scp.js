@@ -1,8 +1,11 @@
 const Discord = require("discord.js");
 const request = require("request");
 const htmlparser = require("htmlparser2");
+const htmlentities = require("html-entities").AllHtmlEntities;
 
 const genUtils = require('../../command_utilities/general_utilities');
+
+const entities = new htmlentities();
 
 
 
@@ -11,11 +14,10 @@ module.exports.run = async (bot, message, args) => {
     let scpNum;
     
     if (args.length == 0) {
-        scpNum = Math.ceil(Math.random() * 4000);
+        scpNum = Math.ceil(Math.random() * 4006);
     }
     else if (args.length == 1) {
-        if (args[0] == 4006) scpNum = 4006;
-        else scpNum = genUtils.verifyIntVal(args[0], 1, 4000, "SCP Number", message);
+        scpNum = genUtils.verifyIntVal(args[0], 1, 4006, "SCP Number", message);
         if (!scpNum) return;
     }
     else {
@@ -83,7 +85,7 @@ module.exports.run = async (bot, message, args) => {
             onopentag: function(name, attribs) {
 
                 if (name == "div") {
-                    if (attribs.class && attribs.class == "scp-image-block block-right") {
+                    if (attribs.class && attribs.class == "scp-image-block block-right" && !scpImageURL) {
                         flagToGetScpImageURL = true;
                     }
                 }
@@ -133,6 +135,10 @@ module.exports.run = async (bot, message, args) => {
                 color = `#de2121`;
                 break;
             
+            case `Thaumiel`:
+                color = `#6f00ff`;
+                break;
+            
             case `Neutralized`:
                 color = `#000000`;
                 break;
@@ -148,8 +154,8 @@ module.exports.run = async (bot, message, args) => {
             .setTitle(`SCP-${scpNum}`)
             .setURL(`http://www.scp-wiki.net/scp-${scpNum}`)
             .addField(`Object Class`, `${objectClass}`)
-            .addField(`Special Containment Procedure`, `${specialContainmentProcedures}`)
-            .addField(`Description`, `${description}`)
+            .addField(`Special Containment Procedure`, `${entities.decode(specialContainmentProcedures)}`)
+            .addField(`Description`, `${entities.decode(description)}`)
             .setColor(color);
         
         if (scpImageURL) {
