@@ -22,9 +22,8 @@ const iMagikColors = [
 
 module.exports.run = async (bot, message, args) => {
 
-    //Check if the user is whitelisted as an admin
     try {
-        if (!genUtils.verifyWhitelistCommandCall(message, "admin")) return;
+        if (!genUtils.verifyWhitelistCommandCall(message, "rainbow")) return;
     }
     catch (err) {
         console.error(err);
@@ -115,7 +114,6 @@ module.exports.help = {
     usage: "!rainbow [-d frameDelay] [-m midwayFrames]",
     example: "!rainbow -d 4 -m 5",
     funFacts: [
-        "This is an admin command! You probably are not able to use it.",
         "This is one of my favorite commands. It's unfortunate that it's too dangerous to allow others to use, as it generates a LOT of \
         images in order to compose a smooth transition throughout the rainbow.",
         "Rainbow starts by first generating six images of each main color. It then generates sub images that represent the midway points between \

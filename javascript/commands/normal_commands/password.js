@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
 
     let password = args[0];
     if (!password.match(/^\d+$/g)) {
-        message.channel.send(`The supplied password must be a number, ${genUtils.getRandomNameInsult(message)}`);
+        message.channel.send(`The supplied password must be an integer, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
@@ -101,6 +101,12 @@ module.exports.run = async (bot, message, args) => {
             bot.commands.get("fumika").run(bot, message, args);
             break;
         }
+
+        case "12345":
+        {
+            message.channel.send("haha, nice one");
+            break;
+        }
         
         case "25565":
         {
@@ -137,6 +143,30 @@ module.exports.run = async (bot, message, args) => {
             message.channel.send("Jenny?");
             break;
         }
+
+        case "01251999":
+        {
+            message.channel.send("https://itsyourbirthday.today/#bianca");
+            break;
+        }
+
+        case "08011998":
+        {
+            message.channel.send("https://itsyourbirthday.today/#vincent");
+            break;
+        }
+
+        case "10151996":
+        {
+            message.channel.send("https://itsyourbirthday.today/#kordell");
+            break;
+        }
+
+        case "10261994":
+        {
+            message.channel.send("https://itsyourbirthday.today/#michael");
+            break;
+        }
         
         case "8005882300":
         {
@@ -152,7 +182,7 @@ module.exports.run = async (bot, message, args) => {
 
         default:
         {
-            message.channel.send(`Incorrect password. However, here's some info I found about that number:\n`);
+            message.channel.send(`Incorrect password. However, here's some info I found about that number:\n...`);
             bot.commands.get("urban").run(bot, message, args);
             break;
         }

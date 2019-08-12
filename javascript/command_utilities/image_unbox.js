@@ -73,16 +73,39 @@ module.exports.unboxImage = (message, imageName) => {
                     return;
                 }*/
 
-                const collector = new Discord.MessageCollector(message.channel, m => m.author.id === message.author.id, { time: 15000 });
+                const rarityFilter = (reaction, user) => {
+                    if (user.id === message.author.id) {
+                        switch (reaction.emoji.name) {
+                            case `🇨`:
+                            case `🇺`:
+                            case `🇷`:
+                            case `🇪`:
+                            case `🇱`:
+                                return true;
+                        }
+                    }
+                    return false;
+                }
+
+                msg.awaitReactions(rarityFilter, { max: 1, time: 15000, errors: ['time'] })
+                    .then((collected) => {
+                        msg.react(`✅`);
+                    })
+                    .catch((collected) => {
+                        msg.react(`❌`);
+                    });
+
+                /*const collector = msg.createReactionCollector(rarityFilter, { time: 15000 });
+
                 collector.on('collect', (message) => {
 
-                    msg = message.content.toLowerCase();
-                    if (msg == "common" || msg == "uncommon" || msg == "rare" || msg == "epic" || msg == "legendary") {
+                    userMsg = message.content.toLowerCase();
+                    if (userMsg == "common" || userMsg == "uncommon" || userMsg == "rare" || userMsg == "epic" || userMsg == "legendary") {
 
-                        message.react("✅");
-                        collector.stop();
+                        msg.react("✅");
+                        collector.stop();*/
 
-                        /*switch (msg) {
+                        /*switch (userMsg) {
                             case "common":
                                 jsonObj.rarity = "Common";
                                 break;
@@ -104,9 +127,9 @@ module.exports.unboxImage = (message, imageName) => {
                                 break;
                         }*/
 
-                    }
+                    //}
 
-                });
+                //});
 
             })
             .catch(console.error);

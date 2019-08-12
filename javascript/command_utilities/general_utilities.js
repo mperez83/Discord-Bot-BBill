@@ -129,7 +129,7 @@ function sendGlobalMessage(bot, msg) {
             let billGuildMember = guild.members.get(bot.user.id);
 
             if (!billGuildMember) {
-                console.log(`Bill was unable to find himself in ${tempGuild.name}`);
+                console.log(`Bill was unable to find himself in ${guild.name}`);
             }
             else {
 
@@ -178,7 +178,7 @@ function verifyWhitelistCommandCall(message, command) {
     if (!whitelist[command].servers.includes(message.guild.id)) {
         if (!whitelist[command].users.includes(message.author.id)) {
             if (command == "admin")
-                message.channel.send(`You are not admin!!! You cannot use that command, ${getRandomNameInsult(message)}`);
+                message.channel.send(`You are not a Big Bill admin!!! You cannot use that command, ${getRandomNameInsult(message)}`);
             else
                 message.channel.send(`This server isn't whitelisted to use the ${command} command, ${getRandomNameInsult(message)}`);
             return false;
