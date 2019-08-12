@@ -16,7 +16,7 @@ This bot must have the following permissions in order to function correctly:
   * Embed Links
   * Attach Files
   * Read Message History
-  * Use External Emojis
+  * Use External Emojis (this one is so that Big Bill can use certain global emotes he has access to on other servers)
   * Add Reactions
 
 - Voice Permissions:
@@ -39,11 +39,13 @@ This bot must have the following permissions in order to function correctly:
 | **!index (name)** | Indexes the most recently posted image (wihtin ten messages) under the given name | !index when you get the victory royale |
 | **!indexcall [name]** | Posts the index under the specified name if one exists, or a random index if no name is provided | !indexcall when you get the victory royale |
 | **!liststats [user]** | Lists all of a @'d user's stats, or the caller's stats if no user is provided | !liststats Star |
+| **!password (number)** | Takes a password, and produces an output if the password is correct | !password 83 |
 | **!power** | Assesses the caller's power level | !power |
 | **!powercheck** | Checks the caller's power level, and displays when next they can use the !power command | !powercheck |
 | **!powerrankings** | Displays the power levels of all known users | !powerrankings |
 | **!prestige** | Enhances the caller if their power level is admirable | !prestige |
 | **!pride** | Posts a random pride flag, as well as some information about it | !pride |
+| **!randomemote [number]** | Post the provided number of random custom emotes Big Bill has access to | !randomemote 5 |
 | **!rgif (input)** | Searches google for the specified input and posts a random gif from the first 50 results | !rgif sad cat dance |
 | **!rimage (input)** | Searches google for the specified input and posts a random image from the first 50 results | !rimage sad cat |
 | **!scp [number]** | Attempts to post the specified SCP entry number, or a random one if no number is provided | !scp 173 |
@@ -65,8 +67,10 @@ Comic commands attempt to parse a comic's html page and post its relevant conten
 Image unbox commands produce a random image from a specified directory.
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
+| **!cat** | Posts a random cat from the cat directory | !fumika |
 | **!fumika** | Posts a random fumika from the fumika directory | !fumika |
 | **!ham** | Posts a random ham from the ham directory | !ham |
+| **!pikachu** | Posts a random pikachu from the pikachu directory | !shibe |
 | **!shibe** | Posts a random shibe from the shibe directory | !shibe |
 
 Images that are unboxed can be assigned rarities by the caller. Upon the image showing up in the chat, the caller has 15 seconds to say one of the following keywords to assign the image a rarity:

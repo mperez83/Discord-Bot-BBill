@@ -53,12 +53,26 @@ module.exports.run = async (bot, message, args) => {
             message.channel.send(newEmbed);
             break;
         }
+
+        case "621":
+        {
+            let newEmbed = new Discord.RichEmbed();
+            newEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/610341313224769550/gotcha.png`);
+            message.channel.send(newEmbed);
+            break;
+        }
         
         case "666":
         {
             let newEmbed = new Discord.RichEmbed();
             newEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584252304992108577/AaAAAaaaAAaAaaaaAaAAAAAaAaAa.jpg`);
             message.channel.send(newEmbed);
+            break;
+        }
+
+        case "911":
+        {
+            message.channel.send(`https://youtu.be/AJW2LlphuSs?t=155`);
             break;
         }
         
@@ -138,7 +152,8 @@ module.exports.run = async (bot, message, args) => {
 
         default:
         {
-            message.channel.send(`Incorrect password.`);
+            message.channel.send(`Incorrect password. However, here's some info I found about that number:\n`);
+            bot.commands.get("urban").run(bot, message, args);
             break;
         }
 
@@ -150,9 +165,9 @@ module.exports.help = {
     name: "password",
     description: "Takes a password, and produces an output if the password is correct",
     usage: "!password (number)",
-    example: "!password 420",
+    example: "!password 83",
     funFacts: [
         "This command spawned when I realized how many numbers associated with inside jokes there are, with some being more obscure than others. One obscure \
-        one I'll drop here is 83."
+        one is listed in the example above."
     ]
 }

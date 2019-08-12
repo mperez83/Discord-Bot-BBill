@@ -41,7 +41,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "randomemote",
-    description: "Post a random custom emote Big Bill has access to",
+    description: "Post the provided number of random custom emotes Big Bill has access to",
     usage: "!randomemote [number]",
     example: "!randomemote 5",
     funFacts: [
