@@ -71,7 +71,7 @@ function getRandomEmote(message) {
         return genUtils.normalEmotes[Math.floor(Math.random() * genUtils.normalEmotes.length)];
     }
     else {
-        let emoteList = genUtils.normalEmotes.slice(0);;
+        let emoteList = genUtils.normalEmotes.slice(0);
         let guildEmotes = message.guild.emojis.array();
         for (let i = 0; i < guildEmotes.length; i++) emoteList.push(guildEmotes[i]);
         return emoteList[Math.floor(Math.random() * emoteList.length)];

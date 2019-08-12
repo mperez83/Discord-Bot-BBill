@@ -1,3 +1,4 @@
+const Discord = require("discord.js");
 const fs = require("fs");
 
 const insultData = require("../../data/static_command_data/insult_data.json");
@@ -151,8 +152,21 @@ function sendGlobalMessage(bot, msg) {
     });
 
 }
-
 module.exports.sendGlobalMessage = sendGlobalMessage;
+
+
+
+function getGlobalEmote(bot, emoteName) {
+    let emoteGuild = bot.guilds.get("589954446415626260");
+    let foundEmote = emoteGuild.emojis.find(emote => emote.name === emoteName);
+    if (foundEmote) {
+        return `<:${foundEmote.name}:${foundEmote.id}>`;
+    }
+    else {
+        return `😔`;
+    }
+}
+module.exports.getGlobalEmote = getGlobalEmote;
 
 
 

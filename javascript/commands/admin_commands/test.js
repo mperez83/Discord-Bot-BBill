@@ -14,7 +14,7 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    genUtils.sendGlobalMessage(bot, `Thinking`);
+    message.channel.send(genUtils.getGlobalEmote(bot, "littleBill"));
 
 }
 

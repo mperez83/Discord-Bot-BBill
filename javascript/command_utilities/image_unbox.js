@@ -1,25 +1,20 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
-const config = require("../../data/general_data/config.json");
 
 
-
-module.exports.unboxImage = (message) => {
-
-    let command = message.content.split(/\s+/g)[0];
-    command = command.slice(config.prefix.length);
+module.exports.unboxImage = (message, imageName) => {
 
     let photoLoc = ``;
 
     if (Math.floor(Math.random() * 100) < 5)
         photoLoc = `./graphics/image_unbox_graphics/komugi/`;
     else
-        photoLoc = `./graphics/image_unbox_graphics/${command}/`;
+        photoLoc = `./graphics/image_unbox_graphics/${imageName}/`;
 
 
 
-    fs.readdir(photoLoc, (err, images) => { //This fucks up the collector
+    fs.readdir(photoLoc, (err, images) => { //This fucks up the collector, I think
 
         if (err) console.error(err);
 
@@ -29,7 +24,7 @@ module.exports.unboxImage = (message) => {
         let fileSize = (stats["size"] / 1000000.0).toFixed(2);
 
         if (fileSize > 8) {
-            message.channel.send(`That fweaking image is **${fileSize}mb** big, I physically cannot upload that`);
+            message.channel.send(`"${selectedImage}" is **${fileSize}mb** big, I physically cannot upload that`);
             return;
         }
 

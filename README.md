@@ -16,6 +16,7 @@ This bot must have the following permissions in order to function correctly:
   * Embed Links
   * Attach Files
   * Read Message History
+  * Use External Emojis
   * Add Reactions
 
 - Voice Permissions:
