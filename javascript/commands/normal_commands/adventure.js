@@ -1,18 +1,5 @@
 const genUtils = require('../../command_utilities/general_utilities');
-
-let map_area = [
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-];
+const advUtils = require('../../command_utilities/adventure_utilities');
 
 
 
@@ -60,7 +47,7 @@ message with 💣 to complete the action. (After 15 seconds, this message won't 
 
     }
 
-    //If bill-sadventure doesn't exist
+    //If bills-adventure doesn't exist
     else {
 
         if (args == "newgame") {
@@ -100,7 +87,7 @@ message with 💣 to complete the action. (After 15 seconds, this message won't 
                         })
                             .then((createdChannel) => {
                                 message.react(`✅`);
-                                draw_init(createdChannel);
+                                advUtils.drawInit(createdChannel);
                             })
                             .catch(console.error);
 
@@ -131,41 +118,4 @@ module.exports.help = {
     funFacts: [
         "This command was on hiatus for the longest time, as more and more smaller things kept popping up that I wanted to implement."
     ]
-}
-
-
-
-function draw_init(billsAdventureChannel) {
-
-    let msg = ``;
-
-    for (let row = 0; row < map_area.length; row++) {
-        for (let col = 0; col < map_area[row].length; col++) {
-
-            switch (map_area[row][col]) {
-
-                case 0:
-                    msg += `🌲`;
-                    break;
-
-                case 1:
-                    msg += `<:aceBill:610264175721054208>`;
-                    break;
-
-            }
-
-        }
-        msg += `\n`;
-    }
-
-    billsAdventureChannel.send(msg)
-        .then((msg) => {
-            msg.react(`⬆`)
-                .then(() => msg.react(`⬇`))
-                .then(() => msg.react(`⬅`))
-                .then(() => msg.react(`➡`))
-                .catch(console.error);
-        })
-        .catch(console.error);
-
 }

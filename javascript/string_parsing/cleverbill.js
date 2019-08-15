@@ -68,7 +68,7 @@ module.exports = {
 
             //Insult them if they're adding a bunch of bullshit spaces in front of their message
             if (spaceCount > 5) {
-                message.channel.send(`why the fuck you are adding so many spaces in front of your message`);
+                message.channel.send(`why the fuck are you adding so many spaces in front of your message`);
                 return true;
             }
 

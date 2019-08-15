@@ -94,7 +94,7 @@ function getMostRecentImageURL(message) {
             errorMessage = `I didn't find any messages containing images whatsoever in the last ten messages, ${getRandomNameInsult(message)}`;
         }
 
-        else if (validURL.match(/\.(jpeg|jpg|gif|png)(\?v=1)*$/) == null) {
+        else if (validURL.match(/\.(jpeg|jpg|JPG|gif|png)(\?v=1)*$/) == null) {
             errorMessage = `The image url I found doesn't have a valid file extension. ${getRandomNameInsult(message)}`;
             validURL = null;
         }

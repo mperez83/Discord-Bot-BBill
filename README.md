@@ -1,7 +1,8 @@
 # Discord-Bot-BBill
 
 # Overview
-A chat bot for discord, utilizing <a href="https://github.com/hydrabolt/discord.js/">discord.js</a>
+A chat bot for discord, utilizing <a href="https://github.com/hydrabolt/discord.js/">discord.js</a> (v11.5.1)
+Running Node.js v10.16.2
 
 Its functionalities are mostly for entertainment purposes. Commands range from querying Google Images for a specified image, posting random image files from a specific directory, utilizing GraphicsMagick and ImageMagick to modify images posted in chat, and so on.
 
@@ -33,12 +34,15 @@ This bot must have the following permissions in order to function correctly:
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
 | **!craft** | Composes a random crafting recipe out of the available emotes | !craft |
+| **!datefact** | Deploys an interesting fact about a random date | !datefact |
 | **!gif (input)** | Searches google for the specified input and posts the first gif found | !gif sad cat dance |
 | **!help [command]** | Posts information about the specified command, or links to this page if no command is provided | !help power |
 | **!image (input)** | Searches google for the specified input and posts the first image found | !image sad cat |
 | **!index (name)** | Indexes the most recently posted image (wihtin ten messages) under the given name | !index when you get the victory royale |
 | **!indexcall [name]** | Posts the index under the specified name if one exists, or a random index if no name is provided | !indexcall when you get the victory royale |
 | **!liststats [user]** | Lists all of a @'d user's stats, or the caller's stats if no user is provided | !liststats Star |
+| **!mathfact** | Deploys an interesting random math fact | !mathfact |
+| **!numberfact** | Deploys an interesting fact about a random number | !numberfact |
 | **!password (number)** | Takes a password, and produces an output if the password is correct | !password 83 |
 | **!power** | Assesses the caller's power level | !power |
 | **!powercheck** | Checks the caller's power level, and displays when next they can use the !power command | !powercheck |
@@ -48,12 +52,14 @@ This bot must have the following permissions in order to function correctly:
 | **!randomemote [number]** | Post the provided number of random custom emotes Big Bill has access to | !randomemote 5 |
 | **!rgif (input)** | Searches google for the specified input and posts a random gif from the first 50 results | !rgif sad cat dance |
 | **!rimage (input)** | Searches google for the specified input and posts a random image from the first 50 results | !rimage sad cat |
+| **!roll (diceCount)d(diceType) | Rolls the specified amount of dice with the specified type of die | !roll 2d4 |
 | **!scp [number]** | Attempts to post the specified SCP entry number, or a random one if no number is provided | !scp 173 |
 | **!sfw** | Purges the chat of its sins | !sfw |
 | **!speak [name]** | Plays the specified audio file in all of the servers Big Bill is in, or a random audio file if no name is provided | !speak mind flood 2 |
 | **!topic [input]** | Changes the topic to the specified input, or displays the current topic if no input is provided | !topic Hello, World! |
 | **!urban [input]** | Searches urban dictionary for the specified input and posts the article about it, or posts a random urban dictionary article if no input is provided | !urban (800)-588-2300 |
 | **!weight** | Posts how large Big Bill is in gigabytes | !weight |
+| **!yearfact** | Deploys an interesting fact about a random year | !yearfact |
 
 ## Comic Commands
 Comic commands attempt to parse a comic's html page and post its relevant content.
@@ -243,13 +249,13 @@ The letters represent a specific option within the command that can be manipulat
 # Todo
 The trello board containing all upcoming features can be found here: https://trello.com/b/fYoxfMoT/big-bills-board
 
-# External modules utilized
+# External modules utilized (dependencies not included)
 * [request](https://www.npmjs.com/package/request)
 	* Utilized in anything related to making web calls
 * [urban-dictionary](https://www.npmjs.com/package/urban-dictionary)
 	* Utilized in the !urban command
 * [node-gyp](https://www.npmjs.com/package/node-gyp)
-	* ??? Might delete
+	* Compiles other modules, like better-sqlite3
 * [node-opus](https://www.npmjs.com/package/node-opus)
 	* Utilized in voice chat related functionalities
 * [gm](https://www.npmjs.com/package/gm)
@@ -264,3 +270,5 @@ The trello board containing all upcoming features can be found here: https://tre
 	* Utilized in the !scp command to more easily parse through the html page
 * [html-entities](https://www.npmjs.com/package/html-entities)
 	* Utilized in various request calls to make the html presentable
+* [better-sqlite3](https://www.npmjs.com/package/better-sqlite3)
+	* Utilized for data management

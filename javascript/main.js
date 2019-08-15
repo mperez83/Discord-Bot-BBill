@@ -140,11 +140,15 @@ bot.on("message", (message) => {
 
 //Create event listener for reactions
 bot.on("messageReactionAdd", (messageReaction, user) => {
+
     if (messageReaction.me) return;
 
-    if (messageReaction.emoji.name == `❗` || messageReaction.emoji.name == `✅`) {
+    let emojiName = messageReaction.emoji.name;
+
+    if (emojiName == `❗` || emojiName == `✅`) {
         messageReaction.message.react(`🙃`);
     }
+
 });
 
 
@@ -184,6 +188,37 @@ bot.on("rateLimit", (rateLimitInfo) => {
     //console.log(rateLimitInfo);
     //I feel like I should do something here but I'm not sure what
 });
+
+
+
+/*const events = {
+	MESSAGE_REACTION_ADD: 'messageReactionAdd',
+	MESSAGE_REACTION_REMOVE: 'messageReactionRemove'
+};
+
+bot.on("raw", async event => {
+    if (!events.hasOwnProperty(event.t)) return;
+
+	let { d: data } = event;
+    let user = bot.users.get(data.user_id);
+    let channel = bot.channels.get(data.channel_id) || await user.createDM();
+
+    //if (channel.messages.has(data.message_id)) return;    //user documentation says this is necessary to prevent double-calls, but I'm not seeing it
+
+    let message = await channel.fetchMessage(data.message_id);
+
+    let emojiKey = (data.emoji.id) ? `${data.emoji.name}:${data.emoji.id}` : data.emoji.name;
+
+    let reaction = message.reactions.get(emojiKey);
+
+    if (!reaction) {
+        // Create an object that can be passed through the event like normal
+        let emoji = new Discord.Emoji(bot.guilds.get(data.guild_id), data.emoji);
+        reaction = new Discord.MessageReaction(message, emoji, 1, data.user_id === bot.user.id);
+    }
+
+    bot.emit(events[event.t], reaction, user);
+});*/
 
 
 
