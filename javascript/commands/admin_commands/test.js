@@ -1,7 +1,7 @@
 const genUtils = require("../../command_utilities/general_utilities");
 
-//const SQLite = require("better-sqlite3");
-//const sql = new SQLite('./scores.sqlite');
+const SQLite = require("better-sqlite3");
+const sql = new SQLite('./scores.sqlite');
 
 
 
