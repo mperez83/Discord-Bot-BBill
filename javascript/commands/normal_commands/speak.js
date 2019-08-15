@@ -6,7 +6,7 @@ const genUtils = require('../../command_utilities/general_utilities');
 
 module.exports.run = async (bot, message, args) => {
 
-    var inputAudioName = args.join(" ");
+    let inputAudioName = args.join(" ");
     let audioFiles = [];
 
     fs.readdir("./audio/", (err, files) => {

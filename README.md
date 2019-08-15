@@ -255,7 +255,7 @@ The trello board containing all upcoming features can be found here: https://tre
 * [urban-dictionary](https://www.npmjs.com/package/urban-dictionary)
 	* Utilized in the !urban command
 * [node-gyp](https://www.npmjs.com/package/node-gyp)
-	* Compiles other modules, like better-sqlite3
+	* Utilized in compiling other modules, like better-sqlite3
 * [node-opus](https://www.npmjs.com/package/node-opus)
 	* Utilized in voice chat related functionalities
 * [gm](https://www.npmjs.com/package/gm)
