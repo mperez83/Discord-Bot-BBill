@@ -6,6 +6,15 @@ const genUtils = require('../../command_utilities/general_utilities');
 
 module.exports.run = async (bot, message, args) => {
 
+    try {
+        if (!genUtils.verifyWhitelistCommandCall(message, "admin")) return;
+    }
+    catch (err) {
+        console.error(err);
+    }
+
+    
+
     let inputAudioName = args.join(" ");
     let audioFiles = [];
 

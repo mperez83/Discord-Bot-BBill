@@ -1,14 +1,14 @@
 const genUtils = require("../../command_utilities/general_utilities");
 
 const SQLite = require("better-sqlite3");
-const sql = new SQLite('./scores.sqlite');
+const sql = new SQLite('./data/user_data/test.sqlite');
 
 
 
 module.exports.run = async (bot, message, args) => {
 
     //Check if the user is whitelisted as an admin
-    /*try {
+    try {
         if (!genUtils.verifyWhitelistCommandCall(message, "admin")) return;
     }
     catch (err) {
@@ -17,12 +17,12 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    // Check if the table "points" exists.
-    const table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
+    // Check if the table "scores" exists
+    let table = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name = 'scores';").get();
     if (!table['count(*)']) {
-        // If the table isn't there, create it and setup the database correctly.
+        // If the table isn't there, create it and setup the database correctly
         sql.prepare("CREATE TABLE scores (id TEXT PRIMARY KEY, user TEXT, guild TEXT, points INTEGER, level INTEGER);").run();
-        // Ensure that the "id" row is always unique and indexed.
+        // Ensure that the "id" row is always unique and indexed
         sql.prepare("CREATE UNIQUE INDEX idx_scores_id ON scores (id);").run();
         sql.pragma("synchronous = 1");
         sql.pragma("journal_mode = wal");
@@ -57,7 +57,7 @@ module.exports.run = async (bot, message, args) => {
         message.reply(`You've leveled up to level **${curLevel}**! Ain't that dandy?`);
     }
 
-    bot.setScore.run(score);*/
+    bot.setScore.run(score);
 
 }
 

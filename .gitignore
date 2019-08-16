@@ -1,3 +1,5 @@
 audio/*
 data/*
 graphics/*
+
+node_modules/better-sqlite3/build/Release/obj/better_sqlite3/better_sqlite3.tlog/*

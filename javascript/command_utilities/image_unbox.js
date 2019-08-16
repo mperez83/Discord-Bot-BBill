@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
+let rarityMessageCollectors = new Discord.Collection();
+
 
 
 module.exports.unboxImage = (message, imageName) => {
@@ -73,7 +75,7 @@ module.exports.unboxImage = (message, imageName) => {
                     return;
                 }*/
 
-                const rarityFilter = (reaction, user) => {
+                /*const rarityFilter = (reaction, user) => {
                     if (user.id === message.author.id) {
                         switch (reaction.emoji.name) {
                             case `🇨`:
@@ -93,43 +95,37 @@ module.exports.unboxImage = (message, imageName) => {
                     })
                     .catch((collected) => {
                         msg.react(`❌`);
-                    });
+                    });*/
 
-                /*const collector = msg.createReactionCollector(rarityFilter, { time: 15000 });
+                const rarityFilter = (userMsg) => {
+                    if (userMsg.author.id === message.author.id) {
+                        switch (userMsg.content.toLowerCase()) {
+                            case `common`:
+                            case `uncommon`:
+                            case `rare`:
+                            case `epic`:
+                            case `legendary`:
+                                return true;
+                        }
+                    }
+                    return false;
+                }
+
+                if (rarityMessageCollectors.get(`${msg.channel.id}-${msg.author.id}`)) {
+                    rarityMessageCollectors.get(`${msg.channel.id}-${msg.author.id}`).stop();
+                }
+
+                let collector = msg.channel.createMessageCollector(rarityFilter, { time: 15000 });
 
                 collector.on('collect', (message) => {
-
                     userMsg = message.content.toLowerCase();
                     if (userMsg == "common" || userMsg == "uncommon" || userMsg == "rare" || userMsg == "epic" || userMsg == "legendary") {
+                        message.react("✅");
+                        collector.stop();
+                    }
+                });
 
-                        msg.react("✅");
-                        collector.stop();*/
-
-                        /*switch (userMsg) {
-                            case "common":
-                                jsonObj.rarity = "Common";
-                                break;
-
-                            case "uncommon":
-                                jsonObj.rarity = "Uncommon";
-                                break;
-                            
-                            case "rare":
-                                jsonObj.rarity = "Rare";
-                                break;
-
-                            case "epic":
-                                jsonObj.rarity = "Epic";
-                                break;
-                            
-                            case "legendary":
-                                jsonObj.rarity = "Legendary";
-                                break;
-                        }*/
-
-                    //}
-
-                //});
+                rarityMessageCollectors.set(`${msg.channel.id}-${msg.author.id}`, collector);
 
             })
             .catch(console.error);
