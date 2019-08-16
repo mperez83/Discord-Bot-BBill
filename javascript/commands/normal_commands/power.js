@@ -1,99 +1,75 @@
+const dbUtils = require(`../../command_utilities/database_utilities`);
+const genUtils = require(`../../command_utilities/general_utilities`);
+
+
+
 module.exports.run = async (bot, message, args) => {
 
-    message.channel.send(`F`);
+    try {
+        if (!genUtils.verifyWhitelistCommandCall(message, "admin")) return;
+    }
+    catch (err) {
+        console.error(err);
+    }
 
-    /*genUtils.readJSONFile(dataLoc, (userDataJson) => {
 
-        let doPowerCheck = false;
-        let currentDate = new Date();
 
-        let user = message.author;
-        let userObj = userDataJson[user.id];
+    let user = dbUtils.getPowerLevelEntry(message);
 
-        if (!userObj) userObj = {username: user.username};
+    let currentDate = new Date();
+    let checkDate = new Date(user.next_power_check_date);
 
-        if (!userObj.power) {
-            userObj.power = 0;
-            userObj.nextValidPowerCheck = undefined;
-            doPowerCheck = true;
+    if (isNaN(checkDate.getTime()) || checkDate <= currentDate) {
+
+        user.power = Math.ceil(Math.random() * 100);
+
+        if (user.power == 69) {
+            message.reply(`your power level is **69.**`);
+            genUtils.sendGlobalMessage(bot, `User **${message.author.username}** just got a power level of 69!!!`);
+        }
+        else if (user.power == 100) {
+            message.reply("your power level is **100!** Congratulations!");
+        }
+        else if (user.power == 1) {
+            message.reply("your power level is **1.** smh");
+            genUtils.sendGlobalMessage(bot, `User **${message.author.username}** just got a power level of 1`);
         }
         else {
-            let checkDateStr = JSON.parse(userObj.nextValidPowerCheck);
-            let checkDate = new Date(checkDateStr);
-
-            if (userObj.power == 69) {
-                message.reply(`you cannot reassess your power level again (already attained best power level. Use !prestige to reset your power back to 0 and increase your prestige level)`);
-                return;
-            }
-            else if (checkDate < currentDate) {
-                doPowerCheck = true;
-            }
+            message.reply(`your power level is **${user.power}**`);
         }
 
-        //If the user is able to do a power call, do it
-        if (doPowerCheck) {
+        if (user.power == 68 || user.power == 70) {
+            message.react("😂");
+            user.chokes++;
+        }
+        
+        let nextPowerCheckDate = new Date();
+        nextPowerCheckDate.setDate(currentDate.getDate() + 1);
+        user.next_power_check_date = nextPowerCheckDate.toLocaleString();
 
-            let power = Math.ceil(Math.random() * 100);
+        dbUtils.setPowerLevelEntry(user);
 
-            if (power == 69) {
-                message.reply(`your power level is **69.**`);
-                genUtils.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 69!!!`);
-            }
-            else if (power == 100) {
-                message.reply("your power level is **100!** Congratulations!");
-            }
-            else if (power == 1) {
-                message.reply("your power level is **1.** smh");
-                genUtils.sendGlobalMessage(bot, `User **${user.username}** just got a power level of 1`);
-            }
-            else {
-                message.reply(`your power level is **${power}**`);
-            }
+    }
+    else {
 
-            if (power == 68 || power == 70) {
-                message.react("😂");
-                genUtils.incrementUserDataValue(user, "chokes", 1);
-            }
+        let checkDateMS = checkDate.getTime();
+        let currentDateMS = currentDate.getTime();
+        let differenceMS = checkDateMS - currentDateMS;
 
-            userObj.power = power;
+        let secondsLeft = Math.floor((differenceMS / 1000) % 60);
+        let minutesLeft = Math.floor((differenceMS / (1000 * 60)) % 60);
+        let hoursLeft = Math.floor((differenceMS / (1000 * 60 * 60)) % 24);
 
-            let nextValidPowerCheck = new Date();
-            nextValidPowerCheck.setDate(currentDate.getDate() + 1);
-            userObj.nextValidPowerCheck = JSON.stringify(nextValidPowerCheck);
-
-            //userDataJson[user.id] = userObj;
-            fs.writeFile(dataLoc, JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err); });
-
-            genUtils.incrementUserDataValue(user, "powerCalls", 1);
-
+        if (hoursLeft == 24 && minutesLeft == 0 && secondsLeft == 0) {
+            //ahm.awardAchievement(message, ahm.achievement_list_enum.POWER_HUNGRY);
+        }
+        else if (hoursLeft == 0 && minutesLeft == 0 && secondsLeft == 0) {
+            //ahm.awardAchievement(message, ahm.achievement_list_enum.TIME_DILATION);
         }
 
-        //If the user isn't able to do a power call, tell them how long it'll take until they can do one
-        else {
-
-            let checkDateStr = JSON.parse(userObj.nextValidPowerCheck);
-            let checkDate = new Date(checkDateStr);
-
-            let checkDateMS = checkDate.getTime();
-            let currentDateMS = currentDate.getTime();
-            let differenceMS = checkDateMS - currentDateMS;
-
-            let secondsLeft = Math.floor((differenceMS / 1000) % 60);
-            let minutesLeft = Math.floor((differenceMS / (1000 * 60)) % 60);
-            let hoursLeft = Math.floor((differenceMS / (1000 * 60 * 60)) % 24);
-
-            if (hoursLeft == 24 && minutesLeft == 0 && secondsLeft == 0) {
-                ahm.awardAchievement(message, ahm.achievement_list_enum.POWER_HUNGRY);
-            }
-            else if (hoursLeft == 0 && minutesLeft == 0 && secondsLeft == 0) {
-                ahm.awardAchievement(message, ahm.achievement_list_enum.TIME_DILATION);
-            }
-
-            message.reply(`you may reassess your power in ** ${hoursLeft} hour${(hoursLeft != 1) ? 's' : ''}, ${minutesLeft} minute${(minutesLeft != 1) ? 's' : ''}, and ${secondsLeft} second${(secondsLeft != 1) ? 's' : ''}**`);
-
-        }
-
-    });*/
+        message.reply(`you may reassess your power in ** ${hoursLeft} hour${(hoursLeft != 1) ? 's' : ''}, ${minutesLeft} minute${(minutesLeft != 1) ? 's' : ''}, and ${secondsLeft} second${(secondsLeft != 1) ? 's' : ''}**`);
+        
+    }
 
 }
 
@@ -107,6 +83,9 @@ module.exports.help = {
         testosterone would be seen as offensive by some.",
         "This command was inspired by RockLeeSmiles's twitch bot command \"t-count\", which would display a random number between 1 and 100 to the chat user.",
         "Big Bill globally announces to all servers whenever a user gets a noteworthy power level.",
-        "Making the command call all uppercase does not increase your power."
+        "Making the command call all uppercase does not increase your power.",
+        "Power was the first command to be converted to the SQLite database system.",
+        "In the old JSON database system, rapid power calls would sometimes get overwritten or ignored, causing Big Bill to not record when someone's next \
+        power check date was, allowing them to instantly do another power check. We can't have an exploit of that magnitude, can we?"
     ]
 }

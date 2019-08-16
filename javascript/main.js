@@ -6,15 +6,18 @@ bot.commands = new Discord.Collection();
 const fs = require("fs");
 const config = require("../data/general_data/config.json");
 
+const dbUtils = require(`./command_utilities/database_utilities`);
+const genUtils = require("./command_utilities/general_utilities");
+
 const cleverbillModule = require("./string_parsing/cleverbill");
 const informalCommandsModule = require("./string_parsing/string_parse");
 const messageEvents = require("./string_parsing/message_events");
-const genUtils = require("./command_utilities/general_utilities");
 
 
 
 //Load all commands
 fs.readdir("./javascript/commands/", (err, cmdDirs) => {
+
     if (err) console.error(err);
     
     console.log();
