@@ -5,7 +5,7 @@ const genUtils = require(`../../command_utilities/general_utilities`);
 
 module.exports.run = async (bot, message, args) => {
 
-    let user = dbUtils.getPowerLevelEntry(message);
+    let user = dbUtils.getPowerLevelEntry(message.author);
 
     let currentDate = new Date();
     let checkDate = new Date(user.next_power_check_date);

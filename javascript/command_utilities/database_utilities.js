@@ -3,13 +3,15 @@ const sql = new SQLite('./data/user_database.sqlite');
 
 verifyTable("power_levels");
 verifyTable("command_calls");
-verifyTable("misc_info");
+verifyTable("misc_data");
 
 //Prepared statements for convenience
 const getUserPowerLevelData = sql.prepare("SELECT * FROM power_levels WHERE user_id = ?");
 const setUserPowerLevelData = sql.prepare("INSERT OR REPLACE INTO power_levels (user_id, username, power, next_power_check_date, chokes) VALUES (@user_id, @username, @power, @next_power_check_date, @chokes);");
 const getAllUserPowerLevelData = sql.prepare("SELECT * FROM power_levels");
 const orderByPowerLevel = sql.prepare("SELECT * FROM power_levels ORDER BY power ASC");
+
+const getUserMiscData = sql.prepare("SELECT * FROM misc_data WHERE user_id = ?");
 
 
 
@@ -43,11 +45,11 @@ function verifyTable(tableToVerify) {
             }
             break;
         
-        case "misc_info":
-            let miscInfoTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='misc_info';").get();
+        case "misc_data":
+            let miscInfoTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='misc_data';").get();
             if (!miscInfoTable['count(*)']) {
                 console.log(`Table "${tableToVerify}" not found! Generating now.`);
-                sql.prepare("CREATE TABLE misc_info (user_id TEXT PRIMARY KEY, billie_bucks INTEGER, garfield_revenance INTEGER, social_deviancy INTEGER, \
+                sql.prepare("CREATE TABLE misc_data (user_id TEXT PRIMARY KEY, username TEXT, billie_bucks INTEGER, garfield_revenance INTEGER, social_deviancy INTEGER, \
                     stealthy_bastard_points INTEGER, ascii_typed INTEGER, wisdom_shared INTEGER, swears_spoken INTEGER, sin INTEGER);").run();
                 sql.pragma("synchronous = 1");
                 sql.pragma("journal_mode = wal");
@@ -63,19 +65,19 @@ function verifyTable(tableToVerify) {
 
 
 
-function getPowerLevelEntry(message) {
-    let userEntry = getUserPowerLevelData.get(message.author.id);
+function getPowerLevelEntry(user) {
+    let userEntry = getUserPowerLevelData.get(user.id);
     if (!userEntry) {
         userEntry = {
-            user_id: message.author.id,
-            username: message.author.username,
+            user_id: user.id,
+            username: user.username,
             power: 0,
             next_power_check_date: undefined,
             chokes: 0
         }
     }
     else {
-        if (userEntry.username != message.author.username) userEntry.username = message.author.username;
+        if (userEntry.username != user.username) userEntry.username = user.username;
     }
     return userEntry;
 }
@@ -91,3 +93,25 @@ function getAllPowerLevelEntries() {
     return getAllUserPowerLevelData.all();
 }
 module.exports.getAllPowerLevelEntries = getAllPowerLevelEntries;
+
+
+
+function getMiscDataEntry(user) {
+    let userEntry = getUserMiscData.get(user.id);
+    if (!userEntry) {
+        userEntry = {
+            user_id: user.id,
+            username: user.username,
+            billie_bucks: 0,
+            garfield_revenance: 0,
+            social_deviancy: 0,
+            stealthy_bastard_points: 0,
+            ascii_typed: 0,
+            wisdom_shared: 0,
+            swears_spoken: 0,
+            sin: 0
+        }
+    }
+    return userEntry;
+}
+module.exports.getMiscDataEntry = getMiscDataEntry;

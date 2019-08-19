@@ -1,3 +1,4 @@
+const dbUtils = require(`../../command_utilities/database_utilities`);
 const genUtils = require('../../command_utilities/general_utilities');
 
 
@@ -47,31 +48,20 @@ module.exports.run = async (bot, message, args) => {
 
 
 
-    message.channel.send(`This command needs to be updated to the new information read/write system :(`);
+    let userMiscData = dbUtils.getMiscDataEntry(userToIdentify);
+    let userPowerData = dbUtils.getPowerLevelEntry(userToIdentify);
+    let miscKeys = Object.keys(userMiscData);
 
-    /*genUtils.readJSONFile(dataLoc, (userDataJson) => {
+    let finalMsg = `Here are ${(userToIdentify == message.author) ? `your` : `${userToIdentify.username}'s`} stats:\n- - - - - - - - - -\n`;
+    finalMsg += `**power:** ${userPowerData.power}\n`;
+    finalMsg += `**chokes:** ${userPowerData.chokes}\n`;
+    for (let i = 0; i < miscKeys.length; i++) {
+        if (miscKeys[i] == `user_id` || miscKeys[i] == `username` || miscKeys[i] == `ascii_typed`) continue;
+        finalMsg += `**${miscKeys[i]}:** ${userMiscData[miscKeys[i]]}\n`;
+    }
+    finalMsg += `- - - - - - - - - -`;
 
-        if (!userDataJson[userToIdentify.id]) userDataJson[userToIdentify.id] = {username: userToIdentify.username};
-
-        let statsString;
-        if (userToIdentify == message.author)
-            statsString = `here are your stats:\n- - - - - - - - - -\n`;
-        else
-            statsString = `here are ${userDataJson[userToIdentify.id].username}'s stats:\n- - - - - - - - - -\n`;
-
-        let propertyNames = Object.getOwnPropertyNames(userDataJson[userToIdentify.id]);
-
-        genUtils.removeElementsFromArray(propertyNames, unnecessaryStats);
-
-        propertyNames.sort();
-        for (let i = 0; i < propertyNames.length; i++) {
-            statsString = statsString.concat(`**${propertyNames[i]}:** ${userDataJson[userToIdentify.id][propertyNames[i]]}\n`);
-        }
-        statsString = statsString.concat(`- - - - - - - - - -`);
-
-        message.reply(statsString);
-
-    });*/
+    message.channel.send(finalMsg);
     
 }
 
@@ -83,6 +73,6 @@ module.exports.help = {
     funFacts: [
         "The whole idea of stats was created because I found the idea of users seeing other user's stats and not knowing how they got them to be endlessly amusing. \
         To this day, nobody has found out how to attain sin.",
-        "There are an egregious amount of stats that can be acquired. None of them are intuitive."
+        "There are an egregious amount of stats that can be acquired. The vast majority of them are not intuitive."
     ]
 }
