@@ -1,4 +1,4 @@
-const dbUtils = require(`../../command_utilities/database_utilities`);
+const dbUtils = require(`../../database_stuff/user_database_handler`);
 const embed_list_handler = require(`../../command_utilities/embed_list_handler`);
 
 

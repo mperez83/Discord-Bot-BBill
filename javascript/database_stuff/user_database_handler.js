@@ -1,5 +1,9 @@
 const SQLite = require("better-sqlite3");
-const sql = new SQLite('./data/user_database.sqlite');
+const sql = new SQLite('./data/databases/user_database.sqlite');
+
+//These settings make reading/writing to tables a lot safer (in the event of a crash or power outage, the database will not be corrupted with these settings)
+sql.pragma("synchronous = 1");      //Makes the database sync at the most critical moments, but for the most part remain async
+sql.pragma("journal_mode = wal");   //"Write-Ahead Logging" just makes everything faster I guess
 
 verifyTable("power_levels");
 verifyTable("command_calls");
@@ -7,7 +11,7 @@ verifyTable("misc_data");
 
 //Prepared statements for convenience
 const getUserPowerLevelData = sql.prepare("SELECT * FROM power_levels WHERE user_id = ?");
-const setUserPowerLevelData = sql.prepare("INSERT OR REPLACE INTO power_levels (user_id, username, power, next_power_check_date, chokes) VALUES (@user_id, @username, @power, @next_power_check_date, @chokes);");
+const setUserPowerLevelData = sql.prepare("INSERT OR REPLACE INTO power_levels (user_id, username, power, prestige, next_power_check_date, chokes) VALUES (@user_id, @username, @power, @prestige, @next_power_check_date, @chokes);");
 const getAllUserPowerLevelData = sql.prepare("SELECT * FROM power_levels");
 const orderByPowerLevel = sql.prepare("SELECT * FROM power_levels ORDER BY power ASC");
 
@@ -24,14 +28,13 @@ function verifyTable(tableToVerify) {
             if (!powerLevelsTable['count(*)']) {
                 console.log(`Table "${tableToVerify}" not found! Generating now.`);
                 //If the table isn't there, create it and setup the database correctly
-                sql.prepare("CREATE TABLE power_levels (user_id TEXT PRIMARY KEY, username TEXT, power INTEGER, next_power_check_date TEXT, chokes INTEGER);").run();
+                sql.prepare("CREATE TABLE power_levels (user_id TEXT PRIMARY KEY, username TEXT, power INTEGER, prestige INTEGER, next_power_check_date TEXT, chokes INTEGER);").run();
 
                 //Ensure that the "id" row is always unique and indexed
                 //sql.prepare("CREATE UNIQUE INDEX idx_users_id ON power_levels (id);").run();
 
-                //These settings make reading/writing to tables a lot safer (in the event of a crash or power outage, the database will not be corrupted with these settings)
-                sql.pragma("synchronous = 1");      //Makes the database sync at the most critical moments, but for the most part remain async
-                sql.pragma("journal_mode = wal");   //"Write-Ahead Logging" just makes everything faster I guess
+                //sql.pragma("synchronous = 1");
+                //sql.pragma("journal_mode = wal");
             }
             break;
         
@@ -40,8 +43,6 @@ function verifyTable(tableToVerify) {
             if (!commandCallsTable['count(*)']) {
                 console.log(`Table "${tableToVerify}" not found! Generating now.`);
                 sql.prepare("CREATE TABLE command_calls (user_id TEXT PRIMARY KEY);").run();
-                sql.pragma("synchronous = 1");
-                sql.pragma("journal_mode = wal");
             }
             break;
         
@@ -51,8 +52,6 @@ function verifyTable(tableToVerify) {
                 console.log(`Table "${tableToVerify}" not found! Generating now.`);
                 sql.prepare("CREATE TABLE misc_data (user_id TEXT PRIMARY KEY, username TEXT, billie_bucks INTEGER, garfield_revenance INTEGER, social_deviancy INTEGER, \
                     stealthy_bastard_points INTEGER, ascii_typed INTEGER, wisdom_shared INTEGER, swears_spoken INTEGER, sin INTEGER);").run();
-                sql.pragma("synchronous = 1");
-                sql.pragma("journal_mode = wal");
             }
             break;
         
@@ -72,6 +71,7 @@ function getPowerLevelEntry(user) {
             user_id: user.id,
             username: user.username,
             power: 0,
+            prestige: 0,
             next_power_check_date: undefined,
             chokes: 0
         }

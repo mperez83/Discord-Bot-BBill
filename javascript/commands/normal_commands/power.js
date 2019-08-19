@@ -1,4 +1,4 @@
-const dbUtils = require(`../../command_utilities/database_utilities`);
+const dbUtils = require(`../../database_stuff/user_database_handler`);
 const genUtils = require(`../../command_utilities/general_utilities`);
 
 

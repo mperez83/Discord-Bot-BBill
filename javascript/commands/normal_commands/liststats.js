@@ -1,4 +1,4 @@
-const dbUtils = require(`../../command_utilities/database_utilities`);
+const dbUtils = require(`../../database_stuff/user_database_handler`);
 const genUtils = require('../../command_utilities/general_utilities');
 
 
@@ -54,6 +54,7 @@ module.exports.run = async (bot, message, args) => {
 
     let finalMsg = `Here are ${(userToIdentify == message.author) ? `your` : `${userToIdentify.username}'s`} stats:\n- - - - - - - - - -\n`;
     finalMsg += `**power:** ${userPowerData.power}\n`;
+    finalMsg += `**prestige:** ${userPowerData.prestige}\n`;
     finalMsg += `**chokes:** ${userPowerData.chokes}\n`;
     for (let i = 0; i < miscKeys.length; i++) {
         if (miscKeys[i] == `user_id` || miscKeys[i] == `username` || miscKeys[i] == `ascii_typed`) continue;

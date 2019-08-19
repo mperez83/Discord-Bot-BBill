@@ -1,3 +1,4 @@
+const dbUtils = require(`../../database_stuff/index_image_database_handler`);
 const genUtils = require("../../command_utilities/general_utilities");
 
 
@@ -33,43 +34,29 @@ module.exports.run = async (bot, message, args) => {
         }
         else {
 
-            message.channel.send(`This command needs to be updated to the new information read/write system :(`);
+            let indexEntry = dbUtils.getIndexedImageByName(message.guild, inputIndexName);
+            
+            if (indexEntry.index_name) {
+                message.channel.send(`That name is already indexed, ${genUtils.getRandomNameInsult(message)}`);
+                return;
+            }
 
-            /*genUtils.readJSONFile(dataLoc, (indexListJson) => {
+            if (dbUtils.getIndexedImageByUrl(message.guild, validURL)) {
+                message.channel.send(`That image is already indexed under "${dbUtils.getIndexedImageByUrl(message.guild, validURL).index_name}", ${genUtils.getRandomNameInsult(message)}`);
+                return;
+            }
+            
+            indexEntry.index_name = inputIndexName;
+            indexEntry.url = validURL;
+            indexEntry.culprit = message.author.username;
+            
+            dbUtils.setImageIndex(message.guild, indexEntry);
 
-                //Check if the index name we're trying to index already exists
-                if (indexListJson[inputIndexName]) {
-                    message.channel.send(`That name is already indexed, ${genUtils.getRandomNameInsult(message)}`);
-                    return;
-                }
+            message.channel.send(`Successfully indexed "${inputIndexName}"!`);
 
-                //Check if the url we're trying to index already exists
-                for (let indexEntry in indexListJson) {
-                    if (indexListJson.hasOwnProperty(indexEntry)) {
-                        if (validURL == indexListJson[indexEntry].url) {
-                            message.channel.send(`That image is already indexed under "${indexEntry}", ${genUtils.getRandomNameInsult(message)}`);
-                            return;
-                        }
-                    }
-                }
+            if (message.channel.type == "dm") {
 
-                indexListJson[inputIndexName] = {
-                    url: validURL,
-                    culprit: message.author.username
-                };
-
-                fs.writeFile(dataLoc, JSON.stringify(indexListJson, null, 4), (err) => {
-                    if (err) {
-                        console.error(err);
-                        message.channel.send(`Unable to index "${inputIndexName}"... ${genUtils.getRandomNameInsult(message)}`);
-                        return;
-                    }
-
-                    message.channel.send(`Successfully indexed "${inputIndexName}"!`);
-                    if (message.channel.type == "dm") genUtils.incrementUserDataValue(message.author, "stealthyBastardPoints", 1);
-                });
-
-            });*/
+            }
             
         }
 

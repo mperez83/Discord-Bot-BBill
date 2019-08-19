@@ -68,35 +68,6 @@ module.exports.unboxImage = (message, imageName) => {
         message.channel.send({ files: [`${photoLoc + selectedImage}`] })
             .then((msg) => {
 
-                /*if (selectedImage == "komugi shibe 1.jpg") {
-                    jsonObj.rarity = "Legendary";
-                    dataJson[selectedImage] = jsonObj;
-                    fs.writeFile(dataLoc, JSON.stringify(dataJson, null, 4), (err) => { if (err) console.error(err); });
-                    return;
-                }*/
-
-                /*const rarityFilter = (reaction, user) => {
-                    if (user.id === message.author.id) {
-                        switch (reaction.emoji.name) {
-                            case `🇨`:
-                            case `🇺`:
-                            case `🇷`:
-                            case `🇪`:
-                            case `🇱`:
-                                return true;
-                        }
-                    }
-                    return false;
-                }
-
-                msg.awaitReactions(rarityFilter, { max: 1, time: 15000, errors: ['time'] })
-                    .then((collected) => {
-                        msg.react(`✅`);
-                    })
-                    .catch((collected) => {
-                        msg.react(`❌`);
-                    });*/
-
                 const rarityFilter = (userMsg) => {
                     if (userMsg.author.id === message.author.id) {
                         switch (userMsg.content.toLowerCase()) {

@@ -45,6 +45,11 @@ module.exports.run = async (bot, message, args) => {
             message.channel.send(newEmbed);
             break;
         }
+
+        case "243":
+        {
+            message.channel.send(`excuse me?`);
+        }
         
         case "420":
         {
