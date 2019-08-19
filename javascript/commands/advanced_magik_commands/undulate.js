@@ -116,7 +116,7 @@ module.exports.help = {
     name: "undulate",
     description: "Undulates the image",
     usage: "!undulate [-i intensity] [-c frameCount] [-d frameDelay]",
-    example: "!irradiate -s 60 -c 15 -d 5",
+    example: "!undulate -i 1.5 -c 15 -d 5",
     funFacts: [
         "The first iteration of undulate involved applying random implode operations to the image, and producing a gif out of it. It had very strange, \
         unsatisfying results, so I updated it to the current form of the command."

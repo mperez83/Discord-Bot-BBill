@@ -7,7 +7,9 @@ verifyTable("misc_info");
 
 //Prepared statements for convenience
 const getUserPowerLevelData = sql.prepare("SELECT * FROM power_levels WHERE user_id = ?");
-const setUserPowerLevelData = sql.prepare("INSERT OR REPLACE INTO power_levels (user_id, power, next_power_check_date, chokes) VALUES (@user_id, @power, @next_power_check_date, @chokes);");
+const setUserPowerLevelData = sql.prepare("INSERT OR REPLACE INTO power_levels (user_id, username, power, next_power_check_date, chokes) VALUES (@user_id, @username, @power, @next_power_check_date, @chokes);");
+const getAllUserPowerLevelData = sql.prepare("SELECT * FROM power_levels");
+const orderByPowerLevel = sql.prepare("SELECT * FROM power_levels ORDER BY power ASC");
 
 
 
@@ -20,7 +22,7 @@ function verifyTable(tableToVerify) {
             if (!powerLevelsTable['count(*)']) {
                 console.log(`Table "${tableToVerify}" not found! Generating now.`);
                 //If the table isn't there, create it and setup the database correctly
-                sql.prepare("CREATE TABLE power_levels (user_id TEXT PRIMARY KEY, power INTEGER, next_power_check_date TEXT, chokes INTEGER);").run();
+                sql.prepare("CREATE TABLE power_levels (user_id TEXT PRIMARY KEY, username TEXT, power INTEGER, next_power_check_date TEXT, chokes INTEGER);").run();
 
                 //Ensure that the "id" row is always unique and indexed
                 //sql.prepare("CREATE UNIQUE INDEX idx_users_id ON power_levels (id);").run();
@@ -66,10 +68,14 @@ function getPowerLevelEntry(message) {
     if (!userEntry) {
         userEntry = {
             user_id: message.author.id,
+            username: message.author.username,
             power: 0,
             next_power_check_date: undefined,
             chokes: 0
         }
+    }
+    else {
+        if (userEntry.username != message.author.username) userEntry.username = message.author.username;
     }
     return userEntry;
 }
@@ -77,5 +83,11 @@ module.exports.getPowerLevelEntry = getPowerLevelEntry;
 
 function setPowerLevelEntry(updatedPowerLevelData) {
     setUserPowerLevelData.run(updatedPowerLevelData);
+    orderByPowerLevel.run();
 }
 module.exports.setPowerLevelEntry = setPowerLevelEntry;
+
+function getAllPowerLevelEntries() {
+    return getAllUserPowerLevelData.all();
+}
+module.exports.getAllPowerLevelEntries = getAllPowerLevelEntries;
