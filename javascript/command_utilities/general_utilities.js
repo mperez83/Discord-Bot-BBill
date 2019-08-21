@@ -278,13 +278,13 @@ function verifyNumVal(value, minValue, maxValue, valueName, message) {
 
     //If the value is less than the minimum value
     if (value < minValue) {
-        message.channel.send(`${valueName} must be equal to or greater than ${minValue}, ${getRandomNameInsult(message)}`);
+        message.channel.send(`${valueName} must be greater than or equal to ${minValue}, ${getRandomNameInsult(message)}`);
         return undefined;
     }
 
     //If the value is greater than the max value
     if (value > maxValue) {
-        message.channel.send(`${valueName} must be equal to or less than ${maxValue}, ${getRandomNameInsult(message)}`);
+        message.channel.send(`${valueName} must be less than or equal to ${maxValue}, ${getRandomNameInsult(message)}`);
         return undefined;
     }
 
@@ -312,13 +312,13 @@ function verifyIntVal(value, minValue, maxValue, valueName, message) {
 
     //If the value is less than the minimum value
     if (value < minValue) {
-        message.channel.send(`${valueName} must be equal to or greater than ${minValue}, ${getRandomNameInsult(message)}`);
+        message.channel.send(`${valueName} must be greater than or equal to ${minValue}, ${getRandomNameInsult(message)}`);
         return undefined;
     }
 
     //If the value is greater than the max value
     if (value > maxValue) {
-        message.channel.send(`${valueName} must be equal to or less than ${maxValue}, ${getRandomNameInsult(message)}`);
+        message.channel.send(`${valueName} must be less than or equal to ${maxValue}, ${getRandomNameInsult(message)}`);
         return undefined;
     }
 

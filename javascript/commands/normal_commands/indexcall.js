@@ -11,6 +11,11 @@ module.exports.run = async (bot, message, args) => {
 
         let indexEntry = dbUtils.getRandomIndex(message.guild);
 
+        if (!indexEntry) {
+            message.channel.send(`This server doesn't have any indices yet, ${genUtils.getRandomNameInsult(message)}`);
+            return;
+        }
+
         indexEntry.accidental_calls++;
 
         let newEmbed = new Discord.RichEmbed()

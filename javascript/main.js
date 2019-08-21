@@ -131,7 +131,8 @@ bot.on("message", (message) => {
         //Do this so that we're able to create commands that take more parameters in the future if we want
         switch (cmd.help.name) {
             default:
-                cmd.run(bot, message, args);
+                cmd.run(bot, message, args)
+                    .catch(err => {console.error(err)});    //This is required to make javascript errors on async methods NOT SILENT
                 break;
         }
     }

@@ -1,31 +1,34 @@
 const Discord = require("discord.js");
 
+const genUtils = require("./general_utilities");
+
 function pageTurnFilter (reaction, user) {
     return user.id != "315755145365553155" && (reaction.emoji.name === '⬅' || reaction.emoji.name ==='➡');
 };
 
-const collectorDuration = 10000;
-
-
+const collectorDuration = 20000;
 
 
 
 class EmbedList {
 
-    constructor(message, list, col1, col2) {
+    constructor(message, list, nameOfList, attribToList, entriesPerPage) {
         this.message = message;
-        this.listMessage = undefined;
         this.list = list;
-        this.col1 = col1;
-        this.col2 = col2;
+        this.nameOfList = nameOfList;
+        this.attribToList = attribToList;
+        this.entriesPerPage = entriesPerPage;
+
+        this.listMessage = undefined;
         this.page = 1;
-        this.entriesPerPage = 10;
-        this.createMessage();
     }
 
-    createMessage() {
+    createMessage(startEntryNumber=1) {
+        if (startEntryNumber != 1) this.setPageToEntryNumber(startEntryNumber);
+
         let initList = new Discord.RichEmbed();
-        initList.addField(`Power Rankings`, this.getEntriesOnPage());
+        initList.addField(this.nameOfList, this.getEntriesOnPage());
+
         this.message.channel.send(initList)
             .then((sentMsg) => {
                 this.listMessage = sentMsg;
@@ -52,7 +55,7 @@ class EmbedList {
 
     updateMessage() {
         let updatedList = new Discord.RichEmbed();
-        updatedList.addField(`Power Rankings`, this.getEntriesOnPage());
+        updatedList.addField(this.nameOfList, this.getEntriesOnPage());
         this.listMessage.edit(updatedList);
     }
 
@@ -63,7 +66,7 @@ class EmbedList {
         let endIndex = Math.min(curIndex + this.entriesPerPage, this.list.length);    //Math.max so that the endIndex doesn't exceed the length of the list
 
         while (curIndex < endIndex) {
-            returnMsg += `${curIndex + 1}: (${this.list[curIndex][this.col1]}) ${this.list[curIndex][this.col2]}\n`;
+            returnMsg += `**__${curIndex + 1}:__** ${this.list[curIndex][this.attribToList]}\n`;
             curIndex++;
         }
 
@@ -82,5 +85,35 @@ class EmbedList {
         this.updateMessage();
     }
 
+    setPageToEntryNumber(entryNumber) {
+        this.page = Math.ceil(entryNumber / this.entriesPerPage);
+    }
+
 }
 module.exports.EmbedList = EmbedList;
+
+
+
+class SpecialEmbedList extends EmbedList {
+
+    constructor(message, list, nameOfList, attribToList, entriesPerPage, parenthesisAttrib) {
+        super(message, list, nameOfList, attribToList, entriesPerPage);
+        this.parenthesisAttrib = parenthesisAttrib;
+    }
+
+    getEntriesOnPage() {
+        let returnMsg = ``;
+
+        let curIndex = Math.max(0, (this.page - 1) * this.entriesPerPage);            //Math.max so that the curIndex is never -1
+        let endIndex = Math.min(curIndex + this.entriesPerPage, this.list.length);    //Math.max so that the endIndex doesn't exceed the length of the list
+        
+        while (curIndex < endIndex) {
+            returnMsg += `**__${curIndex + 1}:__** (${this.list[curIndex][this.parenthesisAttrib]}) ${this.list[curIndex][this.attribToList]}\n`;
+            curIndex++;
+        }
+
+        return returnMsg;
+    }
+
+}
+module.exports.SpecialEmbedList = SpecialEmbedList;

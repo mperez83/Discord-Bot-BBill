@@ -1,3 +1,4 @@
+const dbUtils = require(`../../database_stuff/index_image_database_handler`);
 const genUtils = require("../../command_utilities/general_utilities");
 
 
@@ -14,27 +15,20 @@ module.exports.run = async (bot, message, args) => {
 
     
 
-    message.channel.send(`This command needs to be updated to the new information read/write system :(`);
-
-    /*if (args.length == 0) {
+    if (args.length == 0) {
         message.channel.send(`I need an index name in order to identify who did it, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
     let inputIndexCall = args.join(" ");
+    let indexEntry = dbUtils.getIndexedImageByName(message.guild, inputIndexCall);
 
-    if (!indexDataJson[inputIndexCall]) {
+    if (!indexEntry.index_name) {
         message.channel.send(`There is no image indexed with the name "${inputIndexCall}", ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
-    else if (!indexDataJson[inputIndexCall].culprit) {
-        message.channel.send(`Culprit: Unknown :(`);
-        return;
-    }
-    else {
-        message.channel.send(`Culprit: ${indexDataJson[inputIndexCall].culprit}`);
-        return;
-    }*/
+
+    message.channel.send(`Culprit: ${indexEntry.culprit}`);
 
 }
 

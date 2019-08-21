@@ -70,3 +70,15 @@ function getRandomIndex(guild) {
     else return undefined;
 }
 module.exports.getRandomIndex = getRandomIndex;
+
+function getAllIndices(guild) {
+    let serverIndexTable = sql.prepare(`SELECT name FROM sqlite_master WHERE type='table' AND name='${guild.id}';`).get();
+    
+    if (!serverIndexTable) {
+        console.log(`An index table for ${guild.name} does not exist! Generating one for them now...`);
+        sql.prepare(`CREATE TABLE [${guild.id}] (index_name TEXT, url TEXT, culprit TEXT, direct_calls INTEGER, accidental_calls INTEGER)`).run();
+    }
+
+    return sql.prepare(`SELECT * FROM [${guild.id}]`).all();
+}
+module.exports.getAllIndices = getAllIndices;

@@ -12,8 +12,7 @@ verifyTable("misc_data");
 //Prepared statements for convenience
 const getUserPowerLevelData = sql.prepare("SELECT * FROM power_levels WHERE user_id = ?");
 const setUserPowerLevelData = sql.prepare("INSERT OR REPLACE INTO power_levels (user_id, username, power, prestige, next_power_check_date, chokes) VALUES (@user_id, @username, @power, @prestige, @next_power_check_date, @chokes);");
-const getAllUserPowerLevelData = sql.prepare("SELECT * FROM power_levels");
-const orderByPowerLevel = sql.prepare("SELECT * FROM power_levels ORDER BY power ASC");
+const getAllUserPowerLevelData = sql.prepare("SELECT * FROM power_levels ORDER BY power DESC");
 
 const getUserMiscData = sql.prepare("SELECT * FROM misc_data WHERE user_id = ?");
 
@@ -85,7 +84,6 @@ module.exports.getPowerLevelEntry = getPowerLevelEntry;
 
 function setPowerLevelEntry(updatedPowerLevelData) {
     setUserPowerLevelData.run(updatedPowerLevelData);
-    orderByPowerLevel.run();
 }
 module.exports.setPowerLevelEntry = setPowerLevelEntry;
 
