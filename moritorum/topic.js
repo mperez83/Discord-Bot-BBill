@@ -1,6 +1,6 @@
 const fs = require("fs");
 
-const genUtils = require('../../command_utilities/general_utilities');
+const genUtils = require('../javascript/command_utilities/general_utilities');
 
 const dataLoc = "./data/general_data/server_data.json";
 

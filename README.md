@@ -40,6 +40,7 @@ This bot must have the following permissions in order to function correctly:
 | **!image (input)** | Searches google for the specified input and posts the first image found | !image sad cat |
 | **!index (name)** | Indexes the most recently posted image (wihtin ten messages) under the given name | !index when you get the victory royale |
 | **!indexcall [name]** | Posts the index under the specified name if one exists, or a random index if no name is provided | !indexcall when you get the victory royale |
+| **!indexlist [startEntry]** | Displays a list of the server's indices, starting on the page of the provided startEntry if provided | !indexlist 100 |
 | **!liststats [user]** | Lists all of a @'d user's stats, or the caller's stats if no user is provided | !liststats Star |
 | **!mathfact** | Deploys an interesting random math fact | !mathfact |
 | **!numberfact** | Deploys an interesting fact about a random number | !numberfact |
@@ -52,11 +53,10 @@ This bot must have the following permissions in order to function correctly:
 | **!randomemote [number]** | Post the provided number of random custom emotes Big Bill has access to | !randomemote 5 |
 | **!rgif (input)** | Searches google for the specified input and posts a random gif from the first 50 results | !rgif sad cat dance |
 | **!rimage (input)** | Searches google for the specified input and posts a random image from the first 50 results | !rimage sad cat |
-| **!roll (diceCount)d(diceType) | Rolls the specified amount of dice with the specified type of die | !roll 2d4 |
+| **!roll (diceCount)d(diceType)** | Rolls the specified amount of dice with the specified type of die | !roll 2d4 |
 | **!scp [number]** | Attempts to post the specified SCP entry number, or a random one if no number is provided | !scp 173 |
 | **!sfw** | Purges the chat of its sins | !sfw |
 | **!speak [name]** | Plays the specified audio file in all of the servers Big Bill is in, or a random audio file if no name is provided | !speak mind flood 2 |
-| **!topic [input]** | Changes the topic to the specified input, or displays the current topic if no input is provided | !topic Hello, World! |
 | **!urban [input]** | Searches urban dictionary for the specified input and posts the article about it, or posts a random urban dictionary article if no input is provided | !urban (800)-588-2300 |
 | **!weight** | Posts how large Big Bill is in gigabytes | !weight |
 | **!yearfact** | Deploys an interesting fact about a random year | !yearfact |
@@ -76,6 +76,7 @@ Image unbox commands produce a random image from a specified directory.
 | **!cat** | Posts a random cat from the cat directory | !fumika |
 | **!fumika** | Posts a random fumika from the fumika directory | !fumika |
 | **!ham** | Posts a random ham from the ham directory | !ham |
+| **!idol** | Posts a random idol character from the idol directory | !idol |
 | **!pikachu** | Posts a random pikachu from the pikachu directory | !shibe |
 | **!shibe** | Posts a random shibe from the shibe directory | !shibe |
 
