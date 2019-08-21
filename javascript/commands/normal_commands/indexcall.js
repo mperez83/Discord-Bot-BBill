@@ -1,4 +1,5 @@
 const Discord = require("discord.js");
+const urlExists = require(`url-exists`);
 
 const dbUtils = require(`../../database_stuff/index_image_database_handler`);
 const genUtils = require("../../command_utilities/general_utilities");
@@ -21,17 +22,32 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
-        indexEntry.accidental_calls++;
+        urlExists(indexEntry.url, (err, exists) => {
+            if (err) console.error(err);
 
-        let newEmbed = new Discord.RichEmbed()
-            .setTitle(indexEntry.index_name)
-            .setURL(indexEntry.url)
-            .addField(`Direct Calls`, indexEntry.direct_calls, true)
-            .addField(`Accidental Calls`, indexEntry.accidental_calls, true)
-            .setImage(indexEntry.url);
-        message.channel.send(newEmbed);
+            //If the index was broken, delete it
+            if (!exists) {
+                message.channel.send(`The link for **${indexEntry.index_name}** was broken! I'm deleting it from the index database.
+(The link was ${indexEntry.url}; re-index it if I made a mistake but I'm pretty sure I'm right)`);
+                dbUtils.removeIndex(message.guild, indexEntry.index_name);
+                return;
+            }
 
-        dbUtils.updateImageIndexData(message.guild, indexEntry);
+            //Otherwise, post it
+            else {
+                indexEntry.accidental_calls++;
+
+                let newEmbed = new Discord.RichEmbed()
+                    .setTitle(indexEntry.index_name)
+                    .setURL(indexEntry.url)
+                    .addField(`Direct Calls`, indexEntry.direct_calls, true)
+                    .addField(`Accidental Calls`, indexEntry.accidental_calls, true)
+                    .setImage(indexEntry.url);
+                message.channel.send(newEmbed);
+
+                dbUtils.updateImageIndexData(message.guild, indexEntry);
+            }
+        });
 
     }
     else {
@@ -44,17 +60,34 @@ module.exports.run = async (bot, message, args) => {
             return;
         }
 
-        indexEntry.direct_calls++;
+        urlExists(indexEntry.url, (err, exists) => {
+            if (err) console.error(err);
 
-        let newEmbed = new Discord.RichEmbed()
-            .setTitle(indexEntry.index_name)
-            .setURL(indexEntry.url)
-            .addField(`Direct Calls`, indexEntry.direct_calls, true)
-            .addField(`Accidental Calls`, indexEntry.accidental_calls, true)
-            .setImage(indexEntry.url);
-        message.channel.send(newEmbed);
+            //If the index was broken, delete it
+            if (!exists) {
+                message.channel.send(`The link for **${indexEntry.index_name}** was broken! I'm deleting it from the index database.
+(The link was ${indexEntry.url}; re-index it if I made a mistake but I'm pretty sure I'm right)`);
+                dbUtils.removeIndex(message.guild, indexEntry.index_name);
+                return;
+            }
 
-        dbUtils.updateImageIndexData(message.guild, indexEntry);
+            //Otherwise, post it
+            else {
+
+                indexEntry.direct_calls++;
+
+                let newEmbed = new Discord.RichEmbed()
+                    .setTitle(indexEntry.index_name)
+                    .setURL(indexEntry.url)
+                    .addField(`Direct Calls`, indexEntry.direct_calls, true)
+                    .addField(`Accidental Calls`, indexEntry.accidental_calls, true)
+                    .setImage(indexEntry.url);
+                message.channel.send(newEmbed);
+
+                dbUtils.updateImageIndexData(message.guild, indexEntry);
+
+            }
+        });
 
     }
 

@@ -273,3 +273,5 @@ The trello board containing all upcoming features can be found here: https://tre
 	* Utilized in various request calls to make the html presentable
 * [better-sqlite3](https://www.npmjs.com/package/better-sqlite3)
 	* Utilized for data management
+* [url-exists](https://www.npmjs.com/package/url-exists)
+	* Utilized in the !indexcall command to determine if the link should be deleted
