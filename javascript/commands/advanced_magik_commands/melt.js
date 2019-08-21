@@ -137,11 +137,11 @@ module.exports.help = {
     usage: "!melt [-s scale] [-c frameCount] [-d frameDelay] [-p pingPong] [-w sinWave]",
     example: "!melt -s 40 -c 40 -d 4 -p true -w false",
     funFacts: [
-        "This is the most complicated Advanced Magik command, having a total of 5 potential parameters.",
-        "It was hard to decide if pingPong should be true by default or not. I personally prefer how gifs look with pingPong set to true, but it feels more \
-        vanilla to leave it as false unless otherwise specified.",
-        "Wave is a fairly hard to notice stat when enabled. I considered removing it when I realized this because it'd never make the difference between a \
-        good or bad gif, but there'd be no point as the parameter is optional anyway."
+        `This is the most complicated Advanced Magik command, having a total of 5 potential parameters.`,
+        `It was hard to decide if pingPong should be true by default or not. I personally prefer how gifs look with pingPong set to true, but it feels more \
+        vanilla to leave it as false unless otherwise specified.`,
+        `Wave is a fairly hard to notice stat when enabled. I considered removing it when I realized this because it'd never make the difference between a \
+        good or bad gif, but there'd be no point as the parameter is optional anyway.`
     ]
 }
 

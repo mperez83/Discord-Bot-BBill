@@ -16,6 +16,6 @@ module.exports.help = {
     usage: "!piplup",
     example: "!piplup",
     funFacts: [
-        "This was one of the easiest commands to implement, because all it does is post a link to a picture of piplup"
+        `This was one of the easiest commands to implement, because all it does is post a link to a picture of piplup`
     ]
 }

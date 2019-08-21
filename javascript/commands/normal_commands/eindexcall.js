@@ -66,6 +66,10 @@ module.exports.help = {
     usage: "!eindexcall",
     example: "!eindexcall",
     funFacts: [
-        "This is a potentially dangerous command, since any server is able to index anything."
+        //`This is a potentially dangerous command, since any server is able to index anything.`,
+        `This command was actually very tedious to implement. You can't select a random table within a database with SQLite, so I have to try and keep \
+        track of servers that contain indices manually. I do this by adding it to a table called "valid_servers" whenever something is indexed, if it isn't \
+        already in that table. Then, the issue becomes how to check if a server is still valid whenever we do an eindexcall, since it potentially might not have \
+        indices anymore. UGH`
     ]
 }

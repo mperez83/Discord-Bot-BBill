@@ -64,11 +64,11 @@ module.exports.help = {
     usage: "!theworstcommand",
     example: "!theworstcommand",
     funFacts: [
-        "This was one of the most complicated commands to implement, involving procedurely generated plasma fractals and modular framing. It produces one of the \
-        most boring results, though, which is why the command has the alias it has.",
-        "One somewhat fun use of the command is to do a lot of theworstcommand calls in a row on the same image. This causes the borders to create a 3D effect \
-        on the image, because each new border is larger than the previous.",
-        "This is one of a few secret commands Big Bill currently has. It isn't listed on his GitHub page."
+        `This was one of the most complicated commands to implement, involving procedurely generated plasma fractals and modular framing. It produces one of the \
+        most boring results, though, which is why the command has the alias it has.`,
+        `One somewhat fun use of the command is to do a lot of theworstcommand calls in a row on the same image. This causes the borders to create a 3D effect \
+        on the image, because each new border is larger than the previous.`,
+        `This is one of a few secret commands Big Bill currently has. It isn't listed on his GitHub page.`
     ]
 }
 

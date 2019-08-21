@@ -125,7 +125,7 @@ module.exports.help = {
     usage: "!intensify [-i intensity] [-c frameCount] [-d frameDelay]",
     example: "!intensify -i 10 -c 16 -d 3",
     funFacts: [
-        "Intensify was the first \"Advanced Magik\" command implemented."
+        `Intensify was the first "Advanced Magik" command implemented, which are commands that utilize a more intricate parameter system.`
     ]
 }
 

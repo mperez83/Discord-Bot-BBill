@@ -41,6 +41,6 @@ module.exports.help = {
     usage: "!powercheck",
     example: "!powercheck",
     funFacts: [
-        "!power also tells you when your next power call is, but this command lets users check without potentially prematurely doing a power call."
+        `!power also tells you when your next power call is, but this command lets users check without potentially prematurely doing a power call.`
     ]
 }

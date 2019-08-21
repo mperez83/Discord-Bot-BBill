@@ -67,7 +67,8 @@ module.exports.help = {
     usage: "!index (name)",
     example: "!index when you get the victory royale",
     funFacts: [
-        "There used to be a way to delete existing indices, but that has since been removed. The index pool is an ever growing cacophony with (virtually) \
-        no way to determine who indexed what."
+        `There used to be a way to delete existing indices, but that has since been removed. The index pool is an ever growing cacophony with (virtually) \
+        no way to determine who indexed what.`,
+        `Indices are per server! Other servers can't see what you index here, unless they use the !eindexcall command.`
     ]
 }

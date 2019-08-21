@@ -18,7 +18,7 @@ module.exports.help = {
     usage: "!sfw",
     example: "!sfw",
     funFacts: [
-        "If I recall correctly, this was the first command ever created. The concept of posting an image three times in a row was an easy enough task to act \
-        as my intro to Discord.js."
+        `If I recall correctly, this was the first command ever created. The concept of posting an image three times in a row was an easy enough task to act \
+        as my intro to Discord.js.`
     ]
 }

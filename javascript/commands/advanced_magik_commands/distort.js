@@ -99,8 +99,8 @@ module.exports.help = {
     usage: "!distort [-s scale]",
     example: "!distort -s 40",
     funFacts: [
-        "This is the most popular command. It's very fast, and easy to whip out on a whim.",
-        "A popular pastime with Big Bill is to do a random !indexcall, and immediately follow it up with a !distort."
+        `This is the most popular command. It's very fast, and easy to whip out on a whim.`,
+        `A popular pastime with Big Bill is to do a random !indexcall, and immediately follow it up with a !distort.`
     ]
 }
 

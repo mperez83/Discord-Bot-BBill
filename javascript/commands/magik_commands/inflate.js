@@ -107,8 +107,8 @@ module.exports.help = {
     usage: "!inflate [intensity]",
     example: "!inflate 1",
     funFacts: [
-        "This was one of the first implemented Magik commands. Similar to deflate, the operation is simple; it calls Implode with some intensity.",
-        "This command could have gone under a different alias."
+        `This was one of the first implemented Magik commands. Similar to deflate, the operation is simple; it calls Implode with some intensity.`,
+        `This command could have gone under a different alias.`
     ]
 }
 

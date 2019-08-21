@@ -174,10 +174,10 @@ module.exports.help = {
     usage: "!scp [number]",
     example: "!scp 173",
     funFacts: [
-        "Because of the nature of how some of the entries are formatted, it sometimes isn't possible to grab the object class, special containment procedure, \
-        or description, despite looking simple to grab just from visually looking at the page.",
-        "This is one of the most poorly constructed commands Big Bill has, as it was made in less than a day, but it's functional enough for me to call it finished.",
-        "This command only grabs entries between 1 and 4000, because many entries between 4000 and 5000 are unfinished. The only entry above 4000 that can be \
-        called manually is SCP 4006."
+        `Because of the nature of how some of the entries are formatted, it sometimes isn't possible to grab the object class, special containment procedure, \
+        or description, despite seeming simple to grab.`,
+        `This is one of the most poorly constructed commands Big Bill has, as it was made in less than a day, but it's functional enough for me to call it finished.`,
+        `This command only grabs entries between 1 and 4000, because many entries between 4000 and 5000 are unfinished. The only entry above 4000 that can be \
+        called manually is SCP 4006.`
     ]
 }

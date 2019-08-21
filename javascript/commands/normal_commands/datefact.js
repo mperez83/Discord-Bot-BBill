@@ -20,6 +20,6 @@ module.exports.help = {
     usage: "!datefact",
     example: "!datefact",
     funFacts: [
-        "This command is one of four number-fact commands. They were all incredibly easy to implement, taking less than five minutes each."
+        `This command is one of four number-fact commands. They were all incredibly easy to implement, taking less than five minutes each.`
     ]
 }

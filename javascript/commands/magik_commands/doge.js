@@ -59,7 +59,7 @@ module.exports.help = {
     usage: "!doge",
     example: "!doooooge",
     funFacts: [
-        "This is one of my favorite commands. The graphic isn't seamless, but the infrastructure is there to create other similar commands.",
-        "This command is woefully undersued."
+        `This is one of my favorite commands. The graphic isn't seamless, but the infrastructure is there to create other similar commands.`,
+        `This command is woefully undersued.`
     ]
 }

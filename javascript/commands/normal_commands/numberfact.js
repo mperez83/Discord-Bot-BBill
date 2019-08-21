@@ -20,6 +20,6 @@ module.exports.help = {
     usage: "!numberfact",
     example: "!numberfact",
     funFacts: [
-        "Out of all four number-fact generators, this one is the only one that didn't exist in the sample bot I referenced to create this command."
+        `Out of all four number-fact generators, this one is the only one that didn't exist in the sample bot I referenced to create this command.`
     ]
 }

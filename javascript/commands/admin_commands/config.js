@@ -102,8 +102,8 @@ module.exports.help = {
     usage: "!config [stat]",
     example: "!config construction_mode true",
     funFacts: [
-        "This is an admin command! You probably are not able to use it.",
-        "Config still uses the antiquated system of reading/writing to JSON files. The rate at which it could do this, however, makes it such that \
-        the chances of data corruption from reading/writing information too fast is pretty much 0%."
+        `This is an admin command! You probably are not able to use it.`,
+        `Config still uses the antiquated system of reading/writing to JSON files. The rate at which it could do this, however, makes it such that \
+        the chances of data corruption from reading/writing information too fast is pretty much 0%.`
     ]
 }

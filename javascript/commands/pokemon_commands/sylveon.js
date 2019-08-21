@@ -16,6 +16,6 @@ module.exports.help = {
     usage: "!sylveon",
     example: "!sylveon",
     funFacts: [
-        "This was one of the easiest commands to implement, because all it does is post a link to a picture of sylveon"
+        `This was one of the easiest commands to implement, because all it does is post a link to a picture of sylveon`
     ]
 }

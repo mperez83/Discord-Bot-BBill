@@ -71,9 +71,9 @@ module.exports.help = {
     usage: "!imagik",
     example: "!imagik",
     funFacts: [
-        "This is an admin command! You probably are not able to use it.",
-        "This command is bad. It doesn't do anything funny to the image; it just saves the image to disk with ImageMagick, and then reuploads it. The \
-        purpose of this command was to learn how to use ImageMagick in lieu of GraphicsMagick."
+        `This is an admin command! You probably are not able to use it.`,
+        `This command is bad. It doesn't do anything funny to the image; it just saves the image to disk with ImageMagick, and then reuploads it. The \
+        purpose of this command was to learn how to use ImageMagick in lieu of GraphicsMagick.`
     ]
 }
 

@@ -71,8 +71,8 @@ module.exports.help = {
     usage: "!homestuck",
     example: "!homestuck",
     funFacts: [
-        "The picosecond I realized how easy it was to parse webcomic pages for the comic's image, I knew what I had to do.",
-        "If a homestuck page doesn't display, it's probably because they contain a Flash application, video, or some other non-image media.",
-        "This command has the potential to post homestuck spoilers, so it's been whitelisted to only a couple servers/users."
+        `The picosecond I realized how easy it was to parse webcomic pages for the comic's image, I knew what I had to do.`,
+        `If a homestuck page doesn't display, it's probably because they contain a Flash application, video, or some other non-image media.`,
+        `This command has the potential to post homestuck spoilers, so it's been whitelisted to only a couple servers/users.`
     ]
 }

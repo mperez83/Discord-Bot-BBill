@@ -35,6 +35,7 @@ This bot must have the following permissions in order to function correctly:
 | :------------------ | :------------ | :--------- |
 | **!craft** | Composes a random crafting recipe out of the available emotes | !craft |
 | **!datefact** | Deploys an interesting fact about a random date | !datefact |
+| **!eindexcall** | Posts a random index from any server with indices | !eindexcall |
 | **!gif (input)** | Searches google for the specified input and posts the first gif found | !gif sad cat dance |
 | **!help [command]** | Posts information about the specified command, or links to this page if no command is provided | !help power |
 | **!image (input)** | Searches google for the specified input and posts the first image found | !image sad cat |

@@ -71,7 +71,7 @@ module.exports.help = {
     usage: "!giygas",
     example: "!giygas",
     funFacts: [
-        "undefined"
+        `undefined`
     ]
 }
 

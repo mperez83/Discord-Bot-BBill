@@ -45,6 +45,6 @@ module.exports.help = {
     usage: "!randomemote [number]",
     example: "!randomemote 5",
     funFacts: [
-        "This command was created when I realized discord bots automatically have the global emote pass that typically comes with Discord Nitro."
+        `This command was created when I realized discord bots automatically have the global emote pass that typically comes with Discord Nitro.`
     ]
 }

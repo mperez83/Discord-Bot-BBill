@@ -66,7 +66,7 @@ module.exports.help = {
     usage: "!speak [name]",
     example: "!speak mind flood 2",
     funFacts: [
-        "This is one of the most dysfunctional commands Big Bill has. It frequently just doesn't work, and when it does, it has an issue that causes him to \
-        make every subsequent speak call take half a second longer to process, with no upper bound."
+        `This is one of the most dysfunctional commands Big Bill has. It frequently just doesn't work, and when it does, it has an issue that causes him to \
+        make every subsequent speak call take half a second longer to process, with no upper bound.`
     ]
 }

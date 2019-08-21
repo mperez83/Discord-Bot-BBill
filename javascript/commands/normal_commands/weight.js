@@ -19,6 +19,6 @@ module.exports.help = {
     usage: "!weight",
     example: "!weight",
     funFacts: [
-        "The fumika graphics folder accounts for approximately 70% of Big Bill's cumulative file size."
+        `The fumika graphics folder accounts for approximately 70% of Big Bill's cumulative file size.`
     ]
 }

@@ -68,8 +68,8 @@ module.exports.help = {
     usage: "!emotify",
     example: "!emotify",
     funFacts: [
-        "This is my least favorite command. I implemented it because I thought there'd frequently be a desire to impulsively make an image posted to chat \
-        suitable to be turned into an emote, but that ended up not being the case."
+        `This is my least favorite command. I implemented it because I thought there'd frequently be a desire to impulsively make an image posted to chat \
+        suitable to be turned into an emote, but that ended up not being the case.`
     ]
 }
 

@@ -116,6 +116,6 @@ module.exports.help = {
     usage: "!adventure",
     example: "!adventure",
     funFacts: [
-        "This command was on hiatus for the longest time, as more and more smaller things kept popping up that I wanted to implement."
+        `This command was on hiatus for the longest time, as more and more smaller things kept popping up that I wanted to implement.`
     ]
 }

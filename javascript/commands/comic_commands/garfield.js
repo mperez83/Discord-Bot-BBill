@@ -20,8 +20,8 @@ module.exports.help = {
     usage: "!gafrield",
     example: "!garfeild",
     funFacts: [
-        "There are well over 26^1999 ways to invoke garfield, which is far above theoretical infinity",
-        "Garfield was the first comic command to be implemented, but it remained classified as a normal command until explosm, homestuck, \
-        and nedroid were implemented."
+        `There are well over 26^1999 ways to invoke garfield, which is far above theoretical infinity`,
+        `Garfield was the first comic command to be implemented, but it remained classified as a normal command until explosm, homestuck, \
+        and nedroid were implemented.`
     ]
 }

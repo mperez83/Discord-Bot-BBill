@@ -12,7 +12,7 @@ module.exports.help = {
     usage: "!ham",
     example: "!ham",
     funFacts: [
-        "Ham contains the smallest amount of images compared to the other image unbox commands.",
-        "Hams can be rated! Say Common, Uncommon, Rare, Epic, or Legendary after an image is posted to assign the ham that rarity."
+        `Ham contains the smallest amount of images compared to the other image unbox commands.`,
+        `Hams can be rated! Say Common, Uncommon, Rare, Epic, or Legendary after an image is posted to assign the ham that rarity.`
     ]
 }

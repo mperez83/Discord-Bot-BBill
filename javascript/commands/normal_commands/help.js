@@ -61,8 +61,8 @@ module.exports.help = {
     usage: "!help (command)",
     example: "!help power",
     funFacts: [
-        "!help help doesn't give you an achievement, sorry",
-        "This was the least fun command to implement. It involved no puzzle solving; just the tedious transferring of data from one file to the next."
+        `!help help doesn't give you an achievement, sorry`,
+        `This was the least fun command to implement. It involved no puzzle solving; just the tedious transferring of data from one file to the next.`
     ]
 }
 

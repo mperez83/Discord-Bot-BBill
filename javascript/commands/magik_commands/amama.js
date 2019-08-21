@@ -63,7 +63,7 @@ module.exports.help = {
     usage: "!amama",
     example: "!amama",
     funFacts: [
-        "Amama is a reference to a meme I saw a long time ago, where a picture of obama was cut in half, and the right half was reflected onto the left."
+        `Amama is a reference to a meme I saw a long time ago, where a picture of obama was cut in half, and the right half was reflected onto the left.`
     ]
 }
 

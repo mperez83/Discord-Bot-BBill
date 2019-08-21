@@ -69,9 +69,9 @@ module.exports.help = {
     usage: "!inkblot",
     example: "!inkblot",
     funFacts: [
-        "Kordell patented the series of operations required to do an inkblot. It required a bit of convincing to allow its usage in Big Bill.",
-        "The series of operations inkblot performs is as follows: Small singe, small singe, small singe, small singe, \
-        medium singe, large singe, large singe, large singe, large singe."
+        `Kordell patented the series of operations required to do an inkblot. It required a bit of convincing to allow its usage in Big Bill.`,
+        `The series of operations inkblot performs is as follows: Small singe, small singe, small singe, small singe, \
+        medium singe, large singe, large singe, large singe, large singe.`
     ]
 }
 

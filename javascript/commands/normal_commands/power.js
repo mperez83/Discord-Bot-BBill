@@ -70,13 +70,13 @@ module.exports.help = {
     usage: "!power",
     example: "!power",
     funFacts: [
-        "Power was initially called \"t-count\", but when I started adding Big Bill to more servers, I was worried that the concept of counting a user's \
-        testosterone would be seen as offensive by some.",
-        "This command was inspired by RockLeeSmiles's twitch bot command \"t-count\", which would display a random number between 1 and 100 to the chat user.",
-        "Big Bill globally announces to all servers whenever a user gets a noteworthy power level.",
-        "Making the command call all uppercase does not increase your power.",
-        "Power was the first command to be converted to the SQLite database system.",
-        "In the old JSON database system, rapid power calls would sometimes get overwritten or ignored, causing Big Bill to not record when someone's next \
-        power check date was, allowing them to instantly do another power check. We can't have an exploit of that magnitude, can we?"
+        `Power was initially called "t-count", but when I started adding Big Bill to more servers, I was worried that the concept of counting a user's \
+        testosterone would be seen as offensive by some.`,
+        `This command was inspired by RockLeeSmiles's twitch bot command "t-count", which would display a random number between 1 and 100 to the chat user.`,
+        `Big Bill globally announces to all servers whenever a user gets a noteworthy power level.`,
+        `Making the command call all uppercase does not increase your power.`,
+        `Power was the first command to be converted to the SQLite database system.`,
+        `In the old JSON database system, rapid power calls would sometimes get overwritten or ignored, causing Big Bill to not record when someone's next \
+        power check date was, allowing them to instantly do another power check. We can't have an exploit of that magnitude, can we?`
     ]
 }

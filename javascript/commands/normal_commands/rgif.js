@@ -45,7 +45,7 @@ module.exports.help = {
     usage: "!rgif (input)",
     example: "!rgif sad cat dance",
     funFacts: [
-        "This was one of the first commands Big Bill ever had! It's almost exactly the same as !gif, !image, and !rimage.",
-        "There's a finite number of times Big Bill can make Google API calls per day; once that limit is reached, he won't be able to make anymore calls until the next day."
+        `This was one of the first commands Big Bill ever had! It's almost exactly the same as !gif, !image, and !rimage.`,
+        `There's a finite number of times Big Bill can make Google API calls per day; once that limit is reached, he won't be able to make anymore calls until the next day.`
     ]
 }

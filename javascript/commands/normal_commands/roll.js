@@ -61,8 +61,7 @@ module.exports.help = {
     usage: "!roll (number of dice)d(number of sides on each die)",
     example: "!roll 2d4",
     funFacts: [
-        "It surprises me how long it took me to implement these. This command seems like it would have been one of the first ideas I'd have had.",
-        "I briefly considered allowing users to roll a die of up to the maximum possible javascript integer value, 9007199254740991, \
-        but decided against it."
+        `It surprises me how long it took me to implement these. This command seems like it would have been one of the first ideas I'd have had.`,
+        `I briefly considered allowing users to roll a die of up to the maximum possible javascript integer value, 9007199254740991, but decided against it.`
     ]
 }

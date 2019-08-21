@@ -12,7 +12,7 @@ module.exports.help = {
     usage: "!insultme",
     example: "!insultme",
     funFacts: [
-        "This command was initially made to help test some text-parsing functionalities related to hyphen separated files. I eventually opted for \
-        static JSON files that are loaded at compile time, making its initial purpose obsolete, but it's stuck around since then."
+        `This command was initially made to help test some text-parsing functionalities related to hyphen separated files. I eventually opted for \
+        static JSON files that are loaded at compile time, making its initial purpose obsolete, but it's stuck around since then.`
     ]
 }

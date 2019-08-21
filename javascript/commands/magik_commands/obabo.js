@@ -63,7 +63,7 @@ module.exports.help = {
     usage: "!obabo",
     example: "!obabo",
     funFacts: [
-        "Obabo is a reference to a meme I saw a long time ago, where a picture of obama was cut in half, and the left half was reflected onto the right."
+        `Obabo is a reference to a meme I saw a long time ago, where a picture of obama was cut in half, and the left half was reflected onto the right.`
     ]
 }
 

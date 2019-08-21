@@ -40,8 +40,8 @@ module.exports.help = {
     usage: "!urban [input]",
     example: "!urban (800)-588-2300",
     funFacts: [
-        "Sometimes, users engage in the activity of doing random urban calls in order to find a new nickname to use.",
-        "There's a bizarre amount of entries that are just... numbers, like they're just random numbers and they have entries attached to them"
+        `Sometimes, users engage in the activity of doing random urban calls in order to find a new nickname to use.`,
+        `There's a bizarre amount of entries that are just... numbers, like they're just random numbers and they have entries attached to them`
     ]
 }
 

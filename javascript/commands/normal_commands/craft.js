@@ -84,7 +84,7 @@ module.exports.help = {
     usage: "!craft",
     example: "!craft",
     funFacts: [
-        "Craft has a 1/3 chance of using only default face emojis, a 1/3 chance of using only custom server emojis, and a 1/3 chance of using both. \
-        If the server has no emotes, or if the call is through a DM to Big Bill, he'll always only use default face emojis."
+        `Craft has a 1/3 chance of using only default face emojis, a 1/3 chance of using only custom server emojis, and a 1/3 chance of using both. \
+        If the server has no emotes, or if the call is through a DM to Big Bill, he'll always only use default face emojis.`
     ]
 }

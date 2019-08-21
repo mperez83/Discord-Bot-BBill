@@ -202,7 +202,9 @@ module.exports.help = {
     usage: "!password (number)",
     example: "!password 83",
     funFacts: [
-        "This command spawned when I realized how many numbers associated with inside jokes there are, with some being more obscure than others. One obscure \
-        one is listed in the example above."
+        `This command spawned when I realized how many numbers associated with inside jokes there are, with some being more obscure than others. One obscure \
+        one is listed in the example above.`,
+        `If the password isn't currently in the system, Big Bill will try to look up an urban article of the number. A surprising amount of the time, there is \
+        an article for the number.`
     ]
 }

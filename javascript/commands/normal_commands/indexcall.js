@@ -99,9 +99,9 @@ module.exports.help = {
     usage: "!indexcall [name]",
     example: "!indexcall when you get the victory royale",
     funFacts: [
-        "One popular pastime to engage in is to do a random !indexcall, and immediately do a !distort right after.",
-        "Rather than saving the indexed image to disk and posting the image upon its indexcall, Big Bill saves the URL of the indexed image \
-        and posts it as a discord embed. This makes it much faster to post and less wasteful towards Discord's servers, but if the source URL \
-        is ever broken (for example, by deleting the original message), the index will be considered broken, and Big Bill will delete it."
+        `One popular pastime to engage in is to do a random !indexcall, and immediately do a !distort right after.`,
+        `Rather than saving the indexed image to disk and posting the image upon its indexcall, Big Bill saves the URL of the indexed image \
+        and posts it as a discord embed. This makes it much faster to post and less wasteful towards Discord's servers; however, if the source URL \
+        is ever broken (for example, by deleting the original message), the index will be considered broken, and Big Bill will delete it.`
     ]
 }

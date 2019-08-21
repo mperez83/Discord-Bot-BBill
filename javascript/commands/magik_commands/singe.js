@@ -87,9 +87,9 @@ module.exports.help = {
     usage: "!help singe[intensity]",
     example: "!singe 50",
     funFacts: [
-        "The GraphicsMagik operation this command uses is called \"charcoal\". It supposedly makes the image look like a charcoal drawing.",
-        "This is probably the most boring one-off GraphicsMagick operation command. More interesting results are achieved with inkblot or spider.",
-        "Inkblot and spider are composed out of many of this command's operation."
+        `The GraphicsMagik operation this command uses is called "charcoal". It supposedly makes the image look like a charcoal drawing.`,
+        `This is probably the most boring one-off GraphicsMagick operation command. More interesting results are achieved with inkblot or spider.`,
+        `Inkblot and spider are composed out of many of this command's operation.`
     ]
 }
 

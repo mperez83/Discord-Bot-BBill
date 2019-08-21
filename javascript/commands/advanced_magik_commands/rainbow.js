@@ -114,13 +114,13 @@ module.exports.help = {
     usage: "!rainbow [-d frameDelay] [-m midwayFrames]",
     example: "!rainbow -d 4 -m 5",
     funFacts: [
-        "This is one of my favorite commands. It's unfortunate that it's too dangerous to allow others to use, as it generates a LOT of \
-        images in order to compose a smooth transition throughout the rainbow.",
-        "Rainbow starts by first generating six images of each main color. It then generates sub images that represent the midway points between \
-        those six images, slowly transitioning from one color to the next.",
-        "Rainbow is the most expensive command because of how large the amount of pictures it can generate becomes. With a midwayFrames value of 4, \
+        `This is one of my favorite commands. It's unfortunate that it's too dangerous to allow others to use, as it generates a LOT of \
+        images in order to compose a smooth transition throughout the rainbow.`,
+        `Rainbow starts by first generating six images of each main color. It then generates sub images that represent the midway points between \
+        those six images, slowly transitioning from one color to the next.`,
+        `Rainbow is the most expensive command because of how large the amount of pictures it can generate becomes. With a midwayFrames value of 4, \
         four smooth-transition images are generated between the already existing six images. 24 + 4 = 28 images are generated, each one utilizing a \
-        complex operation process to color it in the first place."
+        complex operation process to color it in the first place.`
     ]
 }
 

@@ -12,7 +12,7 @@ module.exports.help = {
     usage: "!pikachu",
     example: "!pikachu",
     funFacts: [
-        "Pikachu was planned for a while, but I kept pushing it down the todo list. At some point, I wanted to prove to myself how fast I could set up a new \
-        image unboxing command with the infrastructure I set up, and ended up being able to set up !pikachu in under ten minutes."
+        `Pikachu was planned for a while, but I kept pushing it down the todo list. At some point, I wanted to prove to myself how fast I could set up a new \
+        image unboxing command with the infrastructure I set up, and ended up being able to set up !pikachu in under ten minutes.`
     ]
 }

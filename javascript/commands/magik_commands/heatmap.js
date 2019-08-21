@@ -64,8 +64,8 @@ module.exports.help = {
     usage: "!heatmap",
     example: "!heatmap",
     funFacts: [
-        "I do not know how this works. I was looking up how to tint an image a specific color, and ImageMagick's website provided examples for creating weird \
-        rainbow images like this one does, and I made it into a command."
+        `I do not know how this works. I was looking up how to tint an image a specific color, and ImageMagick's website provided examples for creating weird \
+        rainbow images like this one does, and I made it into a command.`
     ]
 }
 

@@ -77,9 +77,9 @@ module.exports.help = {
     usage: "!explosm [number]",
     example: "!explosm 2399",
     funFacts: [
-        "This is the second command to utilize the request package in a more indepth manner. Similar to scp, explosm parses through the page's HTML, and finds \
-        the comic img within in order to post it.",
-        "As opposed to scp, explosm has much better formatting in their page's HTML. Because they tag their comic's image as \"main-comic\", it was much \
-        easier to extract it for discord."
+        `This is the second command to utilize the request package in a more indepth manner. Similar to scp, explosm parses through the page's HTML, and finds \
+        the comic img within in order to post it.`,
+        `As opposed to scp, explosm has much better formatting in their page's HTML. Because they tag their comic's image as "main-comic", it was much \
+        easier to extract it for discord.`
     ]
 }

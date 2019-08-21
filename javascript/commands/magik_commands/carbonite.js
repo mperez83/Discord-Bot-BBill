@@ -71,7 +71,7 @@ module.exports.help = {
     usage: "!carbonite",
     example: "!carbonite",
     funFacts: [
-        "I've never seen Star Wars."
+        `I've never seen Star Wars.`
     ]
 }
 

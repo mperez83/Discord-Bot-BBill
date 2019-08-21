@@ -72,8 +72,8 @@ module.exports.help = {
     usage: "!liststats [user]",
     example: "!liststats @Star",
     funFacts: [
-        "The whole idea of stats was created because I found the idea of users seeing other user's stats and not knowing how they got them to be endlessly amusing. \
-        To this day, nobody has found out how to attain sin.",
-        "There are an egregious amount of stats that can be acquired. The vast majority of them are not intuitive."
+        `The whole idea of stats was created because I found the idea of users seeing other user's stats and not knowing how they got them to be endlessly amusing. \
+        To this day, nobody has found out how to attain sin.`,
+        `There are an egregious amount of stats that can be acquired. The vast majority of them are not intuitive.`
     ]
 }

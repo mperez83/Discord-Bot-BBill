@@ -64,11 +64,11 @@ module.exports.help = {
     usage: "!magik",
     example: "!magik",
     funFacts: [
-        "This is the first magik command ever implemented. Originally, it didn't even perform magik; it just posted a picture of a dog. It stayed that way for a very \
-        long time, waiting for the day I discovered how to utilize GraphicsMagick.",
-        "Magik was initially used as a template for all future magik commands. If ever I wanted to add a new one, I'd copy and paste magik.js into a new document.",
-        "Magik was supposed to change frequently, to reflect my growing knowledge of how to use GraphicsMagick, but eventually I settled on it just being a command that \
-        reduces the size of an image to less than one kilobyte."
+        `This is the first magik command ever implemented. Originally, it didn't even perform magik; it just posted a picture of a dog. It stayed that way for a very \
+        long time, waiting for the day I discovered how to utilize GraphicsMagick.`,
+        `Magik was initially used as a template for all future magik commands. If ever I wanted to add a new one, I'd copy and paste magik.js into a new document.`,
+        `Magik was supposed to change frequently, to reflect my growing knowledge of how to use GraphicsMagick, but eventually I settled on it just being a command that \
+        reduces the size of an image to less than one kilobyte.`
     ]
 }
 

@@ -70,7 +70,7 @@ module.exports.help = {
     usage: "!average",
     example: "!average",
     funFacts: [
-        "This is one of those \"I only thought about if I could, not about if I should\" commands."
+        `This is one of those "I only thought about if I could, not about if I should" commands.`
     ]
 }
 

@@ -20,6 +20,6 @@ module.exports.help = {
     usage: "!mathfact",
     example: "!mathfact",
     funFacts: [
-        "The website the info is requesting from makes it very easy to scrape tidbits like this."
+        `The website that Big Bill is requesting from makes it very easy to display tidbits like this.`
     ]
 }

@@ -33,8 +33,8 @@ module.exports.help = {
     usage: "!prestige",
     example: "!prestige",
     funFacts: [
-        "You already know what power level is considered admirable. Once at this power level, you'll be locked out of doing power calls until prestiging.",
-        "Locking users out of power calls until they prestige after attaining the admirable power level was included so that users who mindlessly do power calls \
-        wouldn't accidentally overwrite their power level without first acquiring their hard-earned prestige."
+        `You already know what power level is considered admirable. Once at this power level, you'll be locked out of doing power calls until prestiging.`,
+        `Locking users out of power calls until they prestige after attaining the admirable power level was included so that users who mindlessly do power calls \
+        wouldn't accidentally overwrite their power level without first acquiring their hard-earned prestige.`
     ]
 }

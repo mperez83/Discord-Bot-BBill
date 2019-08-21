@@ -62,8 +62,8 @@ module.exports.help = {
     funFacts: [
         `This command is my first attempt at utilizing a webcomic's inbuilt "random comic" functionality. It worked way easier than I thought it would, and \
         tremendously helped my understanding of HTML parsing.`,
-        "Nedroid has an excellent format for their comic titles and hover texts, which makes it very easy to parse and utilize in the discord embed messages.",
-        "The title of a given nedroid comic can only properly be seen through HTML parsing. The comic's title can be seen in the URL of the page, but \
-        the properly formatted version of the title can only be seen in the alt text of the comic's image."
+        `Nedroid has an excellent format for their comic titles and hover texts, which makes it very easy to parse and utilize in the discord embed messages.`,
+        `The title of a given nedroid comic can only properly be seen through HTML parsing. The comic's title can be seen in the URL of the page, but \
+        the properly formatted version of the title can only be seen in the alt text of the comic's image.`
     ]
 }
