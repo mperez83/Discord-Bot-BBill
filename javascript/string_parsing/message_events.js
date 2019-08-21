@@ -1,3 +1,5 @@
+const dbUtils = require(`../database_stuff/user_database_handler`);
+
 const emojiSampling = [
     '😊', '😬', '😁', '😂', '😃', '😄', '😅', '😆', '😇', '😉',
     '😊', '🙂', '🙃', '☺', '😋', '😌', '😍', '😘', '😗', '😙',
@@ -22,28 +24,15 @@ module.exports = {
 
 
 
-        //Record how many characters someone just typed to their data file
-        /*genUtils.readJSONFile("./data/general_data/user_data.json", (userDataJson) => {
-            if (!userDataJson[user.id]) userDataJson[user.id] = {username: user.username, asciiTyped: 0};
-            userDataJson[user.id].asciiTyped += message.content.length;
-
-            //If the user has typed a LOT, make big bill react and increase the user's wisdomShared stat by 1
-            if (userDataJson[user.id].asciiTyped >= 10000) {
-
-                message.react("💬");
-                userDataJson[user.id].asciiTyped = 0;
-
-                if (!userDataJson[user.id].wisdomShared) userDataJson[user.id].wisdomShared = 0;
-                userDataJson[user.id].wisdomShared++;
-
-                if (userDataJson[user.id].wisdomShared >= 10) {
-                    ahm.awardAchievement(message, ahm.achievement_list_enum.CHITTER_CHATTER);
-                }
-
-            }
-
-            fs.writeFile("./data/general_data/user_data.json", JSON.stringify(userDataJson, null, 4), (err) => { if (err) console.error(err) });
-        });*/
+        //Handle increasing how much ascii the user has typed
+        let userMiscData = dbUtils.getMiscDataEntry(user);
+        userMiscData.ascii_typed += message.content.length;
+        if (userMiscData.ascii_typed >= 10000) {
+            message.react(`💬`);
+            userMiscData.ascii_typed = 0;
+            userMiscData.wisdom_shared++;
+        }
+        dbUtils.setMiscDataEntry(userMiscData);
 
 
 

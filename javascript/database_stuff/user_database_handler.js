@@ -15,6 +15,7 @@ const setUserPowerLevelData = sql.prepare("INSERT OR REPLACE INTO power_levels (
 const getAllUserPowerLevelData = sql.prepare("SELECT * FROM power_levels ORDER BY power DESC");
 
 const getUserMiscData = sql.prepare("SELECT * FROM misc_data WHERE user_id = ?");
+const setUserMiscData = sql.prepare("INSERT OR REPLACE INTO misc_data (user_id, username, billie_bucks, garfield_revenance, social_deviancy, ascii_typed, wisdom_shared, swears_spoken, sin) VALUES (@user_id, @username, @billie_bucks, @garfield_revenance, @social_deviancy, @ascii_typed, @wisdom_shared, @swears_spoken, @sin);");
 
 
 
@@ -50,7 +51,7 @@ function verifyTable(tableToVerify) {
             if (!miscInfoTable['count(*)']) {
                 console.log(`Table "${tableToVerify}" not found! Generating now.`);
                 sql.prepare("CREATE TABLE misc_data (user_id TEXT PRIMARY KEY, username TEXT, billie_bucks INTEGER, garfield_revenance INTEGER, social_deviancy INTEGER, \
-                    stealthy_bastard_points INTEGER, ascii_typed INTEGER, wisdom_shared INTEGER, swears_spoken INTEGER, sin INTEGER);").run();
+                    ascii_typed INTEGER, wisdom_shared INTEGER, swears_spoken INTEGER, sin INTEGER);").run();
             }
             break;
         
@@ -103,13 +104,44 @@ function getMiscDataEntry(user) {
             billie_bucks: 0,
             garfield_revenance: 0,
             social_deviancy: 0,
-            stealthy_bastard_points: 0,
             ascii_typed: 0,
             wisdom_shared: 0,
             swears_spoken: 0,
             sin: 0
         }
     }
+    if (userEntry.username != user.username) userEntry.username = user.username;
     return userEntry;
 }
 module.exports.getMiscDataEntry = getMiscDataEntry;
+
+function setMiscDataEntry(updatedMiscData) {
+    setUserMiscData.run(updatedMiscData);
+}
+module.exports.setMiscDataEntry = setMiscDataEntry;
+
+function addMiscDataValue(user, attrib, amount) {
+    let userMiscData = getMiscDataEntry(user);
+
+    if (!userMiscData[attrib]) {
+        console.error(`Error: attempted access to non-existent attribute '${attrib}'!`);
+        return;
+    }
+
+    userMiscData[attrib] += amount;
+    setMiscDataEntry(userMiscData);
+}
+module.exports.addMiscDataValue = addMiscDataValue;
+
+function setMiscDataValue(user, attrib, newValue) {
+    let userMiscData = getMiscDataEntry(user);
+
+    if (!userMiscData[attrib]) {
+        console.error(`Error: attempted access to non-existent attribute '${attrib}'!`);
+        return;
+    }
+
+    userMiscData[attrib] = newValue;
+    setMiscDataEntry(userMiscData);
+}
+module.exports.setMiscDataValue = setMiscDataValue;

@@ -5,12 +5,9 @@ const genUtils = require("../../command_utilities/general_utilities");
 
 module.exports.run = async (bot, message, args) => {
 
-    //Whitelist check if this server is ok to use the command (whitelisted users bypass this restriction)
-    try {
-        if (!genUtils.verifyWhitelistCommandCall(message, "index")) return;
-    }
-    catch (err) {
-        console.error(err); //Only occurs if the command_whitelist is malformed in some way, or if the above "index" parameter is misspelled
+    if (message.channel.type == "dm") {
+        message.channel.send(`You can't use this in a dm, ${genUtils.getRandomNameInsult(message)}`);
+        return;
     }
 
     if (args.length == 0) {

@@ -7,6 +7,11 @@ const genUtils = require("../../command_utilities/general_utilities");
 
 module.exports.run = async (bot, message, args) => {
 
+    if (message.channel.type == "dm") {
+        message.channel.send(`You can't use this in a dm, ${genUtils.getRandomNameInsult(message)}`);
+        return;
+    }
+
     if (args.length == 0) {
 
         let indexEntry = dbUtils.getRandomIndex(message.guild);

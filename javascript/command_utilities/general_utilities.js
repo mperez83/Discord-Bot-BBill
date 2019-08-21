@@ -1,8 +1,8 @@
-const Discord = require("discord.js");
 const fs = require("fs");
 
 const insultData = require("../../data/static_command_data/insult_data.json");
 const whitelist = require("../../data/static_command_data/command_whitelist.json");
+const dbUtils = require(`../database_stuff/user_database_handler`);
 
 
 
@@ -26,6 +26,7 @@ module.exports.normalEmotes = [
 
 //Returns random line from list_of_names_to_insult_people_with as a string
 function getRandomNameInsult(message) {
+    dbUtils.addMiscDataValue(message.author, "social_deviancy", 1);
     return insultData.insults[Math.floor(Math.random() * insultData.insults.length)];
 }
 module.exports.getRandomNameInsult = getRandomNameInsult;

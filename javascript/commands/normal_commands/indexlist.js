@@ -6,6 +6,11 @@ const embed_list_handler = require(`../../command_utilities/embed_list_handler`)
 
 module.exports.run = async (bot, message, args) => {
 
+    if (message.channel.type == "dm") {
+        message.channel.send(`You can't use this in a dm, ${genUtils.getRandomNameInsult(message)}`);
+        return;
+    }
+
     if (args.length > 1) {
         message.channel.send(`Too many parameters, ${genUtils.getRandomNameInsult(message)}`);
         return;

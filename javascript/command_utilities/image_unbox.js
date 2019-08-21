@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
+const dbUtils = require(`../database_stuff/user_database_handler`);
+
 let rarityMessageCollectors = new Discord.Collection();
 
 
@@ -91,7 +93,8 @@ module.exports.unboxImage = (message, imageName) => {
                 collector.on('collect', (message) => {
                     userMsg = message.content.toLowerCase();
                     if (userMsg == "common" || userMsg == "uncommon" || userMsg == "rare" || userMsg == "epic" || userMsg == "legendary") {
-                        message.react("✅");
+                        message.react(`✅`);
+                        dbUtils.addMiscDataValue(message.author, "billie_bucks", 5);
                         collector.stop();
                     }
                 });

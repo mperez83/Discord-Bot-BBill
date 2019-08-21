@@ -1,11 +1,17 @@
+const Discord = require("discord.js");
 const garfield = require("garfield");
 
-const genUtils = require('../../command_utilities/general_utilities');
+
+const dbUtils = require(`../../database_stuff/user_database_handler`);
 
 
 
 module.exports.run = async (bot, message, args) => {
-    message.channel.send(garfield.random());
+    let garfEmbed = new Discord.RichEmbed()
+        .setImage(garfield.random())
+        .setColor(`#ffa600`);
+    message.channel.send(garfEmbed);
+    dbUtils.addMiscDataValue(message.author, "garfield_revenance", Math.ceil(25 + (Math.random() * 100)));
 }
 
 module.exports.help = {

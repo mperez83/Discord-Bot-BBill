@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 
 const config = require("../../data/general_data/config.json");
+const dbUtils = require(`../database_stuff/user_database_handler`);
 
 const secretPhrases = [
     `rusty bullet holes`,
@@ -204,11 +205,7 @@ module.exports = {
         }
 
         if (totalSwearCount > 0) {
-            /*genUtils.incrementUserDataValue(message.author, "swearsSpoken", totalSwearCount, (newValue) => {
-                if (newValue >= 10000) {
-                    ahm.awardAchievement(message, ahm.achievement_list_enum.SAILOR_MOUTH);
-                }
-            });*/
+            dbUtils.addMiscDataValue(message.author, "swears_spoken", totalSwearCount);
         }
 
         return false;
