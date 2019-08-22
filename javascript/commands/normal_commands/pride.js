@@ -1,8 +1,9 @@
 const Discord = require("discord.js");
 const fs = require("fs");
 
+const dbUtils = require(`../../database_stuff/misc_database_handler`);
+
 const photoLoc = "./graphics/pride_flags/";
-const prideFlagData = require("../../../data/static_command_data/pride_flag_data.json");
 
 //Primary sources for color descriptions:
 //University of Northern Colorado https://www.unco.edu/gender-sexuality-resource-center/resources/pride-flags.aspx
@@ -30,20 +31,29 @@ module.exports.run = async (bot, message, args) => {
         }
 
         let fileName = selectedFlag.replace(/\.[^/.]+$/, "");
-        let flagObject = prideFlagData[fileName];
+        let flagDatabaseEntry = dbUtils.getPrideData(fileName);
         
-        if (!flagObject) {
-            message.channel.send(`Tell michael that "${fileName}" isn't in the pride flag database`);
+        if (!flagDatabaseEntry) {
+            message.channel.send(`Tell michael that "${fileName}" has some corrupt data`);
             return;
         }
 
+        if (fileName != `catgirl who spilled her orange juice` && fileName != `completely normal photo of ross` && fileName != `gamer bernie sanders` && fileName != `shit eating brain fungus`) {
+            flagDatabaseEntry.people_count++;
+        }
+
         let newEmbed = new Discord.RichEmbed()
-            .setTitle(`${fileName}`)
-            .addField("Description", flagObject.description)
-            .addField("Colors", flagObject.colors)
+            .setTitle(`${flagDatabaseEntry.flag_name}`)
+            .addField("Description", flagDatabaseEntry.description)
+            .addField("Colors", flagDatabaseEntry.colors)
+            .addField(`Amount of ${flagDatabaseEntry.flag_name} people`, flagDatabaseEntry.people_count)
             .attachFile(`${photoLoc + selectedFlag}`);
 
         message.channel.send(newEmbed);
+
+        if (fileName != `catgirl who spilled her orange juice` && fileName != `completely normal photo of ross` && fileName != `gamer bernie sanders` && fileName != `shit eating brain fungus`) {
+            dbUtils.setPrideData(flagDatabaseEntry);
+        }
 
     });
 

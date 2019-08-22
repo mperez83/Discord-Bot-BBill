@@ -1,4 +1,4 @@
-const dbUtils = require(`../../database_stuff/index_image_database_handler`);
+const dbUtils = require(`../../database_stuff/misc_database_handler`);
 const genUtils = require("../../command_utilities/general_utilities");
 const fs = require("fs");
 
@@ -14,26 +14,18 @@ module.exports.run = async (bot, message, args) => {
         console.error(err);
     }
 
-    /*let rawData = fs.readFileSync('./data/data_backups/7-29-2019/general_data/index_image_data.json');
-    let indexDataJson = JSON.parse(rawData);
+    /*let rawData = fs.readFileSync('./data/static_command_data/pride_flag_data.json');
+    let prideJson = JSON.parse(rawData);
 
-    for (let indexEntry in indexDataJson) {
+    for (let flag in prideJson) {
         let newEntry = {
-            index_name: undefined,
-            url: undefined,
-            culprit: undefined,
-            direct_calls: 0,
-            accidental_calls: 0
+            flag_name: flag,
+            description: prideJson[flag].description,
+            colors: prideJson[flag].colors,
+            people_count: 0
         }
 
-        newEntry.index_name = indexEntry;
-        newEntry.url = indexDataJson[indexEntry].url;
-        newEntry.culprit = (indexDataJson[indexEntry].culprit) ? indexDataJson[indexEntry].culprit : `Unknown :(`;
-        newEntry.direct_calls = (indexDataJson[indexEntry].directCalls) ? indexDataJson[indexEntry].directCalls : 0;
-        newEntry.accidental_calls = 0;
-
-        console.log(newEntry);
-        dbUtils.setImageIndex(message.guild, newEntry);
+        dbUtils.setPrideData(newEntry);
     }*/
 
 }

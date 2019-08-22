@@ -123,8 +123,8 @@ module.exports.setMiscDataEntry = setMiscDataEntry;
 function addMiscDataValue(user, attrib, amount) {
     let userMiscData = getMiscDataEntry(user);
 
-    if (!userMiscData[attrib]) {
-        console.error(`Error: attempted access to non-existent attribute '${attrib}'!`);
+    if (userMiscData[attrib] == undefined) {
+        console.error(`Error: ${user.username} attempted access to non-existent attribute '${attrib}'!`);
         return;
     }
 
@@ -136,7 +136,7 @@ module.exports.addMiscDataValue = addMiscDataValue;
 function setMiscDataValue(user, attrib, newValue) {
     let userMiscData = getMiscDataEntry(user);
 
-    if (!userMiscData[attrib]) {
+    if (userMiscData[attrib] == undefined) {
         console.error(`Error: attempted access to non-existent attribute '${attrib}'!`);
         return;
     }
