@@ -96,24 +96,28 @@ module.exports.unboxImage = (message, imageType) => {
                 }
 
                 //Ensure that only one rarity collector is ever active at a given time
-                if (rarityMessageCollectors.get(`${msg.channel.id}-${msg.author.id}`)) {
-                    rarityMessageCollectors.get(`${msg.channel.id}-${msg.author.id}`).stop();
+                if (rarityMessageCollectors.has(`${message.channel.id}-${message.author.id}`)) {
+                    rarityMessageCollectors.get(`${message.channel.id}-${message.author.id}`).stop();
                 }
 
-                let collector = msg.channel.createMessageCollector(rarityFilter, { time: 15000 });
+                let collector = message.channel.createMessageCollector(rarityFilter, { time: 15000 });
 
-                collector.on('collect', (message) => {
-                    userMsg = message.content.toLowerCase();
+                collector.on('collect', (readMsg) => {
+                    userMsg = readMsg.content.toLowerCase();
                     if (userMsg == "common" || userMsg == "uncommon" || userMsg == "rare" || userMsg == "epic" || userMsg == "legendary") {
                         rarityEntry.rarity = userMsg.charAt(0).toUpperCase() + userMsg.slice(1);
-                        imageUnboxDB.updateRarity(message.guild, rarityEntry);
-                        userDB.addMiscDataValue(message.author, "billie_bucks", 5);
-                        message.react(`✅`);
+                        imageUnboxDB.updateRarity(readMsg.guild, rarityEntry);
+                        userDB.addMiscDataValue(readMsg.author, "billie_bucks", 5);
+                        readMsg.react(`✅`);
                         collector.stop();
                     }
                 });
 
-                rarityMessageCollectors.set(`${msg.channel.id}-${msg.author.id}`, collector);
+                collector.on('end', (readMsg) => {
+                    rarityMessageCollectors.delete(`${message.channel.id}-${message.author.id}`);
+                });
+
+                rarityMessageCollectors.set(`${message.channel.id}-${message.author.id}`, collector);
 
             })
             .catch(console.error);
