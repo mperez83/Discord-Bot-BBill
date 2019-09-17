@@ -54,7 +54,7 @@ module.exports.run = async (bot, message, args) => {
                 .setImage(indexEntry.url);
             message.channel.send(newEmbed);
 
-            dbUtils.updateImageIndexData(message.guild, indexEntry);
+            dbUtils.updateImageIndexData(selectedServer, indexEntry);
         }
     });
 

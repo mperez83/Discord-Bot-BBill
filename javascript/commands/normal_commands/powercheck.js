@@ -16,7 +16,7 @@ module.exports.run = async (bot, message, args) => {
     }
 
     if (user.power == 69) {
-        message.reply(`your current power level is **${user.power}**, which means you cannot reassess your power. Use "!prestige" to reset your power back to 0 and increase your prestige level`);
+        message.reply(`your current power level is **${user.power}**.`);
         return;
     }
 
