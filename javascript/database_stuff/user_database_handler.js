@@ -5,53 +5,37 @@ const sql = new SQLite('./data/databases/user_database.sqlite');
 sql.pragma("synchronous = 1");      //Makes the database sync at the most critical moments, but for the most part remain async
 sql.pragma("journal_mode = wal");   //"Write-Ahead Logging" just makes everything faster I guess
 
-verifyTable("power_levels");
-verifyTable("command_calls");
+verifyTable("power_data");
+verifyTable("command_call_data");
 verifyTable("misc_data");
-
-//Prepared statements for convenience
-const getUserPowerLevelData = sql.prepare("SELECT * FROM power_levels WHERE user_id = ?");
-const setUserPowerLevelData = sql.prepare("INSERT OR REPLACE INTO power_levels (user_id, username, power, prestige, next_power_check_date, chokes) VALUES (@user_id, @username, @power, @prestige, @next_power_check_date, @chokes);");
-const getAllUserPowerLevelData = sql.prepare("SELECT * FROM power_levels ORDER BY power DESC");
-
-const getUserMiscData = sql.prepare("SELECT * FROM misc_data WHERE user_id = ?");
-const setUserMiscData = sql.prepare("INSERT OR REPLACE INTO misc_data (user_id, username, billie_bucks, garfield_revenance, social_deviancy, ascii_typed, wisdom_shared, swears_spoken, sin) VALUES (@user_id, @username, @billie_bucks, @garfield_revenance, @social_deviancy, @ascii_typed, @wisdom_shared, @swears_spoken, @sin);");
 
 
 
 function verifyTable(tableToVerify) {
     switch (tableToVerify) {
 
-        case "power_levels":
-            //Check if the table "power_levels" exists
-            let powerLevelsTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='power_levels';").get();
-            if (!powerLevelsTable['count(*)']) {
-                console.log(`Table "${tableToVerify}" not found! Generating now.`);
-                //If the table isn't there, create it and setup the database correctly
-                sql.prepare("CREATE TABLE power_levels (user_id TEXT PRIMARY KEY, username TEXT, power INTEGER, prestige INTEGER, next_power_check_date TEXT, chokes INTEGER);").run();
-
-                //Ensure that the "id" row is always unique and indexed
-                //sql.prepare("CREATE UNIQUE INDEX idx_users_id ON power_levels (id);").run();
-
-                //sql.pragma("synchronous = 1");
-                //sql.pragma("journal_mode = wal");
-            }
-            break;
-        
-        case "command_calls":
-            let commandCallsTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='command_calls';").get();
-            if (!commandCallsTable['count(*)']) {
-                console.log(`Table "${tableToVerify}" not found! Generating now.`);
-                sql.prepare("CREATE TABLE command_calls (user_id TEXT PRIMARY KEY);").run();
+        case "power_data":
+            let powerDataTable = sql.prepare("SELECT * FROM sqlite_master WHERE type='table' AND name='power_data';").get();
+            if (!powerDataTable) {
+                console.log(`Table "power_data" not found! Generating now.`);
+                sql.prepare("CREATE TABLE power_data (user_id TEXT PRIMARY KEY, username TEXT, power INTEGER, power_calls INTEGER, prestige INTEGER, next_power_check_date TEXT, chokes INTEGER);").run();
             }
             break;
         
         case "misc_data":
-            let miscInfoTable = sql.prepare("SELECT count(*) FROM sqlite_master WHERE type='table' AND name='misc_data';").get();
-            if (!miscInfoTable['count(*)']) {
-                console.log(`Table "${tableToVerify}" not found! Generating now.`);
+            let miscInfoTable = sql.prepare("SELECT * FROM sqlite_master WHERE type='table' AND name='misc_data';").get();
+            if (!miscInfoTable) {
+                console.log(`Table "misc_data" not found! Generating now.`);
                 sql.prepare("CREATE TABLE misc_data (user_id TEXT PRIMARY KEY, username TEXT, billie_bucks INTEGER, garfield_revenance INTEGER, social_deviancy INTEGER, \
                     ascii_typed INTEGER, wisdom_shared INTEGER, swears_spoken INTEGER, sin INTEGER);").run();
+            }
+            break;
+        
+        case "command_call_data":
+            let commandCallsTable = sql.prepare("SELECT * FROM sqlite_master WHERE type='table' AND name='command_call_data';").get();
+            if (!commandCallsTable) {
+                console.log(`Table "command_call_data" not found! Generating now.`);
+                sql.prepare("CREATE TABLE command_call_data (user_id TEXT PRIMARY KEY, username TEXT);").run();
             }
             break;
         
@@ -64,13 +48,16 @@ function verifyTable(tableToVerify) {
 
 
 
+//Power data stuff
 function getPowerLevelEntry(user) {
-    let userEntry = getUserPowerLevelData.get(user.id);
+    let userEntry = sql.prepare(`SELECT * FROM power_data WHERE user_id=${user.id}`).get();
+
     if (!userEntry) {
         userEntry = {
             user_id: user.id,
             username: user.username,
             power: 0,
+            power_calls: 0,
             prestige: 0,
             next_power_check_date: undefined,
             chokes: 0
@@ -79,24 +66,27 @@ function getPowerLevelEntry(user) {
     else {
         if (userEntry.username != user.username) userEntry.username = user.username;
     }
+
     return userEntry;
 }
 module.exports.getPowerLevelEntry = getPowerLevelEntry;
 
 function setPowerLevelEntry(updatedPowerLevelData) {
-    setUserPowerLevelData.run(updatedPowerLevelData);
+    sql.prepare("INSERT OR REPLACE INTO power_data (user_id, username, power, power_calls, prestige, next_power_check_date, chokes) VALUES (@user_id, @username, @power, @power_calls, @prestige, @next_power_check_date, @chokes);").run(updatedPowerLevelData);
 }
 module.exports.setPowerLevelEntry = setPowerLevelEntry;
 
 function getAllPowerLevelEntries() {
-    return getAllUserPowerLevelData.all();
+    return sql.prepare("SELECT * FROM power_data ORDER BY power DESC").all();
 }
 module.exports.getAllPowerLevelEntries = getAllPowerLevelEntries;
 
 
 
+//Misc data stuff
 function getMiscDataEntry(user) {
-    let userEntry = getUserMiscData.get(user.id);
+    let userEntry = sql.prepare(`SELECT * FROM misc_data WHERE user_id=${user.id}`).get();
+
     if (!userEntry) {
         userEntry = {
             user_id: user.id,
@@ -111,12 +101,13 @@ function getMiscDataEntry(user) {
         }
     }
     if (userEntry.username != user.username) userEntry.username = user.username;
+
     return userEntry;
 }
 module.exports.getMiscDataEntry = getMiscDataEntry;
 
 function setMiscDataEntry(updatedMiscData) {
-    setUserMiscData.run(updatedMiscData);
+    sql.prepare("INSERT OR REPLACE INTO misc_data (user_id, username, billie_bucks, garfield_revenance, social_deviancy, ascii_typed, wisdom_shared, swears_spoken, sin) VALUES (@user_id, @username, @billie_bucks, @garfield_revenance, @social_deviancy, @ascii_typed, @wisdom_shared, @swears_spoken, @sin);").run(updatedMiscData);
 }
 module.exports.setMiscDataEntry = setMiscDataEntry;
 
@@ -145,3 +136,61 @@ function setMiscDataValue(user, attrib, newValue) {
     setMiscDataEntry(userMiscData);
 }
 module.exports.setMiscDataValue = setMiscDataValue;
+
+
+
+//Command data stuff
+function getCommandCallDataEntry(user) {
+    let userEntry = sql.prepare(`SELECT * FROM command_call_data WHERE user_id=${user.id}`).get();
+
+    if (!userEntry) {
+        userEntry = {};
+
+        let tableColumnData = sql.prepare(`PRAGMA table_info(command_call_data);`).all();
+        tableColumnData.forEach((colInfo) => {
+            userEntry[colInfo.name] = colInfo.dflt_value;
+        });
+
+        userEntry.user_id = user.id;
+        userEntry.username = user.username;
+    }
+
+    return userEntry;
+}
+module.exports.getCommandCallDataEntry = getCommandCallDataEntry;
+
+function addCommandNameToTable(commandName) {
+    sql.prepare(`ALTER TABLE command_call_data ADD COLUMN ${commandName} INTEGER DEFAULT 0;`).run();
+}
+module.exports.addCommandNameToTable = addCommandNameToTable;
+
+function updateCommandCallRecord(updatedRecord, colName) {
+    let colNames = "";
+    let colValues = "";
+
+    Object.keys(updatedRecord).forEach((key, index) => {
+        colNames += `${key}, `;
+        colValues += `@${key}, `;
+    });
+
+    colNames = colNames.slice(0, -2);
+    colValues = colValues.slice(0, -2);
+
+    sql.prepare(`INSERT INTO command_call_data (${colNames}) VALUES (${colValues}) ON CONFLICT (user_id) DO UPDATE SET ${colName}="${updatedRecord[colName]}";`).run(updatedRecord);
+}
+module.exports.updateCommandCallRecord = updateCommandCallRecord;
+
+function incrementCommandCallAmount(user, commandName) {
+    let userEntry = getCommandCallDataEntry(user);
+
+    if (userEntry[commandName] == undefined) {
+        addCommandNameToTable(commandName);
+        userEntry[commandName] = 1;
+    }
+    else {
+        userEntry[commandName]++;
+    }
+
+    updateCommandCallRecord(userEntry, commandName);
+}
+module.exports.incrementCommandCallAmount = incrementCommandCallAmount;

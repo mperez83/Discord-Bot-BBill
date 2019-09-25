@@ -1,6 +1,4 @@
-const dbUtils = require(`../../database_stuff/misc_database_handler`);
 const genUtils = require("../../command_utilities/general_utilities");
-const fs = require("fs");
 
 
 
@@ -13,20 +11,6 @@ module.exports.run = async (bot, message, args) => {
     catch (err) {
         console.error(err);
     }
-
-    /*let rawData = fs.readFileSync('./data/static_command_data/pride_flag_data.json');
-    let prideJson = JSON.parse(rawData);
-
-    for (let flag in prideJson) {
-        let newEntry = {
-            flag_name: flag,
-            description: prideJson[flag].description,
-            colors: prideJson[flag].colors,
-            people_count: 0
-        }
-
-        dbUtils.setPrideData(newEntry);
-    }*/
 
 }
 

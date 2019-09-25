@@ -13,10 +13,15 @@ module.exports.run = async (bot, message, args) => {
     if (isNaN(checkDate.getTime()) || checkDate <= currentDate) {
 
         user.power = Math.ceil(Math.random() * 100);
+        user.power_calls++;
 
         if (message.author.username == "SM980") {
             //user.power *= 0.1;
-            user.power -= 0.0001;
+            //user.power -= 0.0001;
+            user.power *= 2;
+        }
+        if (message.author.username == "Boxinc") {
+            user.power *= 4;
         }
 
         if (user.power == 69) {

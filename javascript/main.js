@@ -6,7 +6,8 @@ bot.commands = new Discord.Collection();
 const fs = require("fs");
 const config = require("../data/general_data/config.json");
 
-const genUtils = require("./command_utilities/general_utilities");
+const userDB = require(`./database_stuff/user_database_handler`);
+const genUtils = require(`./command_utilities/general_utilities`);
 
 const cleverbillModule = require("./string_parsing/cleverbill");
 const informalCommandsModule = require("./string_parsing/string_parse");
@@ -128,6 +129,7 @@ bot.on("message", (message) => {
     let cmd = bot.commands.get(command);
 
     if (cmd) {
+        userDB.incrementCommandCallAmount(message.author, command);
         //Do this so that we're able to create commands that take more parameters in the future if we want
         switch (cmd.help.name) {
             default:
@@ -147,7 +149,6 @@ bot.on("messageReactionAdd", (messageReaction, user) => {
     if (messageReaction.me) return;
 
     let emojiName = messageReaction.emoji.name;
-
     if (emojiName == `❗` || emojiName == `✅`) {
         messageReaction.message.react(`🙃`);
     }
