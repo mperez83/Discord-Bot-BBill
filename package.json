@@ -5,26 +5,23 @@
   "main": "javascript/main.js",
   "dependencies": {
     "better-sqlite3": "^5.4.2",
-    "discord.js-commando": "^0.9.0",
     "discord.js": "^11.5.1",
     "garfield": "^1.1.2",
     "get-folder-size": "^2.0.1",
     "gm": "^1.23.1",
     "html-entities": "^1.2.1",
     "htmlparser2": "^3.10.1",
-    "lodash": "^4.17.15",
     "node-gyp": "^5.0.3",
     "node-opus": "^0.3.2",
-    "request-promise": "^4.2.4",
     "request": "^2.88.0",
+    "request-promise": "^4.2.4",
     "urban-dictionary": "^2.2.1",
-    "url-exists": "^1.0.3",
-    "util.promisify": "^1.0.0"
+    "url-exists": "^1.0.3"
   },
   "devDependencies": {},
   "scripts": {
     "test": "!power",
-	"start": "node javascript/main.js"
+    "start": "node javascript/main.js"
   },
   "repository": {
     "type": "git",
@@ -32,7 +29,7 @@
   },
   "keywords": [
     "discord",
-	"bot"
+    "bot"
   ],
   "author": "Michael",
   "license": "ISC",
