@@ -160,7 +160,7 @@ function getCommandCallDataEntry(user) {
 module.exports.getCommandCallDataEntry = getCommandCallDataEntry;
 
 function addCommandNameToTable(commandName) {
-    sql.prepare(`ALTER TABLE command_call_data ADD COLUMN ${commandName} INTEGER DEFAULT 0;`).run();
+    sql.prepare(`ALTER TABLE command_call_data ADD COLUMN "${commandName}" INTEGER DEFAULT 0;`).run();
 }
 module.exports.addCommandNameToTable = addCommandNameToTable;
 

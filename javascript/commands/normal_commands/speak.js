@@ -15,7 +15,7 @@ module.exports.run = async (bot, message, args) => {
 
     
 
-    let inputAudioName = args.join(" ");
+    /*let inputAudioName = args.join(" ");
     let audioFiles = [];
 
     fs.readdir("./audio/", (err, files) => {
@@ -56,7 +56,7 @@ module.exports.run = async (bot, message, args) => {
                 .catch(console.error);
         });
 
-    });
+    });*/
 
 }
 
