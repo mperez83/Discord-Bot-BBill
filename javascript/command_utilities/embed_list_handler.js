@@ -10,13 +10,13 @@ const collectorDuration = 20000;
 
 
 
+//Used to display a list of array indices
 class EmbedList {
 
-    constructor(message, list, nameOfList, attribToList, entriesPerPage) {
+    constructor(message, list, nameOfList, entriesPerPage) {
         this.message = message;
         this.list = list;
         this.nameOfList = nameOfList;
-        this.attribToList = attribToList;
         this.entriesPerPage = entriesPerPage;
 
         this.listMessage = undefined;
@@ -66,7 +66,7 @@ class EmbedList {
         let endIndex = Math.min(curIndex + this.entriesPerPage, this.list.length);    //Math.max so that the endIndex doesn't exceed the length of the list
 
         while (curIndex < endIndex) {
-            returnMsg += `**__${curIndex + 1}:__** ${this.list[curIndex][this.attribToList]}\n`;
+            returnMsg += `**__${curIndex + 1}:__** ${this.list[curIndex]}\n`;
             curIndex++;
         }
 
@@ -94,10 +94,39 @@ module.exports.EmbedList = EmbedList;
 
 
 
-class SpecialEmbedList extends EmbedList {
+//Used to display a list of object attributes
+class ObjectEmbedList extends EmbedList {
+
+    constructor(message, list, nameOfList, attribToList, entriesPerPage) {
+        super(message, list, nameOfList, entriesPerPage);
+        this.attribToList = attribToList;
+    }
+
+    getEntriesOnPage() {
+        let returnMsg = ``;
+
+        let curIndex = Math.max(0, (this.page - 1) * this.entriesPerPage);            //Math.max so that the curIndex is never -1
+        let endIndex = Math.min(curIndex + this.entriesPerPage, this.list.length);    //Math.max so that the endIndex doesn't exceed the length of the list
+
+        while (curIndex < endIndex) {
+            returnMsg += `**__${curIndex + 1}:__** ${this.list[curIndex][this.attribToList]}\n`;
+            curIndex++;
+        }
+
+        return returnMsg;
+    }
+
+}
+module.exports.ObjectEmbedList = ObjectEmbedList;
+
+
+
+//Used specifically to display everyone's powerrankings
+class PowerEmbedList extends EmbedList {
 
     constructor(message, list, nameOfList, attribToList, entriesPerPage, parenthesisAttrib) {
-        super(message, list, nameOfList, attribToList, entriesPerPage);
+        super(message, list, nameOfList, entriesPerPage);
+        this.attribToList = attribToList;
         this.parenthesisAttrib = parenthesisAttrib;
     }
 
@@ -116,4 +145,4 @@ class SpecialEmbedList extends EmbedList {
     }
 
 }
-module.exports.SpecialEmbedList = SpecialEmbedList;
+module.exports.PowerEmbedList = PowerEmbedList;

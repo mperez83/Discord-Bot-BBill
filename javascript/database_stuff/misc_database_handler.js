@@ -5,7 +5,6 @@ sql.pragma("synchronous = 1");
 sql.pragma("journal_mode = wal");
 
 verifyTable("pride_data");
-verifyTable("command_data");
 
 
 

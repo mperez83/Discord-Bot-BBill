@@ -18,7 +18,8 @@ module.exports.run = async (bot, message, args) => {
         if (message.author.username == "SM980") {
             //user.power *= 0.1;
             //user.power -= 0.0001;
-            user.power *= 2;
+            //user.power *= 2;
+            user.power = (((user.power) - 69) * 420) / 69;
         }
         if (message.author.username == "Boxinc") {
             user.power *= 4;

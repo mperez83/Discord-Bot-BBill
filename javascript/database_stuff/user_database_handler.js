@@ -169,14 +169,14 @@ function updateCommandCallRecord(updatedRecord, colName) {
     let colValues = "";
 
     Object.keys(updatedRecord).forEach((key, index) => {
-        colNames += `${key}, `;
+        colNames += `"${key}", `;
         colValues += `@${key}, `;
     });
 
     colNames = colNames.slice(0, -2);
     colValues = colValues.slice(0, -2);
 
-    sql.prepare(`INSERT INTO command_call_data (${colNames}) VALUES (${colValues}) ON CONFLICT (user_id) DO UPDATE SET ${colName}="${updatedRecord[colName]}";`).run(updatedRecord);
+    sql.prepare(`INSERT INTO command_call_data (${colNames}) VALUES (${colValues}) ON CONFLICT (user_id) DO UPDATE SET "${colName}"=${updatedRecord[colName]};`).run(updatedRecord);
 }
 module.exports.updateCommandCallRecord = updateCommandCallRecord;
 

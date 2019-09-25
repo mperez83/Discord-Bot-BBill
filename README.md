@@ -263,8 +263,6 @@ The trello board containing all upcoming features can be found here: https://tre
 	* Utilized in the !urban command
 * [node-gyp](https://www.npmjs.com/package/node-gyp)
 	* Utilized in compiling other modules, like better-sqlite3
-* [node-opus](https://www.npmjs.com/package/node-opus)
-	* Utilized in voice chat related functionalities
 * [gm](https://www.npmjs.com/package/gm)
 	* Utilized in all magik commands
 * [request-promise](https://www.npmjs.com/package/request-promise)
@@ -281,3 +279,5 @@ The trello board containing all upcoming features can be found here: https://tre
 	* Utilized for data management
 * [url-exists](https://www.npmjs.com/package/url-exists)
 	* Utilized in the !indexcall command to determine if the link should be deleted
+* [opusscript](https://www.npmjs.com/package/opusscript)
+	* Utilized in voice chat functionalities

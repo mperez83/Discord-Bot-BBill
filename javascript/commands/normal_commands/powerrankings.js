@@ -5,7 +5,7 @@ const embed_list_handler = require(`../../command_utilities/embed_list_handler`)
 
 module.exports.run = async (bot, message, args) => {
     let powerEntries = dbUtils.getAllPowerLevelEntries();
-    let newEmbedList = new embed_list_handler.SpecialEmbedList(message, powerEntries, "Power Rankings", "username", 10, "power");
+    let newEmbedList = new embed_list_handler.PowerEmbedList(message, powerEntries, "Power Rankings", "username", 10, "power");
     newEmbedList.createMessage();
 }
 

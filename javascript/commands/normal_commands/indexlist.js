@@ -27,13 +27,12 @@ module.exports.run = async (bot, message, args) => {
 
     
 
+    let newEmbedList = new embed_list_handler.ObjectEmbedList(message, indexEntries, `Indices (Total: ${indexEntries.length})`, "index_name", 25);
+
     if (args.length == 0) {
-        let newEmbedList = new embed_list_handler.EmbedList(message, indexEntries, `Indices (Total: ${indexEntries.length})`, "index_name", 25);
         newEmbedList.createMessage();
     }
     else if (args.length == 1) {
-        let newEmbedList = new embed_list_handler.EmbedList(message, indexEntries, `Indices (Total: ${indexEntries.length})`, "index_name", 25);
-
         let startEntry = genUtils.verifyIntVal(parseInt(args[0]), 1, indexEntries.length, "Start entry", message);
         if (!startEntry) return;
 
@@ -44,7 +43,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "indexlist",
-    description: "Displays a list of the server's indices, starting on the page of the provided startEntry if provided",
+    description: "Displays a list of the server's indices, starting on the page of the provided startEntry (if provided)",
     usage: "!indexlist [startEntry]",
     example: "!indexlist 100",
     funFacts: [
