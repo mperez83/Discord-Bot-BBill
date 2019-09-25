@@ -6,7 +6,7 @@ const genUtils = require('../../command_utilities/general_utilities');
 const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
-const maxFileSize = 0.2;
+const maxFileSize = 2;
 
 
 
@@ -46,7 +46,7 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    let msg = `Starting giygas process`;
+                    let msg = `Starting the process`;
                     if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
@@ -66,12 +66,12 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "giygas",
+    name: "makeblackandwhiteandthenremovetheblack",
     description: "???",
-    usage: "!giygas",
-    example: "!giygas",
+    usage: "!makeblackandwhiteandthenremovetheblack",
+    example: "!makeblackandwhiteandthenremovetheblack",
     funFacts: [
-        `undefined`
+        `i dont know`
     ]
 }
 
@@ -84,28 +84,19 @@ function performGiygasMagik(message, filename) {
 
             if (err) console.error(err);
 
-            let swirlAmount = 180 + (Math.random() * 180);
+            let swirlAmount = 180 + (Math.random() * 360);
             if (Math.random() > 0.5) swirlAmount *= -1;
 
             let maxRadius = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
             let singeAmount = (maxRadius < 99) ? maxRadius : 99;
 
             gm(`${magikUtils.workshopLoc}/${filename}.png`)
-                .swirl(swirlAmount)
-                .charcoal(1)
-                .charcoal(1)
-                .charcoal(1)
-                .charcoal(1)
-                .charcoal(singeAmount / 2)
-                .charcoal(singeAmount)
-                .charcoal(singeAmount)
-                .charcoal(singeAmount)
-                .charcoal(singeAmount)
+                //.blur(4, 4)
                 .monochrome()
                 .matte()
-                .fuzz(10, true)
-                .fill(`red`)
-                .opaque(`white`)
+                .fuzz(50, true)
+                .fill(`none`)
+                .opaque(`black`)
                 .write(`${magikUtils.workshopLoc}/${filename}.png`, (err) => {
                     if (err) console.error(err);
 

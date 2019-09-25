@@ -123,9 +123,6 @@ bot.on("message", (message) => {
         args = ["lil wayne"];
     }
 
-    //If the command is invalid, change it to garfield
-    if (!bot.commands.get(command)) command = "garfield";
-
     let cmd = bot.commands.get(command);
 
     if (cmd) {
@@ -137,6 +134,9 @@ bot.on("message", (message) => {
                     .catch(err => {console.error(err)});    //This is required to make javascript errors on async methods NOT SILENT
                 break;
         }
+    }
+    else {
+        message.react(`❔`);
     }
 
 });
