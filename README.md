@@ -74,11 +74,12 @@ Comic commands attempt to parse a comic's html page and post its relevant conten
 Image unbox commands produce a random image from a specified directory.
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
-| **!cat** | Posts a random cat from the cat directory | !fumika |
+| **!any** | Posts a random image from any of the other image unbox commands | !any |
+| **!cat** | Posts a random cat from the cat directory | !cat |
 | **!fumika** | Posts a random fumika from the fumika directory | !fumika |
 | **!ham** | Posts a random ham from the ham directory | !ham |
 | **!idol** | Posts a random idol character from the idol directory | !idol |
-| **!pikachu** | Posts a random pikachu from the pikachu directory | !shibe |
+| **!pikachu** | Posts a random pikachu from the pikachu directory | !pikachu |
 | **!shibe** | Posts a random shibe from the shibe directory | !shibe |
 
 Images that are unboxed can be assigned rarities by the caller. Upon the image showing up in the chat, the caller has 15 seconds to say one of the following keywords to assign the image a rarity:
@@ -100,6 +101,8 @@ Magik commands perform [GraphicsMagick](https://github.com/aheckmann/gm) operati
 | | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527666605396721684/606728891897348097/1564725844079.png) | |
 | **!average** | Creates 100 copies of the image, applying random implode operations to each one, and then produces one image which is the average of them all | !average |
 | | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527666605396721684/606729612306939905/1564726015554.png) | |
+| **!bottob** | Cuts the image in half, and reflects the bottom half of the image onto the top half | !bottob |
+| | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527341248214990850/626319873580204042/1569396697394.png) | |
 | **!carbonite** | Freezes the image in carbonite | !carbonite |
 | | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527341248214990850/606730706420367360/1564726276942.png) | |
 | **!deepfry** | Deepfries the image | !deepfry |
@@ -126,6 +129,8 @@ Magik commands perform [GraphicsMagick](https://github.com/aheckmann/gm) operati
 | | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527341248214990850/606737860489379860/1564727982649.png) | |
 | **!spider** | Creates an eldritch spider from the image | !spider |
 | | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527341248214990850/606738342280691712/1564728096783.png) | |
+| **!toppot** | Cuts the image in half, and reflects the top half of the image onto the bottom half | !bottob |
+| | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527341248214990850/626320150047752222/1569396763347.png) | |
 
 ## Advanced Magik Commands
 These particular magik commands use a more intricate parameter system that allow for more specific results. The parameter format is based on inputting a letter/value pair, like so:
