@@ -41,7 +41,7 @@ This bot must have the following permissions in order to function correctly:
 | **!image (input)** | Searches google for the specified input and posts the first image found | !image sad cat |
 | **!index (name)** | Indexes the most recently posted image (wihtin ten messages) under the given name | !index when you get the victory royale |
 | **!indexcall [name]** | Posts the index under the specified name if one exists, or a random index if no name is provided | !indexcall when you get the victory royale |
-| **!indexlist [startEntry]** | Displays a list of the server's indices, starting on the page of the provided startEntry if provided | !indexlist 100 |
+| **!indexlist [startEntry]** | Displays a list of the server's indices, starting on the page of the provided startEntry (if provided) | !indexlist 100 |
 | **!liststats [user]** | Lists all of a @'d user's stats, or the caller's stats if no user is provided | !liststats Star |
 | **!mathfact** | Deploys an interesting random math fact | !mathfact |
 | **!numberfact** | Deploys an interesting fact about a random number | !numberfact |
@@ -58,6 +58,7 @@ This bot must have the following permissions in order to function correctly:
 | **!scp [number]** | Attempts to post the specified SCP entry number, or a random one if no number is provided | !scp 173 |
 | **!sfw** | Purges the chat of its sins | !sfw |
 | **!speak [name]** | Plays the specified audio file in all of the servers Big Bill is in, or a random audio file if no name is provided | !speak mind flood 2 |
+| **!speaklist [startEntry]** | Displays a list of the things big bill can say, starting on the page of the provided startEntry (if provided) | !speaklist 10 |
 | **!urban [input]** | Searches urban dictionary for the specified input and posts the article about it, or posts a random urban dictionary article if no input is provided | !urban (800)-588-2300 |
 | **!weight** | Posts how large Big Bill is in gigabytes | !weight |
 | **!yearfact** | Deploys an interesting fact about a random year | !yearfact |

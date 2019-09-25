@@ -9,14 +9,10 @@ let serverDispatchers = new Discord.Collection();
 
 module.exports.run = async (bot, message, args) => {
 
-    try {
-        if (!genUtils.verifyWhitelistCommandCall(message, "admin")) return;
+    if (message.channel.type == "dm") {
+        message.channel.send(`You can't use this in a dm, ${genUtils.getRandomNameInsult(message)}`);
+        return;
     }
-    catch (err) {
-        console.error(err);
-    }
-
-    
 
 
 
