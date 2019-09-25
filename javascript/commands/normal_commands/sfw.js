@@ -1,20 +1,30 @@
 const Discord = require("discord.js");
 
+const thoughts = [
+    `nope. not into that very much at all`,
+    `don't like that`,
+    `get that outta here`,
+    `begone`
+];
+
 
 
 module.exports.run = async (bot, message, args) => {
 
-    /*for (let i = 0; i < 3; i++) {
-        let newEmbed = new Discord.RichEmbed();
-        newEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/584244981397454884/sfw_sasuke.jpg`);
-        message.channel.send(newEmbed);
-    }*/
+    let msg = "";
 
-    let msg = `<:vtwinkie1:595359362147680266>\n`;
-    for (let i = 0; i < 30; i++) {
-        msg += `<:vtwinkie2:595359360884932619>\n`;
+    //10% chance for twinkie doge to voice its thoughts
+    if (Math.floor(100 * Math.random()) < 25) {
+        msg += `<:vtwinkie1:626326797038125066><:thinky1:525918684061892619>${thoughts[Math.floor(thoughts.length * Math.random())]}<:thinky2:525918684313813023>\n`;
     }
-    msg += `<:vtwinkie3:595359361283653632>`;
+    else {
+        msg += `<:vtwinkie1:626326797038125066>\n`;
+    }
+
+    for (let i = 0; i < 30; i++) {
+        msg += `<:vtwinkie2:626326796375162890>\n`;
+    }
+    msg += `<:vtwinkie3:626326796765495316>`;
 
     message.channel.send(msg);
 

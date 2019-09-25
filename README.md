@@ -110,7 +110,7 @@ Magik commands perform [GraphicsMagick](https://github.com/aheckmann/gm) operati
 | **!deflate [intensity]** | Deflates the image by the specified intensity (defaults to 1) | !deflate 1 |
 | | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527341248214990850/606731390012358666/1564726439974.png) | |
 | **!doge** | Creates a doge that's as long as there are o's in the command call | !doooge |
-| | ![](https://cdn.discordapp.com/attachments/527341248214990850/606731868578250772/1564726554034.png) | |
+| | ![](https://cdn.discordapp.com/attachments/527341248214990850/626329342443782154/1569398955029.png) | |
 | **!emotify** | Makes the image less than 256kb, if it isn't already | !emotify |
 | | ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png) | |
 | **!enhance** | Applies four random GraphicsMagick operations to the image | !enhance |
