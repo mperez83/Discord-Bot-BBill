@@ -65,6 +65,7 @@ This bot must have the following permissions in order to function correctly:
 
 ## Comic Commands
 Comic commands attempt to parse a comic's html page and post its relevant content.
+
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
 | **!explosm [number]** | Attempts to post the specified explosm comic, or a random one if no number is provided | !explosm 2500 |
@@ -73,6 +74,7 @@ Comic commands attempt to parse a comic's html page and post its relevant conten
 
 ## Image Unbox Commands
 Image unbox commands produce a random image from a specified directory.
+
 | Command name | Description | Example |
 | :------------------ | :------------ | :--------- |
 | **!any** | Posts a random image from any of the other image unbox commands | !any |
@@ -246,7 +248,7 @@ The letters represent a specific option within the command that can be manipulat
 ### Example
 ![](https://cdn.discordapp.com/attachments/527666605396721684/606728751291564057/party_pikachu.png)
 
->!melt -s 40 -c 40 -d 4 -p true -w false
+>!undulate -i 1.5 -c 15 -d 5
 
 ![](https://cdn.discordapp.com/attachments/527341248214990850/606756264206270474/1564732369966.gif)
 

@@ -3,6 +3,7 @@ const fs = require("fs");
 
 const userDB = require(`../database_stuff/user_database_handler`);
 const imageUnboxDB = require(`../database_stuff/image_unbox_database_handler`);
+const genUtils = require('../command_utilities/general_utilities');
 
 let rarityMessageCollectors = new Discord.Collection();
 
@@ -10,15 +11,18 @@ let rarityMessageCollectors = new Discord.Collection();
 
 module.exports.unboxImage = (message, imageType) => {
 
-    let photoLoc = ``;
+    if (message.channel.type == "dm") {
+        message.channel.send(`You can't unbox stuff in a dm, ${genUtils.getRandomNameInsult(message)}`);
+        return;
+    }
 
+
+
+    let photoLoc = ``;
     if (Math.floor(Math.random() * 100) < 5) imageType = `komugi`;
-    
     photoLoc = `./graphics/image_unbox_graphics/${imageType}/`;
 
-
-
-    fs.readdir(photoLoc, (err, images) => { //This fucks up the collector, I think
+    fs.readdir(photoLoc, (err, images) => {
 
         if (err) console.error(err);
 
