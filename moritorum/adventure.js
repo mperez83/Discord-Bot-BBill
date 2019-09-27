@@ -1,5 +1,5 @@
-const genUtils = require('../../command_utilities/general_utilities');
-const advUtils = require('../../command_utilities/adventure_utilities');
+const genUtils = require('../javascript/command_utilities/general_utilities');
+const advUtils = require('./adventure_utilities');
 
 
 
@@ -19,11 +19,11 @@ module.exports.run = async (bot, message, args) => {
 message with 💣 to complete the action. (After 15 seconds, this message won't read any more reactions)`)
                     .then((msg) => {
 
-                        const rarityFilter = (reaction, user) => {
+                        const bombFilter = (reaction, user) => {
                             return reaction.emoji.name === '💣' && user.id === message.author.id;
                         };
 
-                        msg.awaitReactions(rarityFilter, { max: 1, time: 15000, errors: ['time'] })
+                        msg.awaitReactions(bombFilter, { max: 1, time: 15000, errors: ['time'] })
                             .then((collected) => {
                                 let channelToDelete = msg.guild.channels.find(channel => (channel.name === "bills-adventure" && channel.type === "text"));
                                 if (channelToDelete) {
@@ -40,6 +40,9 @@ message with 💣 to complete the action. (After 15 seconds, this message won't 
 
                     });
             }
+        }
+        else if (args == "wakeup") {
+            advUtils.wakeUp(message);
         }
         else {
             message.channel.send(`Adventure channel already exists! Use the command "!adventure deletesave" to delete this server's save.`);
