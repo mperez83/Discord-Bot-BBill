@@ -22,7 +22,10 @@ module.exports.run = async (bot, message, args) => {
             user.power = (((user.power) - 69) * 420) / 69;
         }
         if (message.author.username == "Boxinc") {
-            user.power *= 4;
+            //user.power *= 4;
+        }
+        if (message.author.username == "sylferino") {
+            user.power *= 2;
         }
 
         if (user.power == 69) {
