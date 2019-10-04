@@ -15,19 +15,6 @@ module.exports.run = async (bot, message, args) => {
         user.power = Math.ceil(Math.random() * 100);
         user.power_calls++;
 
-        if (message.author.username == "SM980") {
-            //user.power *= 0.1;
-            //user.power -= 0.0001;
-            //user.power *= 2;
-            user.power = (((user.power) - 69) * 420) / 69;
-        }
-        if (message.author.username == "Boxinc") {
-            //user.power *= 4;
-        }
-        if (message.author.username == "sylferino") {
-            user.power *= 2;
-        }
-
         if (user.power == 69) {
             message.reply(`your power level is **69.**`);
             genUtils.sendGlobalMessage(bot, `User **${message.author.username}** just got a power level of 69!!!`);
