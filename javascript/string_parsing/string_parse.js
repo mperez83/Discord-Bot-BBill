@@ -156,6 +156,36 @@ module.exports = {
 
 
 
+        //Post that dog
+        if (userMsg === "post that dog") {
+            let dogEmbed = new Discord.RichEmbed();
+            dogEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/637082158334214164/chrome_2019-10-24_17-17-01.png`);
+            message.channel.send(dogEmbed);
+            return true;
+        }
+
+
+
+        //Post that hamster
+        if (userMsg === "post that hamster") {
+            let hamEmbed = new Discord.RichEmbed();
+            hamEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/637083093227798537/chrome_2019-10-24_17-20-24.png`);
+            message.channel.send(hamEmbed);
+            return true;
+        }
+
+
+
+        //Post him
+        if (userMsg === "post him") {
+            let himEmbed = new Discord.RichEmbed();
+            himEmbed.setImage(`https://cdn.discordapp.com/attachments/527341248214990850/651551194572914716/hamburglar.jpg`);
+            message.channel.send(himEmbed);
+            return true;
+        }
+
+
+
         //React to messages containing a reference to bbill
         if (userMsg.includes("big bill") || userMsg.includes("bbill") || userMsg.includes("bill")) {
             if (Math.ceil(Math.random() * 100) <= 10) message.react("👁");

@@ -28,7 +28,7 @@ module.exports = {
         let userMiscData = dbUtils.getMiscDataEntry(user);
         userMiscData.ascii_typed += message.content.length;
         if (userMiscData.ascii_typed >= 10000) {
-            message.react(`💬`);
+            //message.react(`💬`);
             userMiscData.ascii_typed = 0;
             userMiscData.wisdom_shared++;
         }

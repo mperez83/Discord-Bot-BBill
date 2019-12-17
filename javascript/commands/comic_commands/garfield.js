@@ -11,7 +11,7 @@ module.exports.run = async (bot, message, args) => {
         .setImage(garfield.random())
         .setColor(`#ffa600`);
     message.channel.send(garfEmbed);
-    dbUtils.addMiscDataValue(message.author, "garfield_revenance", Math.ceil(25 + (Math.random() * 100)));
+    dbUtils.addMiscDataValue(message.author, "garfield_reverence", Math.ceil(25 + (Math.random() * 100)));
 }
 
 module.exports.help = {

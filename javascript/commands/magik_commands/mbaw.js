@@ -66,10 +66,10 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "makeblackandwhiteandthenremovetheblack",
+    name: "mbaw",
     description: "???",
-    usage: "!makeblackandwhiteandthenremovetheblack",
-    example: "!makeblackandwhiteandthenremovetheblack",
+    usage: "!mbaw",
+    example: "!mbaw",
     funFacts: [
         `i dont know`
     ]

@@ -4,6 +4,8 @@ const gm = require("gm");
 const genUtils = require("../../command_utilities/general_utilities");
 const config = require("../../../data/general_data/config.json");
 
+const twinkieCap = 500;
+
 
 
 module.exports.run = async (bot, message, args) => {
@@ -24,7 +26,7 @@ module.exports.run = async (bot, message, args) => {
     command = command.slice(config.prefix.length);
 
     let oCount = command.split("o").length - 1;
-    if (oCount > 20) { oCount = 20; }
+    if (oCount > twinkieCap) { oCount = twinkieCap; }
     let dogelength = pos + (oCount * bodyWidth);
 
     let dogeimg = gm()

@@ -92,7 +92,7 @@ function getMiscDataEntry(user) {
             user_id: user.id,
             username: user.username,
             billie_bucks: 0,
-            garfield_revenance: 0,
+            garfield_reverence: 0,
             social_deviancy: 0,
             ascii_typed: 0,
             wisdom_shared: 0,
@@ -107,7 +107,7 @@ function getMiscDataEntry(user) {
 module.exports.getMiscDataEntry = getMiscDataEntry;
 
 function setMiscDataEntry(updatedMiscData) {
-    sql.prepare("INSERT OR REPLACE INTO misc_data (user_id, username, billie_bucks, garfield_revenance, social_deviancy, ascii_typed, wisdom_shared, swears_spoken, sin) VALUES (@user_id, @username, @billie_bucks, @garfield_revenance, @social_deviancy, @ascii_typed, @wisdom_shared, @swears_spoken, @sin);").run(updatedMiscData);
+    sql.prepare("INSERT OR REPLACE INTO misc_data (user_id, username, billie_bucks, garfield_reverence, social_deviancy, ascii_typed, wisdom_shared, swears_spoken, sin) VALUES (@user_id, @username, @billie_bucks, @garfield_reverence, @social_deviancy, @ascii_typed, @wisdom_shared, @swears_spoken, @sin);").run(updatedMiscData);
 }
 module.exports.setMiscDataEntry = setMiscDataEntry;
 

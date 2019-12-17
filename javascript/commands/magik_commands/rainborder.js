@@ -59,14 +59,14 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "theworstcommand",
+    name: "rainborder",
     description: "Turns the image into a Super Mario 64 painting",
-    usage: "!theworstcommand",
-    example: "!theworstcommand",
+    usage: "!rainborder",
+    example: "!rainborder",
     funFacts: [
         `This was one of the most complicated commands to implement, involving procedurely generated plasma fractals and modular framing. It produces one of the \
         most boring results, though, which is why the command has the alias it has.`,
-        `One somewhat fun use of the command is to do a lot of theworstcommand calls in a row on the same image. This causes the borders to create a 3D effect \
+        `One somewhat fun use of the command is to do a lot of rainborder calls in a row on the same image. This causes the borders to create a 3D effect \
         on the image, because each new border is larger than the previous.`,
         `This is one of a few secret commands Big Bill currently has. It isn't listed on his GitHub page.`
     ]
