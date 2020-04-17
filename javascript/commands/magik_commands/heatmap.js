@@ -72,7 +72,6 @@ module.exports.help = {
 
 
 function performRainbowMagik(message, filename) {
-
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size((err, size) => {
 
@@ -97,5 +96,4 @@ function performRainbowMagik(message, filename) {
                 });
                 
         });
-
 }

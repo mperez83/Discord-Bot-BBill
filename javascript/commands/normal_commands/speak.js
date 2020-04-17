@@ -65,7 +65,16 @@ module.exports.run = async (bot, message, args) => {
                             serverDispatchers.set(`${message.guild.id}`, dispatcher);
                             dispatcher.on("end", (reason) => {
                                 serverDispatchers.delete(`${message.guild.id}`);
-                                if (reason != `switching audio`) voiceChannel.leave();
+                                if (reason != `switching audio`) {
+                                    if (inputAudioName == "pain" && message.guild.me.hasPermission("MOVE_MEMBERS")) {
+                                        voiceChannel.members.forEach(function(guildMember) {
+                                            guildMember.setVoiceChannel(null);
+                                        });
+                                    }
+                                    else {
+                                        voiceChannel.leave();
+                                    }
+                                }
                             });
                         }
 
@@ -77,7 +86,16 @@ module.exports.run = async (bot, message, args) => {
                             serverDispatchers.set(`${message.guild.id}`, dispatcher);
                             dispatcher.on("end", (reason) => {
                                 serverDispatchers.delete(`${message.guild.id}`);
-                                if (reason != `switching audio`) voiceChannel.leave();
+                                if (reason != `switching audio`) {
+                                    if (inputAudioName == "pain" && message.guild.me.hasPermission("MOVE_MEMBERS")) {
+                                        voiceChannel.members.forEach(function(guildMember) {
+                                            guildMember.setVoiceChannel(null);
+                                        });
+                                    }
+                                    else {
+                                        voiceChannel.leave();
+                                    }
+                                }
                             });
                         }
 
@@ -96,7 +114,7 @@ module.exports.run = async (bot, message, args) => {
 
 module.exports.help = {
     name: "speak",
-    description: "Plays the specified audio file in all of the servers Big Bill is in, or a random audio file if no name is provided",
+    description: "Plays the specified audio file, or a random audio file if no name is provided",
     usage: "!speak [name]",
     example: "!speak mind flood 2",
     funFacts: [

@@ -1,17 +1,18 @@
 const fs = require("fs");
 const gm = require("gm");
+const imageMagick = require("gm").subClass({imageMagick: true});
 const rp = require("request-promise");
 
 const genUtils = require('../../command_utilities/general_utilities');
 const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
-const maxFileSize = 0.5;
+const maxFileSize = 2;
 
 
 
 module.exports.run = async (bot, message, args) => {
-
+    
     if (config.lite_mode == "true") {
         message.channel.send(`Currently in lite_mode, can't use expensive commands. ${genUtils.getRandomNameInsult(message)}`);
         return;
@@ -19,15 +20,17 @@ module.exports.run = async (bot, message, args) => {
 
     //If the user tried to supply some kind of argument, cut that shit right off
     if (args.length > 0) {
-        message.channel.send(`Inkblot doesn't use parameters, ${genUtils.getRandomNameInsult(message)}`);
+        message.channel.send(`no parameters here, ${genUtils.getRandomNameInsult(message)}`);
         return;
     }
 
 
 
+    let foundURL;
+
     genUtils.getMostRecentImageURL(message).then((requestedURL) => {
 
-        let foundURL = requestedURL;
+        foundURL = requestedURL;
 
         if (!foundURL) {
             return;
@@ -44,12 +47,13 @@ module.exports.run = async (bot, message, args) => {
                     let filename = Date.now();
                     let fileSize = (response.headers['content-length'] / 1000000.0).toFixed(2);
 
-                    let msg = `Starting inkblot process (this is surprisingly the most expensive command, please be patient)`;
+                    let msg = `Starting vibe process`;
+                    if (fileSize > 0.25) msg += ` (image is rather large, be patient)`;
                     if (fileSize > maxFileSize) msg += ` (also the image is **${fileSize}mb**, I need to chop it down until it's lower than **${maxFileSize}mb**)`;
                     message.channel.send(msg);
 
-                    magikUtils.writeAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
-                        performInkblotMagik(message, filename);
+                    magikUtils.imWriteAndShrinkImage(message, foundURL, filename, maxFileSize, () => {
+                        performVibeMagik(message, filename);
                     });
 
                 })
@@ -63,41 +67,32 @@ module.exports.run = async (bot, message, args) => {
 }
 
 module.exports.help = {
-    name: "inkblot",
-    description: "Turns the image into an inkblot",
-    usage: "!inkblot",
-    example: "!inkblot",
+    name: "vibe",
+    description: "Produces an image you can vibe to",
+    usage: "!vibe",
+    example: "!vibe",
     funFacts: [
-        `Kordell patented the series of operations required to do an inkblot. It required a bit of convincing to allow its usage in Big Bill.`,
-        `The series of operations inkblot performs is as follows: Small singe, small singe, small singe, small singe, \
-        medium singe, large singe, large singe, large singe, large singe.`,
-        `This is strangely the most expensive magik command, despite seeming fairly simple. It takes even longer than the rainbow command!!`,
-        `A really fun command chain to perform is !inkblot, followed by !obabo.`
+        `i dont think i know what vibe means`
     ]
 }
 
 
 
-function performInkblotMagik(message, filename) {
-
+function performVibeMagik(message, filename) {
     gm(`${magikUtils.workshopLoc}/${filename}.png`)
         .size((err, size) => {
 
             if (err) console.error(err);
 
-            let maxSingeAmount = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
-            let singeAmount = (maxSingeAmount < 99) ? maxSingeAmount : 99;
+            let maxRadius = (size.width < size.height) ? Math.floor(size.width / 2) - 1 : Math.floor(size.height / 2) - 1;
 
-            gm(`${magikUtils.workshopLoc}/${filename}.png`)
-                .charcoal(1)
-                .charcoal(1)
-                .charcoal(1)
-                .charcoal(1)
-                .charcoal(singeAmount / 2)
-                .charcoal(singeAmount)
-                .charcoal(singeAmount)
-                .charcoal(singeAmount)
-                .charcoal(singeAmount)
+            imageMagick()
+                .command(`convert`)
+                .in(`${magikUtils.workshopLoc}/${filename}.png`)
+                .in(`-shade`, `270x15`)
+                .in(`-separate`, `-background`, `white`)
+                .in(`-compose`, `ModulusAdd`, `-flatten`, `-channel`, `R`, `-combine`, `+channel`)
+                .in(`-set`, `colorspace`, `HSB`, `-colorspace`, `RGB`)
                 .write(`${magikUtils.workshopLoc}/${filename}.png`, (err) => {
                     if (err) console.error(err);
 
@@ -107,7 +102,6 @@ function performInkblotMagik(message, filename) {
                         })
                         .catch(console.error);
                 });
-
+                
         });
-
 }
