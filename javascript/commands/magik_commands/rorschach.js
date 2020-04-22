@@ -6,7 +6,7 @@ const genUtils = require('../../command_utilities/general_utilities');
 const magikUtils = require('../../command_utilities/magik_utilities');
 const config = require("../../../data/general_data/config.json");
 
-const maxFileSize = 2;
+const maxFileSize = 0.25;
 
 
 
