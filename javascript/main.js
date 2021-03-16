@@ -72,8 +72,6 @@ bot.on("ready", () => {
     }
 });
 
-
-
 //Create event listener for messages
 bot.on("message", (message) => {
 
