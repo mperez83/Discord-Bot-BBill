@@ -4,7 +4,7 @@
   "description": "A chat bot for discord, utilizing discord.js (v11.5.1) Running Node.js v10.16.2",
   "main": "javascript/main.js",
   "dependencies": {
-    "@discordjs/opus": "^0.1.0",
+    "@discordjs/opus": "^0.8.0",
     "better-sqlite3": "^5.4.3",
     "cross-spawn": "^7.0.3",
     "discord.js": "^11.6.4",
